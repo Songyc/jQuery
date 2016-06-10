@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- exec -->
+	<script>
+	var rquickIs = /^(\w*)(?:#([\w\-]+))?(?:\.([\w\-]+))?$/;		// (\w*)为贪婪的，会匹配到""; (\w*)?为非贪婪的, 会匹配到undefined;
+	// var rquickIs = /^(\w*)?(?:#([\w\-]+))?(?:\.([\w\-]+))?$/;
+
+	// var rquickIs = /(child)/;
+	console.log(rquickIs.exec(".child1"));
+	</script>
+</body>
+</html>

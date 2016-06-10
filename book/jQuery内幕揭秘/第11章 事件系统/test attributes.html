@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- attributes -->
+	<div class="test" id="test1"></div>
+	<script>
+	var test = document.getElementById('test1');
+	console.log(test.attributes); 		// 兼容ie6, 也没什么好说的
+	console.log(test.attributes.id);		// object
+	console.log(test.attributes.id.value);	// id
+
+	test.attributes.id.value = "test";
+	console.log(test.attributes.id.value);	// id
+	test.setAttribute("id", "test1");
+
+	console.log(test.attributes["class"].value); // ie9以下不兼容
+
+	</script>
+</body>
+</html>

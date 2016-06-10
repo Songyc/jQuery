@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="par1">
+		<div id="par2">
+			<li id="par3">
+				test adfa
+			</li>
+		</div>
+	</div>
+	<script>
+	var par1 = document.getElementById('par1'),
+		par2 = document.getElementById('par2'),
+		par3 = document.getElementById('par3');
+
+	// 自定义事件2
+	document.addEventListener('click', function (e){
+		console.log('document: 普通事件');
+	}, false);
+
+	document.getElementById('par1').addEventListener('click', function (e) {
+		console.log('par1: 普通事件');
+	}, false);
+
+	// 事件委托
+	document.body.addEventListener('click', function (e) {
+		e.stopPropagation();
+		if(e.target.id === 'par3') {
+			console.log('par3元素: 事件委托');
+		}
+	}, false);
+
+	document.body.addEventListener('click', function (e) {
+		if(e.target.id === 'par2') {
+			console.log('par2元素: 事件委托');
+		}
+	}, false);
+
+	// 自定义事件1
+	document.body.addEventListener('click', function (e) {
+		console.log('body元素: 普通事件');
+	}, false);
+
+	// 自定义事件2
+	par3.onclick = function (e) {
+		console.log('par3:普通事件');
+	}
+
+	// 先执行onXXX事件, 再执行委托，再执行普通事件。
+	// 即使阻止了冒泡，普通事件仍会执行。
+	</script>
+</body>
+</html>

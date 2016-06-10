@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:100px;height:100px;background:red;}
+	</style>
+</head>
+<body>
+	<!-- toElement fromElement -->
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onmouseover = function (e) {
+		var evt = window.event || e;	
+		console.log(evt.toElement);			// 检测 onmouseover 和 onmouseout 事件发生时，鼠标所进入的元素。
+		console.log(evt.fromElement);		// 检测 onmouseover 和 onmouseout 事件发生时，鼠标所离开的元素。
+	}
+	test.onmouseout = function (e) {
+		var evt = window.event || e;
+		console.log(evt.toElement);
+		console.log(evt.fromElement);
+	}
+	
+	</script>
+</body>
+</html>

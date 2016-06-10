@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="add" id="add">
+		<div class="child1">child1</div>
+		<div class="child2">child2</div>
+		<div class="child3">child3</div>
+		<div class="child4">child4</div>
+	</div>
+	<script src="../js/jQuery.js"></script>
+	<script>
+
+	// $(...).on(types, fn);
+	// $(".add").on('click', function () {
+	// 	console.log("1");
+	// });
+
+	// $(...).on(types-object, fn);
+	// $(".add").on({
+	// 	'click': function (e) {
+	// 		console.log(e.target + 'is clicked');
+	// 	},
+	// 	'mouseover': function () {
+	// 		console.log('mouseover');
+	// 	}
+	// });
+
+	// $(...).on(types-object, 'selector', fn);
+	// $(".add").on({
+	// 	'click': function (e) {
+	// 		console.log(e.target + 'is clicked');
+	// 	},
+	// 	'mouseover': function () {
+	// 		console.log('mouseover');
+	// 	}
+	// }, '.child1');
+	
+	// $(...).on(type, data, fn);
+	// $(".add").on('click', {'foo': 'bar'}, function (e) {
+	//  console.log(e.data.foo);
+	// 	console.log(e.handleObj.data.foo);
+	// 	console.log('add');
+	// });
+	
+	// $(...).on(type.namespace, fn);
+	$(".add").on('focusin', function (e) {
+		console.log('focusin1');
+	});
+
+	$(".add").on('focusout', function (e) {
+		console.log(e);
+	});
+	// trigger事件在domready事件中也用到。与$(...).on无关;
+	
+	var add = document.getElementById('add');
+	add.onclick = function () {
+		console.log("add");
+	}
+	</script>
+</body>
+</html>

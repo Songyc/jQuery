@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	var whenDone = function () {
+			console.log('done', arguments);
+		},
+		whenFail = function () {
+			console.log('fail', arguments);
+		};
+
+	// $.when(
+	// 		$.ajax('http://192.168.50.224/qianduan/Book/jQuery%E5%86%85%E5%B9%95%E6%8F%AD%E7%A7%98/%E7%AC%AC4%E7%AB%A0%20%E6%B0%91%E6%AD%A5%E9%98%9F%E5%88%97%20Deferred%20Object/data/data1.js', {dataType: "json"}),
+
+	// 		$.ajax('http://192.168.50.224/qianduan/Book/jQuery%E5%86%85%E5%B9%95%E6%8F%AD%E7%A7%98/%E7%AC%AC4%E7%AB%A0%20%E6%B0%91%E6%AD%A5%E9%98%9F%E5%88%97%20Deferred%20Object/data/data2.js', {dataType: "json"})
+	// 	).done(whenDone).fail(whenFail);
+
+	$.ajax('http://192.168.50.224/qianduan/Book/jQuery%E5%86%85%E5%B9%95%E6%8F%AD%E7%A7%98/%E7%AC%AC4%E7%AB%A0%20%E6%B0%91%E6%AD%A5%E9%98%9F%E5%88%97%20Deferred%20Object/data/data1.js', {dataType: "json"}).done(whenDone);
+	</script>
+</body>
+</html>

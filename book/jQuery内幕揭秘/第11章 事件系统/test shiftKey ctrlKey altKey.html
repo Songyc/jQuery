@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	body{margin:0;height:2000px;}
+	.test{width:300px;height:300px;background:red;margin-top:1950px;}
+	</style>
+</head>
+<body>
+	<!-- shiftKey ctrlKey altKey -->
+	<div class="test" id="test"></div>
+	<script>
+	    var oDiv=document.getElementById("test");
+	   	var shift = true;
+	   	var alt = true;
+	   	var ctrl = true;
+	   	var str = '';
+	   	document.onkeydown = function (e) {
+	   		// shiftKey 
+	   		str = '';
+	   		var evt = window.event || e;
+	   		if(evt.shiftKey || shift) {
+	   			oDiv.innerHTML += "shiftKey <br>";
+	   			shift = !shift;
+	   			console.log(evt.shiftKey);
+	   		}else{
+	   			oDiv.innerHTML += "no shiftKey <br>";
+	   			shift = !shift;
+	   			console.log(evt.shiftKey);
+	   		}
+
+	   		if(evt.altKey || alt) {
+	   			oDiv.innerHTML += "alt <br>";
+	   			alt = !alt;
+	   		}else{
+	   			oDiv.innerHTML += "no alt <br>";
+	   			alt = !alt;
+	   		}
+
+	   		if(evt.ctrlKey || ctrl) {
+	   			oDiv.innerHTML += "ctrl <br>";
+	   			ctrl = !ctrl;
+	   		}else{
+	   			oDiv.innerHTML += "no ctrl <br>";
+	   			ctrl = !ctrl;
+	   		}
+
+	   	}
+	</script>
+	
+</body>
+</html>

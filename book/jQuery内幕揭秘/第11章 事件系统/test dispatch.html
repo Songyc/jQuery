@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:100px;height:100px;background: red;}
+	</style>
+</head>
+<body>
+	<!-- dispatch事件派发 -->
+	<div class="test" id="test"></div>
+	<script>
+	// W3C
+	var test = document.getElementById('test');
+	test.addEventListener('click', function () {
+		this.style.background = '#000';
+	}, false);
+
+	// test.addEventListener('mouseover', function () {
+	// 	this.style.background = '#333';
+	// }, false);
+
+	test.onmouseover = function () {
+		this.style.background = '#333';
+	}
+	var evt = document.createEvent('Event');
+	evt.initEvent('mouseover', true, true); 	// (eventType, canBubble, cancelable);	
+	test.dispatchEvent(evt);			// 派发事件, 对事件处理和监听都有效
+
+	</script>
+</body>
+</html>

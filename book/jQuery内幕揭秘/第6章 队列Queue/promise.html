@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<style>
+	.promisediv{
+		width: 50px;
+		height: 50px;
+		/*display: none;*/
+		background-color: #090;
+	}
+	</style>
+	<button id="go">Go</button>
+	<div class="promisediv"> promisediv 1</div>
+	<div class="promisediv"> promisediv 2</div>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	$("#go").click(function () {
+		var $div = $(".promisediv");
+		$div.fadeOut(800).delay(1200).fadeIn().animate({width: 100}, {queue: false}).animate({height: 100}, {queue: false}).promise().done(function (args) {
+			console.log(this === $div, args === $div);
+			console.log('done!');
+		});
+	});
+	
+	$(".promisediv").promise().done(function (args) {
+		console.log(this);
+	});
+	</script>
+</body>
+</html>

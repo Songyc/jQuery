@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	html{margin:0;padding:0;}
+	body{margin:0;height:4000px;padding:0;}
+	.test{width:300px;height:300px;background:red;margin-top:1950px;}
+	</style>
+</head>
+<body>
+	<!-- clientX, clientY -->
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onclick = function (e) {
+		var evt = window.event || e;
+		console.log(evt.clientX);
+		console.log(evt.clientY); 	
+	}
+
+	// 返回鼠标在窗口客户区域中的X坐标。不包括滚动条高度和导航栏高度   ie下从(2, 2)开始计算html对象的位置
+	// 返回鼠标在窗口客户区域中的Y坐标。不包括滚动条高度和导航栏高度   ie下从(2, 2)开始计算html对象的位置
+	</script>
+</body>
+</html>

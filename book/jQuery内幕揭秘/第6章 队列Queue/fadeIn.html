@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.foo{background:yellow;}
+	</style>
+</head>
+<body>
+	<div class="foo" id="foo">foo</div>
+	<div class="controler" id="controler">controler</div>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	$("#foo").slideUp();
+	$("#foo").queue(function () {
+		alert('Animation complete');
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="" id='form'>
+		<input type="text" id="input">
+		<input type="checkbox" id="checkbox">
+		<input type="radio" id="radio">
+		<textarea id="textarea" ></textarea>
+		<select id="select">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+	</form>
+	<script src='../js/jQuery.js'></script>
+	<script>
+	// $('#checkbox').on('change', function (e) {
+	// 	console.log('change');
+	// });
+	var checkbox = document.getElementById('checkbox');
+	var radio = document.getElementById('radio');
+	var input = document.getElementById('input');
+	var textarea = document.getElementById('textarea');
+	var select = document.getElementById('select');
+
+	input.addEventListener('change', function (e) {
+		alert('input');
+	}, false);
+
+	
+
+	textarea.addEventListener('change', function (e) {
+		alert('textarea');
+	}, false);
+
+	
+	select.addEventListener('change', function (e) {
+		alert('select');
+	}, false);
+
+	document.addEventListener('change', function () {
+		alert('document');	
+	}, false);
+
+	// textarea 填写内容, 失焦后; input点击回车或者失焦; select改变选项时触发onchange事件。 textarea, input, select元素会支持冒泡。
+	
+	
+	</script>
+
+</body>
+</html>

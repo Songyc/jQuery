@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.outer{width:500px;height:300px;background: red;}
+	.test1, .test2{width:300px;height:30px;margin:20px;}
+	</style>
+</head>
+<body>
+	<!-- <div class="test" id="test"></div> -->
+	<div class="outer" id="outer">
+		<input type="text" class='test1' id='test1'>
+		<input type="text" class='test2' id='test2'>
+	</div>
+	<!-- focusout , focusin 兼容性测试 -->
+	<script>
+	// ie
+	// focusout, focusin不支持冒泡。而focus, blur支持。
+	document.getElementById("outer").addEventListener(
+		'mouseout', 
+		function (e) {
+			var ev = e || window.event;
+			if(ev.srcElement) {
+				console.log(ev);
+				console.log(ev.relatedTarget);		
+			}
+		}
+	);
+	// 对于 mouseover 事件来说，该属性是鼠标指针移到目标节点上时所离开的那个节点(fromElement)。 对于 mouseout 事件来说，该属性是离开目标时，鼠标指针进入的节点(toElement)。 非target节点 
+	// 返回指针刚刚离开的元素 window.event不支持, event支持
+	</script>
+</body>
+</html>

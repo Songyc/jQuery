@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:100px;height:100px;background:red;}
+	</style>
+</head>
+<body>
+	<!-- attrName -->
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onclick = function (e) {
+		var evt = window.event || e;
+		console.log(evt);
+		console.log(evt.attrName);			// undefined
+	}
+	// 暂时不明
+	</script>
+</body>
+</html>

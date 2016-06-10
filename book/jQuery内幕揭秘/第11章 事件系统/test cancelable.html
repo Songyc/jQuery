@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- cancelable -->
+	<input type="button" id="myBtn" value="点击" />
+	<script>
+	var btn = document.getElementById("myBtn");
+	if(document.addEventListener) {
+		btn.addEventListener("click", function (e) {
+			e.preventDefault();
+			var evt = e;
+			console.log(e);
+			console.log(e.cancelable); 				// 无论怎么都为true
+		}, false);
+	}else {
+		btn.attachEvent("onclick", function () {
+			var evt = window.event;
+			console.log(evt.cancelable);
+		})
+	}
+
+	
+	// cancelable 事件返回一个布尔值。如果用 preventDefault() 方法可以取消与事件关联的默认动作，则为 true，否则为 false.
+	// http://www.w3school.com.cn/jsref/event_cancelable.asp
+	</script>
+</body>
+</html>

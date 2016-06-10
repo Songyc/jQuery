@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.ani{background:red;height:100px;}
+	</style>
+</head>
+<body>
+	<div class="ani">
+		动画
+	</div>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	$(".ani").slideUp().delay(3000, 'fx').slideDown(); 						
+
+	setTimeout(function () {
+		jQuery._data($(".ani")[0], 'fx.run').stop(); 						// 清除定时器，停止执行后面的动画
+		$(".ani").dequeue();												// 继续执行后面的动画
+	}, 1000);
+	</script>
+</body>
+</html>

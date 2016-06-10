@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.outer{width:500px;height:300px;background:red;}
+	.test1, .test2{width:100px;height:100px;background:blue;display:inline-block;}
+	</style>
+</head>
+<body>
+	<div class="outer" id="outer">
+		<div class="test1" id="test1"></div>
+		<div class="test2" id="test2"></div>
+	</div>
+	<script src='../js/jQuery.js'></script>
+	<script>
+	// onmouseenter, onmouseleave不支持冒泡。而onmouseover, onmouseout支持。
+
+	// document.getElementById("outer").addEventListener(
+	// 	'mouseover', 
+	// 	function () {
+	// 		var ev = window.event;
+	// 		if(ev.srcElement) {
+	// 			if(ev.srcElement.className.indexOf('test1') > -1) {
+	// 				console.log('test1');
+	// 			}
+	// 			if(ev.srcElement.className.indexOf('test2') > -1) {
+	// 				console.log("test2");
+	// 			}
+	// 		}
+	// 	}
+	// );
+
+	// var outer = document.getElementById('outer');
+	// outer.addEventListener('mouseenter', function () {
+	// 	console.log('mouseenter');
+	// }, false);
+	// outer.addEventListener('mouseleave', function () {
+	// 	console.log('mouseleave');
+	// }, false)
+	
+	// mouseenter本不会冒泡, 被jQuery用mouseover修正后会冒泡了.
+	$('.outer').on('mouseenter', '.test1' ,function (e) {		
+		var ev = window.event;
+		if(ev.srcElement) {
+			if(ev.srcElement.className.indexOf('test1') > -1) {
+				console.log('test1');
+			}
+			if(ev.srcElement.className.indexOf('test2') > -1) {
+				console.log("test2");
+			}
+		}
+		console.log('mouseenter'); 				
+	})
+	// mouseenter, mouseleave 进入子元素时不会触发
+	</script>
+</body>
+</html>

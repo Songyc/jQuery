@@ -1,0 +1,38 @@
+
+<html>
+<head>
+<style>v\: * { behavior:url(#default#VML); }</style>
+<xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v" />
+</head>
+<body style='font: 11px Arial; '>
+
+<h1>Problem with VML objects' attributes in Internet Explorer 7 en 8</h1>
+<p>
+	MSIE7/8 alerts an error when a javascript tries to read several specific attibutes of a VML object's, like 'type', 'innerHTML', 'outerHTML' and 'title'.
+</p>
+<p>
+	When this page loads, all we are trying to do is "alert(document.getElementById('vmlobject').type); ".
+</p>
+
+<v:oval id='vmlobject' type='fooValue' style='width:100pt;height:75pt' fillcolor="red" />
+<script type="text/javascript">
+window.onload = function() {
+	alert('Click OK to try to get the VML object\'s type attribute,\nMSIE7/8 will alert an error!');
+	alert(document.getElementById('vmlobject'))
+	alert(document.getElementById('vmlobject').type);
+}
+</script>
+
+<ol>
+	<li>Example of <a href='./'>VML object type error in MSIE7/8</a></li>
+	<li>Example of <a href='./jquery.htm'>VML object with 'submit' event bound by jQuery</a></li>
+	<li>Example of <a href='./jquery.address.htm'>basic jQuery, jQuery Address and Cufon setup</a></li>
+</ol>
+<p>
+	Extensively discussed at: <a href='http://www.sitecrafting.com/blog/jquery-cufon-dont-mix/' target='_blank'>sitecrafting.com/blog/jquery-cufon-dont-mix/</a>,<br />
+	Reported to Sizzle: <a href='https://github.com/jquery/sizzle/issues/17' target='_blank'>github.com/jquery/sizzle/issues/17</a>,<br />
+	Reported to jQuery: <a href='http://bugs.jquery.com/ticket/9807' target='_blank'>bugs.jquery.com/ticket/9807</a>
+</p>
+
+</body>
+</html>

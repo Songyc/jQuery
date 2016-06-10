@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form id="form" action="">
+		<input type="text" id="text" class='text'> 							<!-- 回车键会触发 -->
+		<input type="password" id="password">					<!-- 回车键会触发 -->
+		<input type="checkbox" id="checkbox">					<!-- 回车键会触发 -->
+		<input type="radio" id="radio">							<!-- 回车键会触发 -->
+		<input type="button" id="button" value="button"> 		<!-- 回车键不会触发，点击不会触发 -->
+		<input type="submit" id="submit">						<!-- 点击会触发 -->
+		<input type="image" id="image">							<!-- 点击会触发 -->
+		<input type="file" id="file">							<!-- ie下回车键会触发 -->
+	</form>
+	<script src="../js/jQuery.js"></script>
+	<script>
+
+	var form = document.getElementById('form');
+	var input = document.getElementById('input'); 		// 回车键会触发
+	var submit = document.getElementById('submit'); 	// 点击submit键会触发
+	var image = document.getElementById('image'); 		// 点击会触发
+	var file = document.getElementById('file'); 		// ie下回车键会触发
+	
+	// form.onsubmit = function () { 		
+	// 	console.log('form submit');
+	// 	alert('form submit'); 			
+	// }
+	// document.onsubmit = function () {
+	// 	console.log('document submit');
+	// 	alert('document submit'); 
+	// }
+	// window.onsubmit = function () {
+	// 	alert('window submit');
+	// }
+
+	$(document).on('submit', '.text', function () {
+		alert('form on');
+	})
+
+	// 会不会捕获呢
+	// form.addEventListener('submit', function () {
+	// 	alert('form');
+	// });
+	// document.addEventListener('submit', function () {
+	// 	alert('document');
+	// }, true);
+	// window.addEventListener('submit', function () {
+	// 	alert('window');
+	// }, true);
+	// 会捕获
+
+	// input.onsubmit = function () { 	
+	// 	console.log('input submit')				
+	// }
+	// submit.onsubmit = function () {
+	// 	console.log('submit submit'); 			
+	// }
+
+	// image			 
+	// file.onsubmit = function () { 			
+
+	// }
+	// 旧版本下，submit不会冒泡到顶层
+
+	</script>
+</body>
+</html>

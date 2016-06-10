@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	body{margin:0;height:2000px;}
+	.test{width:300px;height:60px;background:red;margin:50px;margin-top:1950px;}
+	</style>
+</head>
+<body>
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onclick = function (e) {
+		var evt = window.event || e;
+		console.log(evt.screenX);
+		console.log(evt.screenY); 		
+	}
+	// event.screenX 检测鼠标相对于用户屏幕的水平位置
+	// event.screenY 检测鼠标相对于用户屏幕的水平位置  此高算上导航栏的高度 chrome下为60;
+	</script>
+</body>
+</html>

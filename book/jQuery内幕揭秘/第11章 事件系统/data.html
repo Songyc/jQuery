@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../js/jQuery.js"></script>
+</head>
+<body>
+	<div class="test">
+	
+	</div>
+	<script>
+	// dom元素 
+	$(".test").data("blah", "hello");   // jQuery.cache[++jQuery.uuid].data = {}  jQuery.cache[++jQuery.uuid].data.blah = "hello";
+
+	// 非dom元素
+	var obj = {};
+	$(obj).data("blah", "hello"); 		// obj.[jQuery.expando] = {}  			  obj.[jQuery.expando].blah = "hello";
+	</script>
+</body>
+</html>

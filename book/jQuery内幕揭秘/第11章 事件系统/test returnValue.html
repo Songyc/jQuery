@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:100px;height:100px;background:red;}
+	</style>
+</head>
+<body>
+	<!-- getPreventDefault 只有FF支持,其他浏览器均不支持 -->
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onmouseover = function (e) {
+		var evt = window.event || e;
+		console.log(evt.defaultPrevented);
+	}
+	</script>
+</body>
+</html>

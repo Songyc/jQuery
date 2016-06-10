@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<ul id="ul">
+	  	<li id="li">
+	  		<div class='a' id="a">aaa</div>
+	  	</li>
+	  	<li>bbbbbbbb</li>
+	  	<li>cccccccc</li>
+	</ul>
+	<script>
+	// window.onload = function() {
+	// 	var oUl = document.getElementById("ul");
+	// 	var aLi = oUl.getElementsByTagName("li");
+
+	// 	for (var i = 0; i < aLi.length; i++) {
+	// 		aLi[i].onmouseover = function() {
+	// 			this.style.background = "red";
+	// 		}
+	// 		aLi[i].onmouseout = function() {
+	// 			this.style.background = "";
+	// 		}
+	// 	}
+	// }
+	window.onload = function() {
+		var oUl = document.getElementById("ul");
+		var aLi = oUl.getElementsByTagName("li");
+
+		/*
+这里要用到事件源：event 对象，事件源，不管在哪个事件中，只要你操作的那个元素就是事件源。
+ie：window.event.srcElement
+标准下:event.target
+nodeName:找到元素的标签名
+*/
+		oUl.onmouseover = function(ev) {
+			var ev = ev || window.event;
+			var target = ev.target || ev.srcElement;
+			// ev.stopPropagation();
+			console.log(target);
+			if (target.nodeName.toLowerCase() == "li") {
+				target.style.background = "red";
+			}
+		}
+		oUl.onmouseout = function(ev) {
+			var ev = ev || window.event;
+			var target = ev.target || ev.srcElement;
+			//alert(target.innerHTML);
+			if (target.nodeName.toLowerCase() == "li") {
+				target.style.background = "";
+			}
+		}
+	}
+
+	// window.onload = function () {
+	// 	var oUl = document.getElementById('ul'),
+	// 		oLi = document.getElementById('li'),
+	// 		oA = document.getElementById('a');
+
+	// 	oA.onclick = function (e) {
+	// 		e.stopPropagation();
+	// 		console.log(e.target);
+	// 	}
+	// 	oLi.onclick = function (e) {
+	// 		console.log(e.target);
+	// 	}
+	// 	oUl.onclick = function (e) {
+	// 		console.log(e.target);
+	// 	}
+	// }
+	
+	// 事件从事件目标(target)开始，往上冒泡直到页面的最上一级标签。
+	</script>
+</body>
+</html>

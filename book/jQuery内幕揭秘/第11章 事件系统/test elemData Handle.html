@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+	var elemData = {};
+	var eventHandle = elemData.handle;
+	if(!eventHandle) {
+		elemData.handle = eventHandle = function () {
+
+		}
+	}
+	eventHandle.prop = 1;
+	console.log(elemData.handle.prop); 			// 1 	浅拷贝的毛病
+	</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	var callbacks = jQuery.Callbacks();
+
+	function fn1(args) {console.log('测试：remove' + args);}
+	function fn2(args) {console.log('测试：remove' + args);}
+
+	callbacks.add(fn1);
+	callbacks.add(fn2);
+
+	callbacks.remove(fn1);
+	</script>
+</body>
+</html>

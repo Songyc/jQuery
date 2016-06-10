@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	html{margin:0;padding:0;}
+	body{margin:0;height:4000px;padding:0;}
+	.test{width:300px;height:300px;background:red;margin-top:1950px;}
+	</style>
+</head>
+<body>
+	<!-- which -->
+	<div id="msg"></div>
+	<script src="../js/jQuery1.js"></script>
+	<script>
+
+	// $(document).bind("keydown mousedown", function(event){
+	// 	var msg = '';
+	// 	if( event.type == "mousedown" ){ // 鼠标按下事件
+	// 		var map = {"1": "左", "2":"中", "3":"右"};
+	// 		msg = '你按下了鼠标[' + map[event.which] + ']键';
+	// 	}else{ // 键盘按下事件
+	// 		if(event.which >= 65 && event.which <= 90){
+	// 			msg = '你按下了键盘[' + String.fromCharCode(event.which) + ']键';
+	// 		}
+	// 	}
+	// 	if(msg){
+	// 		$("#msg").prepend( msg + '<br>');
+	// 	}
+	// });
+	
+	var msgDom = document.getElementById("msg");
+
+	document.onkeydown = document.onmousedown = function () {
+		if( event.type == "mousedown" ){  // 鼠标按下事件
+			var map = {"1": "左", "2":"中", "3":"右"};
+			console.log(event);
+			console.log(event.which);
+			// msg = '你按下了鼠标[' + map[event.which] + ']键';
+		}else{ // 键盘按下事件
+			if(event.which >= 65 && event.which <= 90){
+				msg = '你按下了键盘[' + String.fromCharCode(event.which) + ']键';
+			}
+		}
+		if(msg){
+			msgDom.innerHTML = msg;
+		}
+	}
+
+	// http://www.365mini.com/page/jquery-event-which.htm  http://www.365mini.com/diy.php?f=jquery-event-which-demo  
+	// 在mousedown、mouseup事件中，event.which属性返回的是对应鼠标按钮的映射代码值(相当于event.button)。   ie不支持该属性
+	// 在keypress事件中，event.which属性返回的是输入的字符的Unicode值(相当于event.charCode)。			   
+	// 在keydown、keyup事件中，event.which属性返回的是对应按键的映射代码值(相当于event.keyCode)。
+	</script>
+</body>
+</html>

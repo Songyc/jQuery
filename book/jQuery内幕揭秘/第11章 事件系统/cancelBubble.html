@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="cancelBubble">cancelBubble</button>
+	<div id="result">result</div>
+	<script>
+	var cancelBubble = document.getElementById('cancelBubble');
+	var result = document.getElementById('result');
+	var handler = function (e) {
+		e = e || window.event;
+		if(e.stopPropagation) {
+			e.stopPropagation();
+		}else {
+			e.cancelBubble = true;
+		}
+		result.innerHTML = '' + e.cancelBubble;
+	}
+	if(cancelBubble.addEventListener) {
+		cancelBubble.addEventListener('click', handler, false); 
+	}else if(cancelBubble.attachEvent){
+		cancelBubble.attachEvent('onclick', handler);
+	}
+	</script>
+</body>
+</html>

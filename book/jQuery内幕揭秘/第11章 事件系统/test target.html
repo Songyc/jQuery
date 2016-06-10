@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- target -->
+	<input type="button" id="myBtn" value="点击" />
+    <script>
+    var btn = document.getElementById("myBtn");
+    if(document.addEventListener && !document.attachEvent) {
+	 	document.body.addEventListener("click", function(event) {
+		    console.log("1:" + event.target); //1 捕获阶段,IE是木有捕获阶段的  	允许捕获
+		}, true);
+
+		btn.addEventListener("click", function (event) {
+			console.log("2:" + event.target); //2 事件处理程序处于目标上   		允许/不允许 捕获
+		}, false);
+
+		document.body.addEventListener("click", function (event) {
+			console.log("3:" + event.target); 	//3 冒泡阶段   					不允许 捕获
+		}, false);
+    }
+
+    else {
+    	document.body.attachEvent("onclick", function() {
+		    console.log("1:" + window.event.target); //1 捕获阶段,IE是木有捕获阶段的
+		});
+
+		btn.attachEvent("onclick", function () {
+			console.log("2:" + window.event.target); //2 事件处理程序处于目标上
+		})
+
+		document.body.attachEvent("onclick", function () {
+			console.log("3:" + window.event.target); 	//3 冒泡阶段
+		})
+    }
+    // 触发该事件的节点
+	// http://www.w3school.com.cn/jsref/event_target.asp
+    </script>
+</body>
+</html>

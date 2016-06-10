@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text">
+	<script>
+
+	document.addEventListener('focus', function () {
+		console.log('focus');
+	}, true);
+	// 因为focus不支持冒泡，如果第三个参数为false, 要触发事件就必须绑定元素本身。
+	// 所以只能用捕获来模拟委托行为。
+	</script>
+</body>
+</html>

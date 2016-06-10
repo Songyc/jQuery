@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	// jQuery.Callbacks("once").add(function () {
+
+	// }).fire();
+
+	// 1).如果不是once模式，不是memory模式
+	// var callbacks = jQuery.Callbacks('once'), 				// Actual Callbacks Object  once模式下回调函数不会重复执行, 回调函数列表会禁用。
+	// 	something = true;
+	// var count = 0;
+	// function fn1(args) {
+	// 	console.log('fn1', args);
+	// 	if(count < 10) {
+	// 		callbacks.fire('测试: 执行过程中, 第2次触发'); 		// 在firing
+	// 		callbacks.fire('测试: 执行过程中, 第3次触发');
+	// 		count++;
+	// 	}
+	// }
+
+	// callbacks.add(fn1);
+	// callbacks.fire('测试：第1次触发');
+	// console.log(callbacks.disabled());
+
+	// console.log(callbacks.disabled());
+
+	// fn1 测试：第1次触发
+	// fn1 测试: 执行过程中, 第2次触发
+	// fn1 测试: 执行过程中, 第3次触发
+
+	// 2).如果是once模式，不是memory模式，禁用回调函数列表。
+
+	// var callbacks = jQuery.Callbacks('memory'); 				//在memory模式下, 回调函数列表不会被清空或者禁用。而在非memory模式下, 执行回调函数后回调函数列表会被禁用。
+	// function fn1(args) {console.log('fn1', args);}
+	// function fn2(args) {console.log('fn2', args);}
+
+	// callbacks.add(fn1);
+	// callbacks.add(fn2);
+
+	// callbacks.fire('测试：once模式');
+	// console.log('是否已被禁用?', callbacks.disabled());
+
+	// fn1 测试：once模式
+ 	// fn2 测试：once模式
+	// 是否已被禁用? true
+
+	// 3).如果是once + stopOnFalse模式, 并且某个回调函数返回了false, 则禁用回调函数列表。
+	// var callbacks = jQuery.Callbacks('once stopOnFalse');
+	// function fn1(args) {console.log('fn1', args); return false;}
+	// function fn2(args) {console.log('fn2', args);}
+	// callbacks.add(fn1);
+	// callbacks.add(fn2);
+	// callbacks.fire('测试：once + stopOnFalse 模式'); 	// 禁用
+	// console.log('是否已被禁用?', callbacks.disabled());
+
+	// fn1 测试：once + stopOnFalse 模式
+    // fn1 测试：once + stopOnFalse 模式
+ 	// 是否已被禁用? true
+
+ 	// 4).once + memory 模式, 则清空数组list,但不会被禁用。后续添加的回调函数还会立即执行，再次清空数组list。
+	// var callbacks = jQuery.Callbacks('once memory');
+	// function fn1(args) {console.log('fn1', args);}
+	// function fn2(args) {console.log('fn2', args);}
+	// callbacks.add(fn1);
+	// callbacks.fire('测试：once模式 + memory 模式');
+	// console.log(callbacks.disabled());
+	// callbacks.add(fn2);
+
+	// fn1 测试：once模式 + memory 模式
+	// fn2 测试：once模式 + memory 模式
+
+	// test callbacks.add
+	// var callbacks = jQuery.Callbacks('memory');  		// 非once, 非memory模式回调函数列表不会被禁用。
+	// function fn1(args) {
+	// 	console.log('fn1' + args); 							// 在回调函数列表执行时，添加fn2会马上被执行
+	//  callbacks.add(fn2);
+	// }
+	// function fn2(args) {
+	// 	console.log('fn2' + args);
+	// }
+	// function fn3(args) {
+	// 	console.log('fn3' + args);
+	// }
+	// callbacks.add(fn1);
+	// callbacks.fire('测试：self.add'); 					
+	// callbacks.add(fn2); 									// 如果是memory模式, 在fire之后, 后续添加回调函数会立即执行。
+
+	// callbacks.fire('测试：self.add'); 					// 因为没有清空list，所以会执行fn1, fn2。在once模式下，会清空list，所以就不会重复执行。
+	// console.log(callbacks.disabled());
+
+	// fn1测试：self.add
+	// fn2测试：self.add
+	// [function, function]
+	// false
+
+	// test callback.remove
+	// function fn1(args) {
+	// 	console.log('fn1' + args);
+	// }
+	// function fn2(args) {
+	// 	console.log('fn2' + args);
+	// 	callbacks.remove(fn2);
+	// }
+	// function fn3(args) {
+	// 	console.log('fn3' + args);
+	// }
+	// var callbacks = jQuery.Callbacks();
+	// callbacks.add(fn1, fn2, fn3);
+	// callbacks.fire('测试: remove');
+
+	// // callbacks.remove(fn1);									// 在非firing状态下，在回调函数队列list中
+	// callbacks.fire('测试: remove'); 			
+
+	
+	</script>
+</body>
+</html>

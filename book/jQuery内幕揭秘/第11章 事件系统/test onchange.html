@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form id="form" action="">
+		<input type="text" id="input">
+	</form>
+	<script>
+	var input = document.getElementById('input'),
+		form = document.getElementById('form');
+	form.onchange = function () {
+		console.log('form onchange');
+	}
+	input.onchange = function () {
+		console.log('input onchange');
+	}
+	</script>
+</body>
+</html>

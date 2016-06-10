@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:100px;height:100px;background:red;}
+	</style>
+</head>
+<body>
+	<!-- scrollLeft, scrollTop -->
+	<div class="test" id="test"></div>
+	<script>
+	var test = document.getElementById('test');
+	test.onclick = function (e) {
+		console.log(e.pageY);
+		console.log(e.clientY);
+		console.log(document.documentElment.scrollTop || document.body.scrollTop);
+	}
+	</script>
+</body>
+</html>

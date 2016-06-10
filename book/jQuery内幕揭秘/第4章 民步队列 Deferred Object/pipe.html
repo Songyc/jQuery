@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>title</title>
+</head>
+<body>
+	<script src="../js/jQuery.js"></script>
+	<script>
+	
+	var defer = $.Deferred(),
+
+	filtered = defer.pipe(function( value ) { 				// 异步队列2的只读副本, add function (){}
+	    return value * 2;
+	});
+	 
+	defer.resolve( 5 ); 					// doneList.fire function () {}
+
+	filtered.done(function( value ) { 		// doneList.add function () {} 		在once + memory模式下, fire下再add回调函数会马上执行
+	  	console.log( "Value is ( 2*5 = ) 10: " + value ); 		
+	});	
+
+	</script>
+</body>
+</html>

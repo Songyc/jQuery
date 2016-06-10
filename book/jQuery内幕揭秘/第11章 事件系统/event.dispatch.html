@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	html,body{background:#999;height:90%;}
+	body{padding:20px;}
+	#aaa{background:#cc9;padding:20px;}
+	#bbb{background:#c0c;padding:20px;}
+	#ccc{background:#5e850a;padding:20px;height:40px;}
+	</style>
+</head>
+<body>
+	<div id="aaa" class="aaa">
+		<div id="bbb" class="bbb">
+			<div id="ccc" class="ccc">
+				ccc
+			</div>
+		</div>
+	</div>
+	<input type="text">
+	<script src="../js/jQuery.js"></script>
+	<script>
+	$(function () {
+		
+		// $("#aaa").click(function () {
+		// 	log("aaa");
+		// })
+		
+		// $("#bbb").click(function (e) {
+		// 	e.stopPropagation();
+		// 	log("bbb1");
+		// });
+
+		// $("#bbb").on('click', function () {
+		// 	console.log("bbb2");
+		// });
+
+		// $("#ccc").click(function () {
+		// 	log("ccc");
+		// })
+
+		// $("body").delegate('.bbb', 'click', function (e) {
+		// 	e.stopPropagation(); 
+		// 	console.log(e.target);				
+		// });
+
+		// $("body").delegate('.aaa', 'click', function (e) {
+		// 	console.log(e.target);	
+		// });
+
+		$("body").on('click.namespace.namespace1.namespace2', function (e) {			
+			console.log(e.target);	
+		});
+
+		$("body").trigger('click.namespace1!'); 		// 禁止模拟事件,但无法禁止有命名空间的事件
+		// $("body").on('focusin', function () {
+		// 	console.log('focusin');
+		// })
+	})
+	</script>
+</body>
+</html>
