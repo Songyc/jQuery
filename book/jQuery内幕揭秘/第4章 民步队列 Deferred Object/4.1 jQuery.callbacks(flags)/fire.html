@@ -5,30 +5,25 @@
 	<title>Document</title>
 </head>
 <body>
-	<script src="../js/jQuery.js"></script>
+	<script src="../js/jQuery.1.7.1.js"></script>
 	<script>
-	// jQuery.Callbacks("once").add(function () {
-
-	// }).fire();
-
 	// 1).如果不是once模式，不是memory模式
-	// var callbacks = jQuery.Callbacks('once'), 				// Actual Callbacks Object  once模式下回调函数不会重复执行, 回调函数列表会禁用。
-	// 	something = true;
-	// var count = 0;
-	// function fn1(args) {
-	// 	console.log('fn1', args);
-	// 	if(count < 10) {
-	// 		callbacks.fire('测试: 执行过程中, 第2次触发'); 		// 在firing
-	// 		callbacks.fire('测试: 执行过程中, 第3次触发');
-	// 		count++;
-	// 	}
-	// }
+	var callbacks = jQuery.Callbacks(), 				// Actual Callbacks Object  once模式下回调函数不会重复执行, 回调函数列表会禁用。
+		something = true;
+	var count = 0
+	function fn1(args) {
+		count++;
+		console.log('fn1', args, count);
+		if(something) {
+			callbacks.fire('测试: 执行过程中, 第2次触发'); 		// 在firing
+			callbacks.fire('测试: 执行过程中, 第3次触发');
+			something = false;
+		}
+	}
 
-	// callbacks.add(fn1);
-	// callbacks.fire('测试：第1次触发');
-	// console.log(callbacks.disabled());
-
-	// console.log(callbacks.disabled());
+	callbacks.add(fn1);
+	callbacks.fire('测试：第1次触发');
+	console.log(callbacks.disabled()); 							// 列表没有被禁用
 
 	// fn1 测试：第1次触发
 	// fn1 测试: 执行过程中, 第2次触发
