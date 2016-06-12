@@ -1183,7 +1183,6 @@ jQuery.Callbacks = function( flags ) {
 
 
 
-
 var // Static reference to slice
 	sliceDeferred = [].slice;
 
@@ -1232,15 +1231,15 @@ jQuery.extend({
 								returned;
 							if ( jQuery.isFunction( fn ) ) { 									// 如果是函数
 								deferred[ handler ](function() {								// 调用对应的add方法
-									returned = fn.apply( this, arguments ); 					// 返回异步队列，有可能是异步队列1(deferred)，不可能是异步队列2(newDefer)，因为它在函数内部产生的, 不对外公开, 有可能是异步队列3，一个新的异步队列(returned)。
+									returned = fn.apply( this, arguments ); 					// 返回异步队列，this指向异步队列1。可能返回异步队列3。pipe本身为异步队列2
 									if ( returned && jQuery.isFunction( returned.promise ) ) { 				// 如果返回值可以转成true并且returned.promise是函数, 即返回的是异步队列对象
 										returned.promise().then( newDefer.resolve, newDefer.reject, newDefer.notify ); 				// 把异步队列2的方法resolve(), reject(), notify()加入到异步队列3中
 									} else {
-										newDefer[ action + "With" ]( this === deferred ? newDefer : this, [ returned ] ); 			// 如果返回的不是异步队列对象或者异步队列对象只读副本，那么就调用异步队列2的对应的执行方法
+										newDefer[ action + "With" ]( this === deferred ? newDefer : this, [ returned ] ); 			// 返回值不是异步队列3，就向异步队列2加入相应的方法，异步队列2作为上下文。
 									}
 								});
 							} else {
-								deferred[ handler ]( newDefer[ action ] ); 						// 如果不是函数，将对应的方法加入到对应的list中。马上执行函数
+								deferred[ handler ]( newDefer[ action ] ); 						// 如果不是函数，则向异步队列1中加入异步队列2的调用方法
 							}
 						});
 					}).promise();
@@ -1319,7 +1318,7 @@ jQuery.extend({
 			if ( !count ) { 																				// 如果所有的参数不是异步队列
 				deferred.resolveWith( deferred, args ); 													// 执行成功回调函数
 			}
-		} else if ( deferred !== firstParam ) { 								// 参数长度为0或1，如果不是异步队列或只读副本
+		} else if ( deferred !== firstParam ) { 								// 参数长度为0，如果不是异步队列或只读副本
 			deferred.resolveWith( deferred, length ? [ firstParam ] : [] ); 	// 执行成功回调函数
 		}
 		return promise;

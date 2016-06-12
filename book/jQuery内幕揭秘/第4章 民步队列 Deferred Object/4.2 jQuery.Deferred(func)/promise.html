@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	var fn1 = function () {
+		console.log('fn1');
+	}
+	var fn2 = function () {
+		console.log('fn2');
+	}
+
+	var defer = jQuery.Deferred();
+
+	defer.done(fn1);
+
+	var promise = defer.promise({});
+
+	promise.done(fn2); 			// 只读副本与异步队列共用一个函数作用域，也就是共用一条队列。
+
+	defer.resolve();			// 
+
+	</script>
+</body>
+</html>

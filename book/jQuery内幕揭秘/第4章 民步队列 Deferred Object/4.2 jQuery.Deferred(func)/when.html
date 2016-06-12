@@ -5,7 +5,7 @@
 	<title>Document</title>
 </head>
 <body>
-	<script src="../js/jQuery.js"></script>
+	<script src="../../js/jQuery.js"></script>
 	<script>
 	// 1. 不传参数
 	// console.log($.when(function( x ) { 							// 因为没有参数，相当于调用callbacks.fire, then调用callbacks.add
@@ -20,12 +20,17 @@
 	// Object {x: "x"}
 
 	// 3.传入一个参数, 异步队列对象
-	// var defer = new jQuery.Deferred();
-	// $.when(defer).done(function (x) { 							// 这种情况不触发
-	// 	console.log(x);
-	// });
-	// defer.resolve('Fish');
 
+	var defer = jQuery.Deferred();	
+	defer.resolve('xxx');
+
+	var defer2 = jQuery.Deferred();
+	defer2.resolve('yyy');
+	
+	$.when(defer, defer2).done(function (x, y) { 								// 这种情况不触发
+		console.log(x, y);
+	});
+	
 	// 4.传入两个参数, 非异步队列对象
 	// $.when({x: 'x'}, {y: 'y'}).done(function (x, y) {			// $.when调用callbacks.fire, donc调用callbacks.add
 	// 	console.log(x, y);
@@ -68,12 +73,6 @@
 	//   	console.log( x, y); 
 	// });
 
-	var defer = new jQuery.Deferred();
-	defer.promise().progress(function () {
-		console.log("promise");
-	});
-	
-	defer.notify();
 	</script>
 </body>
 </html>
