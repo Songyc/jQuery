@@ -10,7 +10,7 @@
 <body>
 	<div class="test1">test1</div>
 	<div class="test2">test2</div>
-	<script src="../js/jQuery.js"></script>
+	<script src="../../js/jQuery.js"></script>
 	<script>
 
 	var elem = document.querySelector('.test1'),
@@ -19,9 +19,18 @@
 			console.log('data');
 		};
 
+
+	var q = jQuery.queue(elem, type, data);				// 通过数据缓存方法存储type对应的队列data
+	var d = jQuery.queue(elem, type);					// 通过数据缓存对象读取type对应的队列
+	console.log(d);
+
 	var q = jQuery.queue(elem, type, data);
-	
-	var d = jQuery.dequeue(elem, type, data);
+	var d = jQuery.queue(elem, type);
+	console.log(d);
+
+	var q = jQuery.queue(elem, type, [data, data, data]); 		// 数组则替换队列
+	var d = jQuery.queue(elem, type);
+	console.log(d);
   	</script>
 </body>
 </html>

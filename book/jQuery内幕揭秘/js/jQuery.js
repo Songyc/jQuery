@@ -2053,7 +2053,7 @@ jQuery.extend({
 			fn = queue.shift();												// 则丢弃一个再出队一个。
 		}
 
-		if ( fn ) { 														// 如果fn能转成true
+		if ( fn ) {															// 如果fn能转成true
 			// Add a progress sentinel to prevent the fx queue from being
 			// automatically dequeued
 			if ( type === "fx" ) {											// 队列名为'fx'
