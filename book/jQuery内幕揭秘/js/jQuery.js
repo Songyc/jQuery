@@ -1989,7 +1989,7 @@ function handleQueueMarkDefer( elem, type, src ) {									// 需要观察的元
 			if ( !jQuery._data( elem, queueDataKey ) && 							// 如果关联的队列为空队列，并且关联的计数器为0，则移除并触发回调函数列表，这会导致方法promise()中
 				!jQuery._data( elem, markDataKey ) ) {								// 如果
 				jQuery.removeData( elem, deferDataKey, true ); 						// 移除并触发回调函数列表
-				defer.fire();														// 导致.promise()中count减1
+				defer.fire();														// 对于普通队列，需要用回调函数列表触发。导致.promise()中count减1
 			}
 		}, 0 );
 	}
