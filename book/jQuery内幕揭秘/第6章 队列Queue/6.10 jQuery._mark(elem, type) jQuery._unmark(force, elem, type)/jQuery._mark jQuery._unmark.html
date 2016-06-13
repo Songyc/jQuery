@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	
+	var obj = {};
+	jQuery._mark(obj, 'test');
+	jQuery._mark(obj, 'test');
+	console.log(jQuery._data(obj, 'testmark'));
+	
+	jQuery._unmark(obj, 'test');
+	console.log(jQuery._data(obj, 'testmark'));
+	</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	var fn1 = function (next, hooks) {
+		console.log('fn1');
+	}
+	var fn2 = function (next, hooks) {
+		console.log('fn2');
+	}
+	var fn3 = function (next, hooks) {
+		console.log('fn3');
+	}
+	var obj = {};
+	$(obj)
+	.queue('nofx', fn1)
+	.queue('nofx', fn2)
+	.queue('nofx', fn3);
+
+	var promiseObj = {};
+	var promise = $(obj).promise('nofx', promiseObj);
+	promise.done();
+	
+	</script>
+</body>
+</html>

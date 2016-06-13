@@ -14,17 +14,18 @@
 	<script>
 	var elem = document.querySelector('.test1'),
 		type = 'test',
-		data = function (next, hooks) {
-			console.log('data');
+		fn1 = function (next, hooks) {
+			console.log('fn1');
 			next();
 		},
-		data2 = function (next, hooks) {
-			console.log('data2');
+		fn2 = function (next, hooks) {
+			console.log('fn2');
+			next();
 		};
 		
-	jQuery.queue(elem, type, data); 			// 入列
+	jQuery.queue(elem, type, fn1); 				// 入列
 	jQuery.queue(elem, type, 'inprogress'); 	// 入列
-	jQuery.queue(elem, type, data2);			// 入列
+	jQuery.queue(elem, type, fn2);				// 入列
 	var d = jQuery.queue(elem, type);
 	console.log(d);								
 	jQuery.dequeue(elem, type); 				// data2, data 先进先出

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	// 普通对象的queue
+	var fn1 = function (next) {
+		console.log('fn1');
+		next();
+	}
+	var fn2 = function (next) {
+		console.log('fn2');
+		next();
+	}
+	var fn3 = function (next) {
+		console.log('fn3');
+		next();
+	}
+
+	var obj = {};
+
+	$(obj)
+	.queue('nofx', fn1)
+	.delay(2000, 'nofx')
+	.queue('nofx', fn2)
+	.clearQueue('nofx')
+	.queue('nofx', fn3);
+	
+	$(obj).dequeue('nofx');
+	</script>
+</body>
+</html>
