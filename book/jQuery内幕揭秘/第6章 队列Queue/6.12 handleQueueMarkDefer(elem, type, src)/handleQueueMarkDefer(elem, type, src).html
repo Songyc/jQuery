@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	var fn1 = function (next, hooks) {
+		console.log('fn1')
+		typeof next === 'function' && next();
+		console.log('fn1 + next')
+	}
+	var fn2 = function (next, hooks) {
+		console.log('fn2')
+		typeof next === 'function' && next();
+	}
+	var fn3 = function (next, hooks) {
+		console.log('fn3')
+		typeof next === 'function' && next();
+	}
+	
+	var obj = {};
+	$(obj)
+	.queue('nofx', fn1)										
+	.queue('nofx', fn2)										
+	.queue('nofx', fn3);	
+
+	$(obj).promise('nofx', {}).done(fn2);
+	$(obj).dequeue('nofx');
+	</script>
+</body>
+</html>

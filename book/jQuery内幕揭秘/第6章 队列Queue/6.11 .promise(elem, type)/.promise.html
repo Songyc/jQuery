@@ -17,15 +17,20 @@
 		console.log('fn3');
 	}
 	var obj = {};
+
 	$(obj)
 	.queue('nofx', fn1)
 	.queue('nofx', fn2)
 	.queue('nofx', fn3);
 
 	var promiseObj = {};
-	var promise = $(obj).promise('nofx', promiseObj);
-	promise.done();
-	
+	// $(obj).promise().done(fn3);									// 观察动画队列
+
+	$(obj).promise('nofx').done(fn2);				// 返回主异步队列的只读副本，观察普通队列'nofx'，调用done添加回调函数
+
+	$(obj).dequeue('nofx');
+	// var tmp = jQuery.data(obj, 'nofxdefer', undefined, true);	// 获取'nofx'对应的回调函数列表对象
+	// tmp.fire();  												// 再触发
 	</script>
 </body>
 </html>

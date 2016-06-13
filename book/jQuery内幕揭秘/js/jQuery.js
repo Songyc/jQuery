@@ -1994,7 +1994,7 @@ function handleQueueMarkDefer( elem, type, src ) {									// 需要观察的元
 		}, 0 );
 	}
 }
-window.handleQueueMarkDefer = handleQueueMarkDefer;
+
 jQuery.extend({
 
 	_mark: function( elem, type ) { 												// 计数器加1，计数器存储在关联的数据缓存对象中，数据名称为type + 'mark'
@@ -2139,7 +2139,7 @@ jQuery.fn.extend({
 						jQuery.data( elements[ i ], markDataKey, undefined, true ) ) &&			// 如果有关联的计数器(type + 'mark'), 也说明需要观察该元素。
 					jQuery.data( elements[ i ], deferDataKey, jQuery.Callbacks( "once memory" ), true ) )) {		// 这时会新创建一个回调函数列表，赋值给变量tmp
 				count++;													// 表示要观察元素的个数
-				tmp.add( resolve );											
+				tmp.add( resolve );										
 			}
 		}
 		resolve();															// 调用特殊回调函数resolve，如果没有需要观察的元素，则立即触发异步队列的成功回调函数。
