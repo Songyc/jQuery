@@ -3,16 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<style>
-	tbody{background:red;}
-	</style>
 </head>
 <body>
-	<div id="test" class="test">   <table> <tr> dfadf </tr> </table>
+	<div id="test" class="test">
+		<table id="table" class="table"></table>
 	</div>
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	
+	var div = document.getElementById('test');
+	jQuery.clean('<table></table>', document, null, null);
 	</script>
 </body>
 </html>
