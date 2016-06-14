@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+	var div = document.createElement('div');
+	div.innerHTML = '<a href="/a">a</a>';
+	a = div.getElementsByTagName('a')[0];
+
+	console.log(a.getAttribute('href') === '/a');
+	console.log(a.getAttribute('href', 2)); 					// ie用第二个参数返回相对路径
+	</script>
+</body>
+</html>
