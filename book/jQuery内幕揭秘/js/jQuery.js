@@ -1376,7 +1376,7 @@ jQuery.support = (function() {
 
 		// Get the style information from getAttribute
 		// (IE uses .cssText instead)
-		style: /top/.test( a.getAttribute("style") ),							
+		style: /top/.test( a.getAttribute("style") ),	 							// 如果DOM元素的内联样式可以通过DOM属性style直接访问，则测试项style为true。ie6/7/8为false。						
 
 		// Make sure that URLs aren't manipulated
 		// (IE normalizes it by default)
@@ -1385,7 +1385,7 @@ jQuery.support = (function() {
 		// Make sure that element opacity exists
 		// (IE uses filter instead)
 		// Use a regex to work around a WebKit issue. See #5145
-		opacity: /^0.55/.test( a.style.opacity ),
+		opacity: /^0.55/.test( a.style.opacity ), 									// 如果浏览器支持opacity，测试项为true。否则为false。
 
 		// Verify style float existence
 		// (IE uses styleFloat instead of cssFloat)
@@ -1401,14 +1401,14 @@ jQuery.support = (function() {
 		optSelected: opt.selected,													// 如果浏览器在复制DOM节点时会复制选中状态，则测试项为true。IE6/7/8/9/10为false。
 
 		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
-		getSetAttribute: div.className !== "t",
+		getSetAttribute: div.className !== "t", 									// 能用原生方法getAttribute, setAttribute, removeAttribute可以正确设置，读取和移除HTML属性，则测试项为true。 ie6/7为false。
 
 		// Tests for enctype support on a form(#6743)
-		enctype: !!document.createElement("form").enctype,
+		enctype: !!document.createElement("form").enctype,		 					// 如果表单元素支持属性enctype，测试项为true。					
 
 		// Makes sure cloning an html5 element does not cause problems
 		// Where outerHTML is undefined, this still works
-		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
+		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>", 		// 如果浏览器能正确复制html5元素，测试项为true。ie6/7/8为false。
 
 		// Will be defined later
 		submitBubbles: true,
@@ -1428,14 +1428,14 @@ jQuery.support = (function() {
 	// Make sure that the options inside disabled selects aren't marked as disabled
 	// (WebKit marks them as disabled)
 	select.disabled = true;
-	support.optDisabled = !opt.disabled;
+	support.optDisabled = !opt.disabled;			// 如果已禁用的select元素中的option子元素未被自动禁用，则测试项optDisabled为true。否则为false。
 
 	// Test to see if it's possible to delete an expando from an element
 	// Fails in Internet Explorer
 	try {
-		delete div.test;							// ie9+返回true 
+		delete div.test;							// 如果浏览器允许删除DOM元素上的属性，则测试项为true。ie6/7/8为false。
 	} catch( e ) {		
-		support.deleteExpando = false;			 	// ie6, ie7, ie8 返回缺少对象
+		support.deleteExpando = false;			 	
 	}
 
 	if ( !div.addEventListener && div.attachEvent && div.fireEvent ) {
@@ -1450,21 +1450,21 @@ jQuery.support = (function() {
 	// Check if a radio maintains its value
 	// after being appended to the DOM
 	input = document.createElement("input");
-	input.value = "t";
-	input.setAttribute("type", "radio");
-	support.radioValue = input.value === "t";
+	input.value = "t";																	// 先设置value为't'
+	input.setAttribute("type", "radio");												// 再设置type为'radio'
+	support.radioValue = input.value === "t";									 		// 检查属性value与设置值是否相等。如果相等，测试项为true。ie6/7/8/9/10为false。
 
-	input.setAttribute("checked", "checked");
+	input.setAttribute("checked", "checked");											// 
 	div.appendChild( input );
-	fragment = document.createDocumentFragment();
-	fragment.appendChild( div.lastChild );
+	fragment = document.createDocumentFragment(); 										
+	fragment.appendChild( div.lastChild );												// 将input放入文档碎片中
 
 	// WebKit doesn't clone checked state correctly in fragments
-	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
+	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;  	// 复制两次后检测checked是否为true。如果是则测试项为true。 ie6/7为false。
 
 	// Check if a disconnected checkbox will retain its checked
 	// value of true after appended to the DOM (IE6/7)
-	support.appendChecked = input.checked;
+	support.appendChecked = input.checked;												// 被选中的单选框和复选框添加到DOMs树中后，如果仍然为选中状态，则测试项appendChecked为true。 ie6/7为false。
 
 	fragment.removeChild( input );
 	fragment.appendChild( div );
