@@ -9,7 +9,8 @@
 	var div = document.createElement('div');
 	div.innerHTML = ' <input type="checkbox" />';
 	var input = div.getElementsByTagName('input')[0];
-	console.log(input.value === 'on'); 				// 在safari下为''，其它浏览器为'on'		
+	input.checked = true;
+	console.log(input.cloneNode(true).checked); 					// 在safari下为''，其它浏览器为'on'		
 	</script>
 </body>
 </html>

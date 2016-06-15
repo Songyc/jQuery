@@ -1372,15 +1372,15 @@ jQuery.support = (function() {
 
 		// Make sure that link elements get serialized correctly by innerHTML
 		// This requires a wrapper element in IE
-		htmlSerialize: !!div.getElementsByTagName("link").length,					// 
+		htmlSerialize: !!div.getElementsByTagName("link").length,					// 如果浏览器使用innerHTML属性可以正确序列化link标签，则测试项htmlSerialize为true。ie6/7/8为false
 
 		// Get the style information from getAttribute
 		// (IE uses .cssText instead)
-		style: /top/.test( a.getAttribute("style") ),
+		style: /top/.test( a.getAttribute("style") ),							
 
 		// Make sure that URLs aren't manipulated
 		// (IE normalizes it by default)
-		hrefNormalized: ( a.getAttribute("href") === "/a" ),
+		hrefNormalized: ( a.getAttribute("href") === "/a" ),						// 如果通过原生方法getAttribute()获取属性href值没有被格式化为一个全路径URL。则测试项hrefNormalized为true。ie6/7为false。
 
 		// Make sure that element opacity exists
 		// (IE uses filter instead)
@@ -1394,11 +1394,11 @@ jQuery.support = (function() {
 		// Make sure that if no value is specified for a checkbox
 		// that it defaults to "on".
 		// (WebKit defaults to "" instead)
-		checkOn: ( input.value === "on" ),
+		checkOn: ( input.value === "on" ), 											// 如果复选框的属性value的默认值为'on',　则测试项checkOn为true。safari为false。
 
 		// Make sure that a selected-by-default option has a working selected property.
 		// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
-		optSelected: opt.selected,
+		optSelected: opt.selected,													// 如果浏览器在复制DOM节点时会复制选中状态，则测试项为true。IE6/7/8/9/10为false。
 
 		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
 		getSetAttribute: div.className !== "t",
@@ -1433,9 +1433,9 @@ jQuery.support = (function() {
 	// Test to see if it's possible to delete an expando from an element
 	// Fails in Internet Explorer
 	try {
-		delete div.test;		// ie9+返回true 
+		delete div.test;							// ie9+返回true 
 	} catch( e ) {		
-		support.deleteExpando = false;			 // ie6, ie7, ie8 返回 缺少对象
+		support.deleteExpando = false;			 	// ie6, ie7, ie8 返回缺少对象
 	}
 
 	if ( !div.addEventListener && div.attachEvent && div.fireEvent ) {
