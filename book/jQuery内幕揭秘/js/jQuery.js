@@ -1561,22 +1561,22 @@ jQuery.support = (function() {
 		// Figure out if the W3C box model works as expected
 		div.innerHTML = "";
 		div.style.width = div.style.paddingLeft = "1px";
-		jQuery.boxModel = support.boxModel = div.offsetWidth === 2;
+		jQuery.boxModel = support.boxModel = div.offsetWidth === 2; 					// 检查div元素的可见宽度offsetWidth是否等于2。在IE怪异模式下会返回1，测试项boxModel为false。在标准模式下会返回2，测试项boxModel为true。ie6/7为false。
 
 		if ( typeof div.style.zoom !== "undefined" ) {
 			// Check if natively block-level elements act like inline-block
 			// elements when setting their display to 'inline' and giving
 			// them layout
 			// (IE < 8 does this)
-			div.style.display = "inline";
-			div.style.zoom = 1;
+			div.style.display = "inline";	
+			div.style.zoom = 1;															// 设置zoom为1, 触发hasLayout属性
 			support.inlineBlockNeedsLayout = ( div.offsetWidth === 2 );
 
 			// Check if elements with layout shrink-wrap their children
 			// (IE 6 does this)
 			div.style.display = "";
 			div.innerHTML = "<div style='width:4px;'></div>";
-			support.shrinkWrapBlocks = ( div.offsetWidth !== 2 );
+			support.shrinkWrapBlocks = ( div.offsetWidth !== 2 );						// 在IE下，一个元素拥有hasLayout属性和固定的width和height时，如果该元素会被子元素撑大，则测试项shrinkWrapBlocks为true。ie为true，其它浏览器为false。
 		}
 
 		div.style.cssText = ptlm + vb;
@@ -1587,7 +1587,7 @@ jQuery.support = (function() {
 		td = outer.nextSibling.firstChild.firstChild;
 
 		offsetSupport = {
-			doesNotAddBorder: ( inner.offsetTop !== 5 ),
+			doesNotAddBorder: ( inner.offsetTop !== 5 ), 								// 如果子元素距其父元素上边界的距离offsetTop不包含父元素的上边框厚度，测试项为true。
 			doesAddBorderForTableAndCells: ( td.offsetTop === 5 )
 		};
 
