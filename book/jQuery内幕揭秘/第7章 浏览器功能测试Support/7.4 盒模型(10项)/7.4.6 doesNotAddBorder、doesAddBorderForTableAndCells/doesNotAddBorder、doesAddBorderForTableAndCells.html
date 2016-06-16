@@ -10,7 +10,10 @@
 	</div>
 	<script type="text/javascript" src="../../../js/jQuery.js"></script>
 	<script type="text/javascript">
-	console.log(jQuery.support.doesNotAddBorder);
+	setTimeout(function () {
+		console.log(jQuery.doesNotAddBorder);
+		console.log(jQuery.doesAddBorderForTableAndCells);
+	}, 1000);
 	</script>
 </body>
 </html>

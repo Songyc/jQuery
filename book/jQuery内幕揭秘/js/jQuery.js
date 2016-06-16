@@ -1327,6 +1327,7 @@ jQuery.extend({
 
 
 
+
 jQuery.support = (function() {
 
 	var support,
@@ -1385,7 +1386,7 @@ jQuery.support = (function() {
 		// Make sure that element opacity exists
 		// (IE uses filter instead)
 		// Use a regex to work around a WebKit issue. See #5145
-		opacity: /^0.55/.test( a.style.opacity ), 									// 如果浏览器支持opacity，测试项为true。否则为false。
+		opacity: /^0.55/.test( a.style.opacity ), 									// 如果浏览器支持opacity，测试项为true。否则为false。d
 
 		// Verify style float existence
 		// (IE uses styleFloat instead of cssFloat)
@@ -1411,14 +1412,14 @@ jQuery.support = (function() {
 		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>", 		// 如果浏览器能正确复制html5元素，测试项为true。ie6/7/8为false。
 
 		// Will be defined later
-		submitBubbles: true,
-		changeBubbles: true,
-		focusinBubbles: false,
-		deleteExpando: true,
-		noCloneEvent: true,
-		inlineBlockNeedsLayout: false,
-		shrinkWrapBlocks: false,
-		reliableMarginRight: true
+		submitBubbles: true,							// 如果submit事件沿着DOM树向上冒泡，则测试项submitBubbles为true。ie6/7/8为false。									
+		changeBubbles: true, 							// 如果change事件沿着DOM树向上冒泡，则测试项changeBubbles为true。ie6/7/8为false。
+		focusinBubbles: false, 							// IE支持focusin事件，则测试项focusinBubbles为true。在其他浏览器为true。
+		deleteExpando: true,							// 如果浏览器允许删除DOM元素上的属性，则测试项为true。ie6/7/8为false。
+		noCloneEvent: true, 							// 如果浏览器在复制DOM元素时不复制事件监听函数，则测试项noCloneEvent为true。
+		inlineBlockNeedsLayout: false,					// 设置zoom为1, 触发hasLayout属性。如果该元素按照inline-block显示，则测试项inlineBlockNeedsLayout为true。ie6/7为true，其它浏览器为false。
+		shrinkWrapBlocks: false,						// 在IE下，一个元素拥有hasLayout属性和固定的width和height时，如果该元素会被子元素撑大，则测试项shrinkWrapBlocks为true。ie为true，其它浏览器为false。
+		reliableMarginRight: true 						// 如果浏览器返回正确的计算样式marginRight(即右外边距), 则测试项reliableMarginRight为true。
 	};
 
 	// Make sure checked status is properly cloned
@@ -1442,9 +1443,9 @@ jQuery.support = (function() {
 		div.attachEvent( "onclick", function() {
 			// Cloning a node shouldn't copy over any
 			// bound event handlers (IE does this)
-			support.noCloneEvent = false;
+			support.noCloneEvent = false; 			// 如果浏览器在复制DOM元素时不复制事件监听函数，则测试项noCloneEvent为true。
 		});
-		div.cloneNode( true ).fireEvent( "onclick" );
+		div.cloneNode( true ).fireEvent( "onclick" ); 				
 	}
 
 	// Check if a radio maintains its value
@@ -1569,7 +1570,7 @@ jQuery.support = (function() {
 			// them layout
 			// (IE < 8 does this)
 			div.style.display = "inline";	
-			div.style.zoom = 1;															// 设置zoom为1, 触发hasLayout属性
+			div.style.zoom = 1;															// 设置zoom为1, 触发hasLayout属性。如果该元素按照inline-block显示，则测试项inlineBlockNeedsLayout为true。
 			support.inlineBlockNeedsLayout = ( div.offsetWidth === 2 );
 
 			// Check if elements with layout shrink-wrap their children
@@ -1587,8 +1588,8 @@ jQuery.support = (function() {
 		td = outer.nextSibling.firstChild.firstChild;
 
 		offsetSupport = {
-			doesNotAddBorder: ( inner.offsetTop !== 5 ), 								// 如果子元素距其父元素上边界的距离offsetTop不包含父元素的上边框厚度，测试项为true。
-			doesAddBorderForTableAndCells: ( td.offsetTop === 5 )
+			doesNotAddBorder: ( inner.offsetTop !== 5 ), 								// 如果子元素距其父元素上边界的距离offsetTop不包含父元素的上边框厚度，测试项为true。 ie8为false。
+			doesAddBorderForTableAndCells: ( td.offsetTop === 5 )						// 如果td元素距其父元素tr上边界的距离offsetTop包含table元素的上边框厚度，则测试项doesAddBorderForTableAndCells为true。
 		};
 
 		inner.style.position = "fixed";
@@ -1601,8 +1602,8 @@ jQuery.support = (function() {
 		outer.style.overflow = "hidden";
 		outer.style.position = "relative";
 
-		offsetSupport.subtractsBorderForOverflowNotVisible = ( inner.offsetTop === -5 );
-		offsetSupport.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== conMarginTop );
+		offsetSupport.subtractsBorderForOverflowNotVisible = ( inner.offsetTop === -5 ); 		// 子元素距父元素边界的距离会减去父元素的边框厚度，则测试项为true。
+		offsetSupport.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== conMarginTop ); 	// 如果body元素距html元素边框的距离不包括body元素的外边距margin，则测试项doesNotIncludeMarginInBodyOffset为true。
 
 		body.removeChild( container );
 		div  = container = null;
@@ -1972,6 +1973,7 @@ function isEmptyDataObject( obj ) {
 
 	return true;
 }
+
 
 
 
@@ -8034,12 +8036,12 @@ jQuery.ajaxSettings.xhr = window.ActiveXObject ?
 	createStandardXHR;
 
 // Determine support properties
-(function( xhr ) {
+(function( xhr ) {												// 
 	jQuery.extend( jQuery.support, {
-		ajax: !!xhr,
-		cors: !!xhr && ( "withCredentials" in xhr )
+		ajax: !!xhr,											// 如果创建结果可以转换为true，则测试项为ajax为true。
+		cors: !!xhr && ( "withCredentials" in xhr )				// 如果创建结果含有属性withCredentials，测试项为true。如果浏览器支持跨域共享资源共享,则测试项为true。
 	});
-})( jQuery.ajaxSettings.xhr() );
+})( jQuery.ajaxSettings.xhr() ); 								// 尝试创建ajax对象
 
 // Create transport if the browser can provide an xhr
 if ( jQuery.support.ajax ) {
