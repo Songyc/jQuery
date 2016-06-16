@@ -1389,7 +1389,7 @@ jQuery.support = (function() {
 
 		// Verify style float existence
 		// (IE uses styleFloat instead of cssFloat)
-		cssFloat: !!a.style.cssFloat,
+		cssFloat: !!a.style.cssFloat,												// 如果浏览器支持通过style.cssFloat访问float，测试项为true。 ie6/7/8为false。
 
 		// Make sure that if no value is specified for a checkbox
 		// that it defaults to "on".
@@ -1483,7 +1483,7 @@ jQuery.support = (function() {
 		div.style.width = "2px";
 		div.appendChild( marginDiv );
 		support.reliableMarginRight =
-			( parseInt( ( window.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0;
+			( parseInt( ( window.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0; 		// 如果浏览器返回正确的计算样式marginRight(即右外边距), 则测试项reliableMarginRight为true。
 	}
 
 	// Technique from Juriy Zaytsev
