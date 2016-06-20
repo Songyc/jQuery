@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	var elem = document.querySelector('.test'),
+		name = 'width',
+		value = '100px',
+		pass = false, 
+		returnValue;
+
+	// test jQuery.attrHooks
+	
+	name = 'value';
+	returnValue = jQuery.attr(elem, name, value, pass); 		// 如果是tabindex, type, value，则hooks获取对应的HTML属性修正对象jQuery.attrHooks[name]
+	console.log(returnValue);			
+
+	name = 'loop';
+	returnValue = jQuery.attr(elem, name, value, pass);			// 如果是布尔正则能匹配到，则hooks获取布尔修正对象, 否则为undefined
+	console.log(returnValue);		
+	
+	</script>
+	
+</body>
+</html>

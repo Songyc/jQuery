@@ -2449,55 +2449,55 @@ jQuery.extend({
 	},
 
 	attr: function( elem, name, value, pass ) {
-		var ret, hooks, notxml,
+		var ret, hooks, notxml,											
 			nType = elem.nodeType;
 
 		// don't get/set attributes on text, comment and attribute nodes
-		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
+		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) { 			// 文本节点，，注释，属性节点
 			return;
 		}
 
-		if ( pass && name in jQuery.attrFn ) {
+		if ( pass && name in jQuery.attrFn ) {									// 指示如果HTML属性与jQuery方法同名，是否调用同名的方法。如果该参数为true则调用, false则不调用。
 			return jQuery( elem )[ name ]( value );
 		}
 
 		// Fallback to prop when attributes are not supported
-		if ( typeof elem.getAttribute === "undefined" ) {
-			return jQuery.prop( elem, name, value );
+		if ( typeof elem.getAttribute === "undefined" ) {						// 如果浏览器不支持getAttribute方法
+			return jQuery.prop( elem, name, value );							// 则设置DOM元素的属性name值为value, 读取对应的DOM属性
 		}
 
-		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
+		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );						// elem不是DOM元素或者不是xml元素
 
 		// All attributes are lowercase
 		// Grab necessary hook if one is defined
-		if ( notxml ) {
-			name = name.toLowerCase();
-			hooks = jQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : nodeHook );
+		if ( notxml ) {	
+			name = name.toLowerCase();											// 转成小写
+			hooks = jQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : nodeHook );		// 依次尝试获取对应的HTML属性修正对象jQuery.attrHooks[name], 布尔属性修正对象boolHook，节点属性修正对象nodeHook
 		}
 
-		if ( value !== undefined ) {
+		if ( value !== undefined ) {											// 如果传入value				
 
-			if ( value === null ) {
-				jQuery.removeAttr( elem, name );
+			if ( value === null ) {												// 如果value为null
+				jQuery.removeAttr( elem, name );								// 删除该属性
 				return;
 
-			} else if ( hooks && "set" in hooks && notxml && (ret = hooks.set( elem, value, name )) !== undefined ) {
+			} else if ( hooks && "set" in hooks && notxml && (ret = hooks.set( elem, value, name )) !== undefined ) {		//	
 				return ret;
 
-			} else {
-				elem.setAttribute( name, "" + value );
-				return value;
+			} else {															// 否则
+				elem.setAttribute( name, "" + value );							// 先将value转成字符串，再设置属性name值为value
+				return value;													// 返回value
 			}
 
-		} else if ( hooks && "get" in hooks && notxml && (ret = hooks.get( elem, name )) !== null ) {
-			return ret;
+		} else if ( hooks && "get" in hooks && notxml && (ret = hooks.get( elem, name )) !== null ) { 	// 如果是HTML属性修正对象或者布尔修正对象，调用get方法
+			return ret;											// 返回ret。
 
-		} else {
+		} else {		// 否则
 
-			ret = elem.getAttribute( name );
+			ret = elem.getAttribute( name );	// 读取name属性
 
 			// Non-existent attributes return null, we normalize to undefined
-			return ret === null ?
+			return ret === null ?				// 如果为null，说明没定义HTML属性。统一返回undefined。
 				undefined :
 				ret;
 		}
@@ -2646,8 +2646,8 @@ boolHook = {
 		// Align boolean attributes with corresponding properties
 		// Fall back to attribute presence where some booleans are not supported
 		var attrNode,
-			property = jQuery.prop( elem, name );
-		return property === true || typeof property !== "boolean" && ( attrNode = elem.getAttributeNode(name) ) && attrNode.nodeValue !== false ?
+			property = jQuery.prop( elem, name );						// 读取对应的DOM属性
+		return property === true || typeof property !== "boolean" && ( attrNode = elem.getAttributeNode(name) ) && attrNode.nodeValue !== false ? 		// 如果为true或者
 			name.toLowerCase() :
 			undefined;
 	},
