@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	var elem = document.querySelector('.test'),
+		name = 'async',
+		value = true,
+		pass = false, 
+		returnValue;
+	 
+	returnValue = jQuery.attr(elem, name, value);				
+	console.log(returnValue);	 
+	</script>
+</body>
+</html>

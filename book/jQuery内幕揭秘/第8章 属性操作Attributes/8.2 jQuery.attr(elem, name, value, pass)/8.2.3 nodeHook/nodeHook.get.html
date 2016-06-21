@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script type="text/javascript">
+	var fixSpecified = { 									// 如果属性值为空字符串，则返回undefined，其他属性则正常返回
+		name: true,
+		id: true
+	};
+
+	function get( elem, name ) {					// 
+		var ret;
+		ret = elem.getAttributeNode( name );		// 获取对应的HTML属性对象
+		return ret && ( fixSpecified[ name ] ? ret.nodeValue !== "" : ret.specified ) ? 		// 返回
+			ret.nodeValue :
+			undefined;
+	}	 
+
+	console.log(document.getElementsByTagName('div')[0].name);
+	</script>
+</body>
+</html>

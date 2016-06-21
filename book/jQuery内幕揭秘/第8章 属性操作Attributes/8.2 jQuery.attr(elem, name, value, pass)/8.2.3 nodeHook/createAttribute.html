@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script>
+	var test = document.createElement('div')
+		ret = document.createAttribute('name'),
+		test.setAttributeNode(ret);
+	
+	ret.nodeValue = 'value';
+	console.log({ret: ret});
+	</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div  class="test" category="false">
+		test
+	</div>
+	<script type="text/javascript">
+	var div = document.getElementsByTagName('div'),
+		category;
+	for(var i = 0; i < div.length; i++) {
+		category = div[i].getAttributeNode('category');
+	}	 
+	console.log({category: category});
+	</script>
+</body>
+</html>

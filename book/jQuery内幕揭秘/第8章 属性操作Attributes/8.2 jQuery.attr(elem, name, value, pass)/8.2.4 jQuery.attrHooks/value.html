@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button value="noButton">button</button>
+	
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	var button = document.getElementsByTagName('button')[0];
+	console.log(button.value);
+
+	jQuery.attrHooks.value.get(button, 'value');
+	</script>
+</body>
+</html>
