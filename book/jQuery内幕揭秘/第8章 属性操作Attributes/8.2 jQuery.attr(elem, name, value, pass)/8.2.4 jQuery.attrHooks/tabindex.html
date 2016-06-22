@@ -5,14 +5,31 @@
 	<title>Document</title>
 </head>
 <body>
-	<input class="test" id="test"></input>
+	<input class="test" id="test" tabindex="tabindex"></input>
 	
-	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript" src="jQuery.js"></script>
 	<script type="text/javascript">
 	console.log(document.getElementById('test').getAttribute('tabindex'));
 	console.log(document.getElementById('test').tabindex);
+	document.getElementById('test').tabindex = 'tabindex';
+
 	// jQuery.attrHooks.tabindex.get(document.getElementById('test'));
 	console.log($(".test").attr('tabindex'));
+	console.log(document.getElementById('test').tabindex);
+
+	// 在W3C浏览器中 dom.getAttribute('tabindex') 为null , dom.tabindex为undefined。 jQuery统一为0。
+	// 在IE7里, dom.getAttribute('tabindex')为 0, dom.tabindex为undefined。
+
+	// 有值时，
+
+	// 在W3C浏览器中 dom.getAttribute('tabindex') 为值 , dom.tabindex为undefined。jQuery统一转为十进制的数字。
+	// 
+
+	// 总结：
+	// DOM属性没有设置tabindex值，默认为undefeind。
+	// HTML属性没有设置tabindex值，W3C默认为null。IE7默认为0。
+
+	// jQuery统一把HTML属性性设置为0, 如果有值时统一转为十进制的数字。
 	</script>
 </body>
 </html>

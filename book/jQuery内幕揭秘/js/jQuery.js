@@ -2701,16 +2701,16 @@ if ( !getSetAttribute ) {
 	};
 
 	// Apply the nodeHook to tabindex
-	jQuery.attrHooks.tabindex.set = nodeHook.set;
+	jQuery.attrHooks.tabindex.set = nodeHook.set; 				
 
 	// Set width and height to auto instead of 0 on empty string( Bug #8150 )
 	// This is for removals
-	jQuery.each([ "width", "height" ], function( i, name ) {
-		jQuery.attrHooks[ name ] = jQuery.extend( jQuery.attrHooks[ name ], {
+	jQuery.each([ "width", "height" ], function( i, name ) {	// 创建HTML属性'width', 'height'对应的修正对象
+		jQuery.attrHooks[ name ] = jQuery.extend( jQuery.attrHooks[ name ], { 		// 只有set方法
 			set: function( elem, value ) {
-				if ( value === "" ) {
-					elem.setAttribute( name, "auto" );
-					return value;
+				if ( value === "" ) {												// 当value为空时
+					elem.setAttribute( name, "auto" );								// 设置为'auto'
+					return value;													// 最后返回value
 				}
 			}
 		});
