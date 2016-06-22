@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	var elem = document.querySelector('.test'),
+		name = 'async',
+		pass = false, 
+		returnValue;
+	 
+	returnValue = $(".test").attr('width', '100px');			// 如果pass为false，则设置属性width为100px
+	console.log(returnValue);	 
+	</script>
+</body>
+</html>

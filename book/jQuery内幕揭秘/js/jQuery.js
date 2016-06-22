@@ -2718,39 +2718,39 @@ if ( !getSetAttribute ) {
 
 	// Set contenteditable to false on removals(#10429)
 	// Setting to empty string throws an error as an invalid value
-	jQuery.attrHooks.contenteditable = {
-		get: nodeHook.get,
-		set: function( elem, value, name ) {
-			if ( value === "" ) {
-				value = "false";
-			}
-			nodeHook.set( elem, value, name );
+	jQuery.attrHooks.contenteditable = {											// 创建HTML属性contenteditable对应的修正对象，它含有两个修正方法。
+		get: nodeHook.get,															// 通过读取elem.getAttributeNode(name).nodeValue来读取HTML属性contentditable
+		set: function( elem, value, name ) {										
+			if ( value === "" ) {													// 如果value为空
+				value = "false";													// 设置为false
+			}											
+			nodeHook.set( elem, value, name );										// 调用nodeHook.set(elem, value, name)，通过读取elem.getAttributeNode(name).nodeValue来设置HTML属性
 		}
 	};
 }
 
 
 // Some attributes require a special call on IE
-if ( !jQuery.support.hrefNormalized ) {
-	jQuery.each([ "href", "src", "width", "height" ], function( i, name ) {
+if ( !jQuery.support.hrefNormalized ) {											 
+	jQuery.each([ "href", "src", "width", "height" ], function( i, name ) {			
 		jQuery.attrHooks[ name ] = jQuery.extend( jQuery.attrHooks[ name ], {
 			get: function( elem ) {
-				var ret = elem.getAttribute( name, 2 );
-				return ret === null ? undefined : ret;
+				var ret = elem.getAttribute( name, 2 ); 							// 获取相对路径
+				return ret === null ? undefined : ret;								// 获取不到统一返回undefined
 			}
 		});
 	});
 }
 
-if ( !jQuery.support.style ) {
+if ( !jQuery.support.style ) { 														// 
 	jQuery.attrHooks.style = {
-		get: function( elem ) {
+		get: function( elem ) {														
 			// Return undefined in the case of empty string
 			// Normalize to lowercase since IE uppercases css property names
-			return elem.style.cssText.toLowerCase() || undefined;
+			return elem.style.cssText.toLowerCase() || undefined;					// 读取elem.style.cssText返回内联样式
 		},
 		set: function( elem, value ) {
-			return ( elem.style.cssText = "" + value );
+			return ( elem.style.cssText = "" + value );								// 通过设置elem.style.cssText改变内联样式
 		}
 	};
 }
@@ -2758,7 +2758,7 @@ if ( !jQuery.support.style ) {
 // Safari mis-reports the default selected property of an option
 // Accessing the parent's selectedIndex property fixes it
 if ( !jQuery.support.optSelected ) {
-	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {
+	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {			// 
 		get: function( elem ) {
 			var parent = elem.parentNode;
 

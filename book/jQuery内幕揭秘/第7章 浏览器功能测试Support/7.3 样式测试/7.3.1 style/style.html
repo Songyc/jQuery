@@ -5,9 +5,14 @@
 	<title>Document</title>
 </head>
 <body>
+	<div class="test" style="width:100px;" id="test"></div>
 	<script type="text/javascript" src="../../../js/jQuery.js"></script>
 	<script type="text/javascript">
 	console.log(jQuery.support.style);
+	// 如果DOM元素的内联样式可以通过DOM属性style直接访问，则测试项为true。IE6/7/8需要通过style.cssText来访问
+
+	var test = document.getElementById('test');
+	console.log(test.style.width);
 	</script>
 </body>
 </html>

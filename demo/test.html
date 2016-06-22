@@ -5,25 +5,13 @@
 	<title>Document</title>
 </head>
 <body>
-	<p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p>
-	<p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p>
-	<p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p><p> Some text </p>
+	<div class="test" style="width:100px;" id="test"></div>
 
-	<img id="img" src="http://i.imgur.com/zJJL4.png" height="768" width="1024" />
-
-	<p> <button id="jq">  jQuery - removeAttr("height") </button> <button id="dom"> DOM removeAttribute("height") </button> </p>
-	<p> Some more text</p><p> Some more text</p><p> Some more text</p><p> Some more text</p>
-
-	<script src="jQuery.js"></script>
-	<script>
-	$("#jq").click(function() {
-	    $("img").removeAttr("height");
-	});
-
-	$("#dom").click(function() {
-	    $("img")[0].removeAttribute("height");
-	});
-	
+	<script type="text/javascript">
+	// console.log(jQuery.support.style); // 如果DOM元素的内联样式可以通过DOM属性style直接访问，则测试项为true。IE6/7/8需要通过style.cssText来访问
+	var test = document.getElementById('test');
+	console.log(test.style.width);
+	console.log(test.style.cssText);
 	</script>
 </body>
 </html>
