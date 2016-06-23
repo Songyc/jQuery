@@ -2507,23 +2507,23 @@ jQuery.extend({
 		var propName, attrNames, name, l,
 			i = 0;
 
-		if ( value && elem.nodeType === 1 ) {
-			attrNames = value.toLowerCase().split( rspace );
+		if ( value && elem.nodeType === 1 ) {					
+			attrNames = value.toLowerCase().split( rspace );			
 			l = attrNames.length;
 
-			for ( ; i < l; i++ ) {
-				name = attrNames[ i ];
+			for ( ; i < l; i++ ) {										// 遍历attNames, 逐个移除HTML属性
+				name = attrNames[ i ];									// 
 
 				if ( name ) {
-					propName = jQuery.propFix[ name ] || name;
+					propName = jQuery.propFix[ name ] || name;			// 取出HTML属性对应的DOM属性
 
 					// See #9699 for explanation of this approach (setting first, then removal)
-					jQuery.attr( elem, name, "" );
-					elem.removeAttribute( getSetAttribute ? name : propName );
+					jQuery.attr( elem, name, "" );						// 将HTML属性设置为空字符串
+					elem.removeAttribute( getSetAttribute ? name : propName );		// 如果测试项为false, 则传入对应的DOM属性
 
 					// Set corresponding property to false for boolean attributes
-					if ( rboolean.test( name ) && propName in elem ) {
-						elem[ propName ] = false;
+					if ( rboolean.test( name ) && propName in elem ) {				// 对于布尔型HTML属性
+						elem[ propName ] = false;						// 同步设置对应的DOM属性为false
 					}
 				}
 			}
@@ -2585,25 +2585,25 @@ jQuery.extend({
 		contenteditable: "contentEditable"
 	},
 
-	prop: function( elem, name, value ) {
+	prop: function( elem, name, value ) {											// 
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 
 		// don't get/set properties on text, comment and attribute nodes
-		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
+		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {					// 忽略文本，注释，属性节点
 			return;
 		}
 
-		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
+		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );							// 
 
 		if ( notxml ) {
 			// Fix name and attach hooks
-			name = jQuery.propFix[ name ] || name;
-			hooks = jQuery.propHooks[ name ];
+			name = jQuery.propFix[ name ] || name;									// DOM属性必须是驼峰式
+			hooks = jQuery.propHooks[ name ];										// 尝试获取对应的修正对象
 		}
 
-		if ( value !== undefined ) {
-			if ( hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
+		if ( value !== undefined ) {												// 如果value存在
+			if ( hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {		// 如果存在对应的修正对象，优先调用修正方法set()。
 				return ret;
 
 			} else {
