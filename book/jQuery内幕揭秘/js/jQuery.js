@@ -836,17 +836,17 @@ jQuery.extend({
 		// Setting one attribute 				// 设置单个属性
 		if ( value !== undefined ) { 			// 如果参数value存在
 			// Optionally, function values get executed if exec is true
-			exec = !pass && exec && jQuery.isFunction(value); 			// 参数pass不存在，exec存在并且布尔值为true，并且参数value是函数才返回true。
+			exec = !pass && exec && jQuery.isFunction(value); 			// 参数pass不存在，exec存在并且能转化为true，并且参数value是函数才返回true。
 
-			for ( var i = 0; i < length; i++ ) { 						// 遍历elems 
-				fn( elems[i], key, exec ? value.call( elems[i], i, fn( elems[i], key ) ) : value, pass ); 	// 为每个元素调用回调函数fn。如果value是函数，则执行并取其返回值作为参数值。
+			for ( var i = 0; i < length; i++ ) { 						// 遍历elems, 设置多个元素
+				fn( elems[i], key, exec ? value.call( elems[i], i, fn( elems[i], key ) ) : value, pass ); 	// 为每个元素调用回调函数fn。如果value是函数，则执行并取其返回值作为参数值。如果参数exex为true，则调用fn(elem, key)读取元素的当前HTML属性值, 作为value函数的第二个参数传入，调用value函数，其返回值作为fn函数的第三个参数
 			}
 
 			return elems; 												// 返回elems
 		}
 
 		// Getting an attribute
-		return length ? fn( elems[0], key ) : undefined;
+		return length ? fn( elems[0], key ) : undefined;				// 如果length不为0, 说明只有一个元素，直接调用fn
 	},
 
 	now: function() {
@@ -2448,7 +2448,7 @@ jQuery.extend({
 		offset: true
 	},
 
-	attr: function( elem, name, value, pass ) {
+	attr: function( elem, name, value, pass ) { 								// 参数pass是否调用同名方法
 		var ret, hooks, notxml,											
 			nType = elem.nodeType;
 
