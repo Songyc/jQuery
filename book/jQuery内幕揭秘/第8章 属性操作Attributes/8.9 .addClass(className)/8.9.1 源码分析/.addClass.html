@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test" id="test" width="50px" height="50px" style="width:100px">
+		test
+	</div>
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	// test1
+	$(".test").addClass(function (index, cla) {
+		return cla + index;
+	});
+
+	$(".test").addClass('test1');
+	</script>
+</body>
+</html>

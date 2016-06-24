@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<select>
+  		<option value ="volvo">Volvo</option>
+		<option value ="saab">Saab</option>
+		<option value="opel">Opel</option>
+		<option value="audi">Audi</option>
+	</select>
+
+	<script type="text/javascript" src="jQuery.js"></script>
+	<script type="text/javascript">
+	// 1.tabindex
+
+	// 2.selected
+	// var select = document.getElementsByTagName('select')[0],
+	// 	option = select.getElementsByTagName('option')[0];
+	// 	selected = option.selected,
+
+	//  	option2 = option.cloneNode(),
+	//  	selected2 = option2.selected;
+
+	// console.log(selected);
+	// console.log(selected2);
+
+	// 'selected' in jQuery.propHooks && jQuery.propHooks.selected.get(document.querySelector('.test'));
+
+	var select = document.createElement( "select" ),
+		optgroup = select.appendChild( document.createElement("optgroup") ),
+		opt = optgroup.appendChild( document.createElement("option") );
+
+	console.log(opt);
+	console.log(opt.selected);														// IE7/8/9/10 false
+	// opt.selected = true;
+
+	
+
+	// jQuery.propHooks.selected.get(opt);
+	// optgroup.selectedIndex;
+	select.selectedIndex;															// 触发selectedIndex, 使selected为true
+	console.log(opt.selected);														// IE
+
+	var select2 = select.cloneNode(true);
+	var opt2 = select2.getElementsByTagName('option')[0];
+	console.log(opt2.selected);														// 
+	</script>
+</body>
+</html>

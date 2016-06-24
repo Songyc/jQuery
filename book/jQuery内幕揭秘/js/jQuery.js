@@ -2205,24 +2205,24 @@ jQuery.fn.extend({
 				elem = this[ i ];
 
 				if ( elem.nodeType === 1 ) {
-					if ( !elem.className && classNames.length === 1 ) {
-						elem.className = value;
+					if ( !elem.className && classNames.length === 1 ) {					// 如果className还没设置, 并且只添加一个类名
+						elem.className = value;											// 直接设置类名
 
-					} else {
-						setClass = " " + elem.className + " ";
+					} else {	
+						setClass = " " + elem.className + " ";							// 规范化格式，前后加上空格
 
-						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
-							if ( !~setClass.indexOf( " " + classNames[ c ] + " " ) ) {
-								setClass += classNames[ c ] + " ";
+						for ( c = 0, cl = classNames.length; c < cl; c++ ) {			
+							if ( !~setClass.indexOf( " " + classNames[ c ] + " " ) ) {	// 在待添加类样式前后添加空格，判断类样式是否存在于当前样式中，存在则忽略。
+								setClass += classNames[ c ] + " ";						// 不存在则追加。
 							}
 						}
-						elem.className = jQuery.trim( setClass );
+						elem.className = jQuery.trim( setClass );						// 去掉首尾空格
 					}
 				}
 			}
 		}
 
-		return this;
+		return this;																	// 返回该元素
 	},
 
 	removeClass: function( value ) {
@@ -2235,7 +2235,7 @@ jQuery.fn.extend({
 		}
 
 		if ( (value && typeof value === "string") || value === undefined ) {
-			classNames = ( value || "" ).split( rspace );
+			classNames = ( value || "" ).split( rspace );								// 
 
 			for ( i = 0, l = this.length; i < l; i++ ) {
 				elem = this[ i ];
@@ -2757,16 +2757,16 @@ if ( !jQuery.support.style ) { 														//
 
 // Safari mis-reports the default selected property of an option
 // Accessing the parent's selectedIndex property fixes it
-if ( !jQuery.support.optSelected ) {
-	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {			// 
-		get: function( elem ) {
-			var parent = elem.parentNode;
+if ( !jQuery.support.optSelected ) {												// 如果浏览器在复制DOM节点时会复制选中状态，则测试项为true。IE6/7/8/9/10为false。
+	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {			 
+		get: function( elem ) {														 
+			var parent = elem.parentNode;											
 
-			if ( parent ) {
-				parent.selectedIndex;
+			if ( parent ) {															// 如果有父元素
+				parent.selectedIndex;												// 触发select的selectedIndex属性
 
 				// Make sure that it also works with optgroups, see #5701
-				if ( parent.parentNode ) {
+				if ( parent.parentNode ) {											// 
 					parent.parentNode.selectedIndex;
 				}
 			}
