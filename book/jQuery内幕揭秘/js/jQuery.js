@@ -2228,28 +2228,28 @@ jQuery.fn.extend({
 	removeClass: function( value ) {
 		var classNames, i, l, elem, className, c, cl;
 
-		if ( jQuery.isFunction( value ) ) {
-			return this.each(function( j ) {
-				jQuery( this ).removeClass( value.call(this, j, this.className) );
+		if ( jQuery.isFunction( value ) ) { 											// 传入的是函数
+			return this.each(function( j ) {											// 遍历每个元素
+				jQuery( this ).removeClass( value.call(this, j, this.className) );		// 在每个匹配元素上执行函数，并将返回值作为待移除的类样式，然后迭代调用方法.removeClass(value)移除类样式。
 			});
 		}
 
-		if ( (value && typeof value === "string") || value === undefined ) {
-			classNames = ( value || "" ).split( rspace );								// 
+		if ( (value && typeof value === "string") || value === undefined ) { 			// 如果参数是字符串或者未传入参数
+			classNames = ( value || "" ).split( rspace );								// 用空白符分割参数value, 转换为数组classNames, 以支持移除一个或者多个样式
 
-			for ( i = 0, l = this.length; i < l; i++ ) {
-				elem = this[ i ];
+			for ( i = 0, l = this.length; i < l; i++ ) {								// 遍历每个元素
+				elem = this[ i ];											
 
-				if ( elem.nodeType === 1 && elem.className ) {
-					if ( value ) {
-						className = (" " + elem.className + " ").replace( rclass, " " );
-						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
-							className = className.replace(" " + classNames[ c ] + " ", " ");
+				if ( elem.nodeType === 1 && elem.className ) {							// 如果elem.className不存在或者为空，则不作处理
+					if ( value ) {														// 如果value不为空
+						className = (" " + elem.className + " ").replace( rclass, " " );		// 在elem.className前后添加空格, 并将换行符，回车符，制表符替换为空格
+						for ( c = 0, cl = classNames.length; c < cl; c++ ) {					// 遍历待移除类样式数组classNames
+							className = className.replace(" " + classNames[ c ] + " ", " ");	// 待移除类样式前后添加空格，再替换为空格。
 						}
-						elem.className = jQuery.trim( className );
+						elem.className = jQuery.trim( className );								// 最后支掉头尾空格
 
 					} else {
-						elem.className = "";
+						elem.className = "";											// 如果未传入value，直接设置为空字符串
 					}
 				}
 			}
@@ -2258,9 +2258,9 @@ jQuery.fn.extend({
 		return this;
 	},
 
-	toggleClass: function( value, stateVal ) {
-		var type = typeof value,
-			isBool = typeof stateVal === "boolean";
+	toggleClass: function( value, stateVal ) {										
+		var type = typeof value,						// 指示参数value是否字符串
+			isBool = typeof stateVal === "boolean"; 	// 指示参数stateVal是否布尔值
 
 		if ( jQuery.isFunction( value ) ) {
 			return this.each(function( i ) {
@@ -2268,38 +2268,38 @@ jQuery.fn.extend({
 			});
 		}
 
-		return this.each(function() {
-			if ( type === "string" ) {
+		return this.each(function() { 				// 
+			if ( type === "string" ) {				// 如果value是字符串
 				// toggle individual class names
-				var className,
+				var className,	
 					i = 0,
-					self = jQuery( this ),
-					state = stateVal,
-					classNames = value.split( rspace );
+					self = jQuery( this ),			// this转成jQuery对象
+					state = stateVal,				// 用变量state保存变量stateVal
+					classNames = value.split( rspace );		// 用空格分割value，转成数组
 
-				while ( (className = classNames[ i++ ]) ) {
+				while ( (className = classNames[ i++ ]) ) { 		// 遍历数组classNames
 					// check each className given, space seperated list
-					state = isBool ? state : !self.hasClass( className );
-					self[ state ? "addClass" : "removeClass" ]( className );
+					state = isBool ? state : !self.hasClass( className );		// 参数stateVal不是布尔值，元素没有className, state为true; 元素有className, state为false。
+					self[ state ? "addClass" : "removeClass" ]( className );	// 如果stateVal是布尔值，则依据该参数来判断是添加还是移除，如果是true则添加，false为移除。否则检查匹配元素是否含有指定的类样式，如果含有则移除，如果没有添加。
 				}
 
-			} else if ( type === "undefined" || type === "boolean" ) {
-				if ( this.className ) {
+			} else if ( type === "undefined" || type === "boolean" ) {			// 如果未传入参数，或者只传入了参数switch
+				if ( this.className ) {											// 如果当前元素指定了类样式
 					// store className if set
-					jQuery._data( this, "__className__", this.className );
+					jQuery._data( this, "__className__", this.className ); 		// 则缓存下来，以便再次调用方法.toggle([switch])恢复。
 				}
 
 				// toggle whole className
-				this.className = this.className || value === false ? "" : jQuery._data( this, "__className__" ) || "";
+				this.className = this.className || value === false ? "" : jQuery._data( this, "__className__" ) || "";   	// 直接设置每个匹配元素的DOM属性className来切换全部类样式。
 			}
 		});
 	},
 
 	hasClass: function( selector ) {
-		var className = " " + selector + " ",
+		var className = " " + selector + " ", 		// 类名前后加上空格
 			i = 0,
 			l = this.length;
-		for ( ; i < l; i++ ) {
+		for ( ; i < l; i++ ) {			// 遍历元素，元素类名前后加上空格，再替换其中的换行符，回车符，制表符为空格。然后用字符串indexOf()检查其中是否含有指定的类样式。
 			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) > -1 ) {
 				return true;
 			}
@@ -2308,23 +2308,23 @@ jQuery.fn.extend({
 		return false;
 	},
 
-	val: function( value ) {
-		var hooks, ret, isFunction,
+	val: function( value ) {						// 
+		var hooks, ret, isFunction,					// 
 			elem = this[0];
 
-		if ( !arguments.length ) {
+		if ( !arguments.length ) {					// 如果未传入参数
 			if ( elem ) {
-				hooks = jQuery.valHooks[ elem.nodeName.toLowerCase() ] || jQuery.valHooks[ elem.type ];
+				hooks = jQuery.valHooks[ elem.nodeName.toLowerCase() ] || jQuery.valHooks[ elem.type ];			// 尝试依次获取value对应的修正对象
 
-				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
-					return ret;
+				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) { 			// 优先调用get()获取value属性，返回值不为undefind
+					return ret;																					// 直接返回
 				}
 
-				ret = elem.value;
+				ret = elem.value;					// 保存DOM属性value
 
-				return typeof ret === "string" ?
+				return typeof ret === "string" ? 		 		// 如果value为字符串
 					// handle most common string cases
-					ret.replace(rreturn, "") :
+					ret.replace(rreturn, "") : 					// 
 					// handle cases where value is null/undef or number
 					ret == null ? "" : ret;
 			}

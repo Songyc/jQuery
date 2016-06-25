@@ -2228,28 +2228,28 @@ jQuery.fn.extend({
 	removeClass: function( value ) {
 		var classNames, i, l, elem, className, c, cl;
 
-		if ( jQuery.isFunction( value ) ) {
-			return this.each(function( j ) {
-				jQuery( this ).removeClass( value.call(this, j, this.className) );
+		if ( jQuery.isFunction( value ) ) { 											// 传入的是函数
+			return this.each(function( j ) {											// 遍历每个元素
+				jQuery( this ).removeClass( value.call(this, j, this.className) );		// 在每个匹配元素上执行函数，并将返回值作为待移除的类样式，然后迭代调用方法.removeClass(value)移除类样式。
 			});
 		}
 
-		if ( (value && typeof value === "string") || value === undefined ) {
-			classNames = ( value || "" ).split( rspace );
+		if ( (value && typeof value === "string") || value === undefined ) { 			// 如果参数是字符串或者未传入参数
+			classNames = ( value || "" ).split( rspace );								// 用空白符分割参数value, 转换为数组classNames, 以支持移除一个或者多个样式
 
-			for ( i = 0, l = this.length; i < l; i++ ) {
-				elem = this[ i ];
+			for ( i = 0, l = this.length; i < l; i++ ) {								// 遍历每个元素
+				elem = this[ i ];											
 
-				if ( elem.nodeType === 1 && elem.className ) {
-					if ( value ) {
-						className = (" " + elem.className + " ").replace( rclass, " " );
+				if ( elem.nodeType === 1 && elem.className ) {							// 如果elem.className不存在或者为空，则不作处理
+					if ( value ) {														// 如果value不为空
+						className = (" " + elem.className + " ").replace( rclass, " " );		// 
 						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
 							className = className.replace(" " + classNames[ c ] + " ", " ");
 						}
 						elem.className = jQuery.trim( className );
 
 					} else {
-						elem.className = "";
+						elem.className = "";											// 如果value
 					}
 				}
 			}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test test1 test2" id="test" width="50px" height="50px" style="width:100px">
+		test
+	</div>
+	<script type="text/javascript" src="../../../js/jQuery.js"></script>
+	<script type="text/javascript">
+	// test1 如果存在就删除，不存在则添加
+	// $('.test').toggleClass('test3');
+	// 
+	// test2
+	$('#test').toggleClass(true); 			// 将className存放到缓存中, 并删除className
+	$('#test').toggleClass(true);			// 读取缓存的className，并添加类名
+
+	// test3
+	$('#test').toggleClass(function () {  	// 没有指定第二个参数，删除类名
+		return 'test2'
+	});
+
+	// test4
+	$('#test').toggleClass(function () {  	// 指定第二个参数，添加类名
+		return 'test4'
+	}, true);
+	</script>
+</body>
+</html>
