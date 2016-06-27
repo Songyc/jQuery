@@ -14,8 +14,8 @@
 	<script type="text/javascript">
 	// 如果不传入参数，则获取value值
 	// 测试1
-	// var value = $("#test").val();
-	// console.log(value);
+	var value = $("#test").val();
+	console.log(value);
 	// 测试结果：返回空字符串
 
 	// 测试2
@@ -23,9 +23,17 @@
 	// console.log(value);
 	// 测试结果：null
 
-	// 测试3
-	var value = $("#select").val();
-	console.log(value);
+	// 测试3 参数为字符串
+	// $("#test")[0].value = 'string'; 		
+	// var value = $("#test").val();		// 获取DOM元素value属性，如果没有返回''。
+	// console.log(value);
+
+	// 测试4 参数为function
+	// $('#test')[0].value = 'value';
+	// $("#test").val(function (i, val) {
+	// 	console.log(val);
+	// });
+	
 	</script>
 </body>
 </html>

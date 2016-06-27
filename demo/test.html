@@ -5,20 +5,21 @@
 	<title>Document</title>
 </head>
 <body>
-	<div class="test" id="test" width="50px" height="50px">
-		test
-	</div>
-	<div class="test" width="50px" height="50px">
-		test
-	</div>
-	<script type="text/javascript" src="jQuery.js"></script>
-	<script type="text/javascript">
-	// test1
-	var width = jQuery.prop(document.querySelector('.test'), "width", "100px");
-	console.log($('.test')[0].width);
+	<button type="button">切换</button>
+	<p>这是一个段落。</p>
+	<script>
+	var button = document.querySelector('button'),
+		p = document.querySelector('p');
 
-	var prop = $(".test").removeProp('width');
-	console.log($('.test')[0].width);
+	var isHide = false;
+	button.onclick = function () {
+		if(!isHide) {
+			p.style.display = "none";
+		}else {
+			p.style.display = 'block';
+		}
+		isHide = !isHide;
+	}
 	</script>
 </body>
 </html>

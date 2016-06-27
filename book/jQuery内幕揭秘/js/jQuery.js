@@ -2324,9 +2324,9 @@ jQuery.fn.extend({
 
 				return typeof ret === "string" ? 		 		// 如果value为字符串
 					// handle most common string cases
-					ret.replace(rreturn, "") : 					// 
+					ret.replace(rreturn, "") : 					// 替换空格，最后输出
 					// handle cases where value is null/undef or number
-					ret == null ? "" : ret;
+					ret == null ? "" : ret;						// null转为""，其它类型则直接输出
 			}
 
 			return;
@@ -2335,34 +2335,34 @@ jQuery.fn.extend({
 		isFunction = jQuery.isFunction( value );
 
 		return this.each(function( i ) {
-			var self = jQuery(this), val;
+			var self = jQuery(this), val; 						// 转为jQuery对象
 
-			if ( this.nodeType !== 1 ) {
+			if ( this.nodeType !== 1 ) {						// 提前判断是不是元素，不是直接返回。
 				return;
 			}
 
-			if ( isFunction ) {
-				val = value.call( this, i, self.val() );
+			if ( isFunction ) {									// 如果参数是函数
+				val = value.call( this, i, self.val() );		// 马上执行，把返回值赋给变量val。元素为上下文, 第一个参数为元素在数组中的位置，第二个参数是元素value属性。
 			} else {
-				val = value;
+				val = value; 									// 否则赋值给val变量
 			}
 
 			// Treat null/undefined as ""; convert numbers to string
-			if ( val == null ) {
-				val = "";
-			} else if ( typeof val === "number" ) {
-				val += "";
-			} else if ( jQuery.isArray( val ) ) {
-				val = jQuery.map(val, function ( value ) {
+			if ( val == null ) {								// 如果value为null, undefined
+				val = "";										// 返回空字符串
+			} else if ( typeof val === "number" ) {				// 如果为数字
+				val += "";										// 转为字符串
+			} else if ( jQuery.isArray( val ) ) {				// 如果为数组
+				val = jQuery.map(val, function ( value ) {		// 遍历数组的所有元素，将null的元素转为空字符串，否则转为字符串
 					return value == null ? "" : value + "";
 				});
 			}
 
-			hooks = jQuery.valHooks[ this.nodeName.toLowerCase() ] || jQuery.valHooks[ this.type ];
+			hooks = jQuery.valHooks[ this.nodeName.toLowerCase() ] || jQuery.valHooks[ this.type ];		// 查找节点名称或者type类型对应的修正对象
 
 			// If set returns undefined, fall back to normal setting
-			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
-				this.value = val;
+			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) { 		// 优先调用set方法设置value值，如果返回值不是undefined，则认为设置成功。
+				this.value = val;														// 否则直接设置value
 			}
 		});
 	}
@@ -2374,28 +2374,28 @@ jQuery.extend({
 			get: function( elem ) {
 				// attributes.value is undefined in Blackberry 4.7 but
 				// uses .value. See #6932
-				var val = elem.attributes.value;
-				return !val || val.specified ? elem.value : elem.text;
+				var val = elem.attributes.value; 								// 如果指定了属性value，则返回elem.value，否则返回文本内容elem.text。
+				return !val || val.specified ? elem.value : elem.text; 			// 如果没有设置DOM属性value, 读取HTML属性value; 如果没有设置HTML属性value，则读取文本内容。
 			}
 		},
-		select: {
-			get: function( elem ) {
+		select: {														
+			get: function( elem ) {						// 
 				var value, i, max, option,
-					index = elem.selectedIndex,
-					values = [],
-					options = elem.options,
-					one = elem.type === "select-one";
+					index = elem.selectedIndex,			// 被选中项的索引值
+					values = [],						// 存放option多选的值
+					options = elem.options,				// 
+					one = elem.type === "select-one";	// one变量表示是否单选, true表示是，false表示否
 
 				// Nothing was selected
-				if ( index < 0 ) {
-					return null;
+				if ( index < 0 ) { 						// 没有选择,没有option元素时，返回-1
+					return null; 						// 返回null
 				}
 
 				// Loop through all the selected options
-				i = one ? index : 0;
-				max = one ? index + 1 : options.length;
-				for ( ; i < max; i++ ) {
-					option = options[ i ];
+				i = one ? index : 0; 					// 如果是单选，把index赋值i, 多选的情况i设置为0
+				max = one ? index + 1 : options.length; 		// 如果是单项选择，max表示option的位置，否则表示多选项数
+				for ( ; i < max; i++ ) { 				// 遍历option
+					option = options[ i ];				// 当前项
 
 					// Don't return options that are disabled or in a disabled optgroup
 					if ( option.selected && (jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null) &&
