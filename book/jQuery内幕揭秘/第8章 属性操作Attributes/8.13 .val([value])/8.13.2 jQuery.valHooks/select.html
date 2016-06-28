@@ -5,30 +5,32 @@
 	<title>Document</title>
 </head>
 <body>
-	<select name="" id="" type="select-one"> 
+	<select name="" id="select1" type="select-one"> 
 		<option value=""></option>
 		<option value="1">1</option>
 		<option value="2">2</option>
 		<option value="3">3</option>
 	</select>
 
-	<select name="" id="" multiple="multiple" size="2">
+	<select name="" id="select2" multiple="multiple" >
 		<option value="1">1</option>
 		<option value="2">2</option>
 		<option value="3">3</option>
 		<option value="4">4</option>
-		<option value="4">4</option>
-		<option value="4">4</option>
-		<option value="4">4</option>
-		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
 	</select>
 	<script type="text/javascript" src="../../../js/jQuery.js"></script>
 	<script type="text/javascript">
 	var index = document.querySelector('select').selectedIndex;
-	console.log(index);
-	// 没有option时，index为-1
+	console.log(index); 
 
-	// 
+	var select = document.getElementById("select1");
+	select.onchange = function () {
+		jQuery.valHooks.select.get(select);
+	}
 	</script>
 </body>
 </html>

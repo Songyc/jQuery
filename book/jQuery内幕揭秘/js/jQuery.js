@@ -2399,40 +2399,40 @@ jQuery.extend({
 
 					// Don't return options that are disabled or in a disabled optgroup
 					if ( option.selected && (jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null) &&
-							(!option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" )) ) {
+							(!option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" )) ) { 		// 被禁用的option和optgroup元素，不返回它的值。
 
 						// Get the specific value for the option
-						value = jQuery( option ).val();
+						value = jQuery( option ).val(); 						// 获取value
 
 						// We don't need an array for one selects
-						if ( one ) {
-							return value;
+						if ( one ) {											// 如果是单选
+							return value;										// 返回value
 						}
 
 						// Multi-Selects return an array
-						values.push( value );
+						values.push( value );									// 多选把值放入数组values
 					}
 				}
 
 				// Fixes Bug #2551 -- select.val() broken in IE after form.reset()
-				if ( one && !values.length && options.length ) {
+				if ( one && !values.length && options.length ) { 				
 					return jQuery( options[ index ] ).val();
 				}
 
-				return values;
+				return values; 													// 返回values
 			},
 
-			set: function( elem, value ) {
-				var values = jQuery.makeArray( value );
+			set: function( elem, value ) { 										// 
+				var values = jQuery.makeArray( value );							// 将value转成数组
 
-				jQuery(elem).find("option").each(function() {
+				jQuery(elem).find("option").each(function() {					// 遍历所有option，设置每个option元素的selected属性
 					this.selected = jQuery.inArray( jQuery(this).val(), values ) >= 0;
 				});
 
-				if ( !values.length ) {
-					elem.selectedIndex = -1;
+				if ( !values.length ) {							// 如果未传入参数
+					elem.selectedIndex = -1;					// 则修正select元素的DOM属性selectedIndex为-1
 				}
-				return values;
+				return values; 									// 返回values
 			}
 		}
 	},
@@ -2781,21 +2781,21 @@ if ( !jQuery.support.enctype ) {
 }
 
 // Radios and checkboxes getter/setter
-if ( !jQuery.support.checkOn ) {
-	jQuery.each([ "radio", "checkbox" ], function() {
+if ( !jQuery.support.checkOn ) { 									// 如果测试项为false, 即radio、checkbox默认值不是on
+	jQuery.each([ "radio", "checkbox" ], function() {				
 		jQuery.valHooks[ this ] = {
 			get: function( elem ) {
 				// Handle the case where in Webkit "" is returned instead of "on" if a value isn't specified
-				return elem.getAttribute("value") === null ? "on" : elem.value;
+				return elem.getAttribute("value") === null ? "on" : elem.value;	 			// 读取时统一返回默认值on
 			}
 		};
 	});
 }
-jQuery.each([ "radio", "checkbox" ], function() {
+jQuery.each([ "radio", "checkbox" ], function() { 					// 
 	jQuery.valHooks[ this ] = jQuery.extend( jQuery.valHooks[ this ], {
 		set: function( elem, value ) {
-			if ( jQuery.isArray( value ) ) {
-				return ( elem.checked = jQuery.inArray( jQuery(elem).val(), value ) >= 0 );
+			if ( jQuery.isArray( value ) ) { 						// 如果value为数组
+				return ( elem.checked = jQuery.inArray( jQuery(elem).val(), value ) >= 0 );		// 检测当前元素的值是否与数组中某一个值相等，如果相等则设置当前元素checked为true，否则为false.
 			}
 		}
 	});
@@ -5475,43 +5475,43 @@ function isDisconnected( node ) {
 	return !node || !node.parentNode || node.parentNode.nodeType === 11;
 }
 
-jQuery.each({
-	parent: function( elem ) {
+jQuery.each({																// 遍历函数
+	parent: function( elem ) { 												
 		var parent = elem.parentNode;
-		return parent && parent.nodeType !== 11 ? parent : null;
+		return parent && parent.nodeType !== 11 ? parent : null; 			// 返回父元素, 过滤文档碎片
 	},
-	parents: function( elem ) {
-		return jQuery.dir( elem, "parentNode" );
+	parents: function( elem ) {												
+		return jQuery.dir( elem, "parentNode" );							// 调用工具函数jQuery.dir(elem, dir, until)返回指定的所有祖先元素
 	},
-	parentsUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "parentNode", until );
+	parentsUntil: function( elem, i, until ) { 								
+		return jQuery.dir( elem, "parentNode", until ); 					// 调用工具函数jQuery.dir(elem, dir, until)返回指定DOM元素的祖父元素，直到遇到匹配参数until的元素为止。
 	},
-	next: function( elem ) {
-		return jQuery.nth( elem, 2, "nextSibling" );
+	next: function( elem ) {												
+		return jQuery.nth( elem, 2, "nextSibling" );						// 返回指定元素下一个兄弟元素。
 	},
-	prev: function( elem ) {
-		return jQuery.nth( elem, 2, "previousSibling" );
+	prev: function( elem ) {												
+		return jQuery.nth( elem, 2, "previousSibling" );					// 返回指定元素前一个兄弟元素。
 	},
 	nextAll: function( elem ) {
-		return jQuery.dir( elem, "nextSibling" );
+		return jQuery.dir( elem, "nextSibling" );							// 返回指定元素之后所有兄弟元素
 	},
 	prevAll: function( elem ) {
-		return jQuery.dir( elem, "previousSibling" );
+		return jQuery.dir( elem, "previousSibling" );						// 返回指定元素之前所有兄弟元素
 	},
 	nextUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "nextSibling", until );
+		return jQuery.dir( elem, "nextSibling", until );					// 返回指定元素之后的兄弟元素，直到遇到匹配参数until的元素为止。
 	},
 	prevUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "previousSibling", until );
+		return jQuery.dir( elem, "previousSibling", until );				// 返回指定元素之前的兄弟元素，直到遇到匹配参数until的元素为止。
 	},
 	siblings: function( elem ) {
-		return jQuery.sibling( elem.parentNode.firstChild, elem );
+		return jQuery.sibling( elem.parentNode.firstChild, elem ); 			// 返回指定元素的所有兄弟元素。
 	},
 	children: function( elem ) {
-		return jQuery.sibling( elem.firstChild );
+		return jQuery.sibling( elem.firstChild );							// 返回指定元素的所有子元素
 	},
-	contents: function( elem ) {
-		return jQuery.nodeName( elem, "iframe" ) ?
+	contents: function( elem ) {											
+		return jQuery.nodeName( elem, "iframe" ) ?							// 返回指定DOM元素的子节点，或者返回iframe元素的document对象。
 			elem.contentDocument || elem.contentWindow.document :
 			jQuery.makeArray( elem.childNodes );
 	}
@@ -5549,41 +5549,41 @@ jQuery.extend({
 	},
 
 	dir: function( elem, dir, until ) {
-		var matched = [],
+		var matched = [], 											
 			cur = elem[ dir ];
 
 		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !jQuery( cur ).is( until )) ) {
-			if ( cur.nodeType === 1 ) {
+			if ( cur.nodeType === 1 ) { 			// 沿着方向dir迭代遍历，将找到的Element节点放入数组matched中。
 				matched.push( cur );
 			}
-			cur = cur[dir];
+			cur = cur[dir];							
 		}
-		return matched;
+		return matched;								// 最后返回matched
 	},
 
-	nth: function( cur, result, dir, elem ) {
-		result = result || 1;
+	nth: function( cur, result, dir, elem ) {		// 
+		result = result || 1;						// 
 		var num = 0;
 
-		for ( ; cur; cur = cur[dir] ) {
+		for ( ; cur; cur = cur[dir] ) { 			// 从起始元素cur出发，沿着方向dir迭代遍历，查找该方向上的第result个Element节点
 			if ( cur.nodeType === 1 && ++num === result ) {
 				break;
 			}
 		}
 
-		return cur;
+		return cur;									// 返回找到的节点，没找到返回null
 	},
 
-	sibling: function( n, elem ) {
+	sibling: function( n, elem ) { 					
 		var r = [];
 
-		for ( ; n; n = n.nextSibling ) {
-			if ( n.nodeType === 1 && n !== elem ) {
-				r.push( n );
+		for ( ; n; n = n.nextSibling ) {			// 从起始元素n出发，沿着方向nextSibling查找紧接的兄弟元素，
+			if ( n.nodeType === 1 && n !== elem ) { 		// 是节点元素，并且排除elem元素
+				r.push( n );						// 将结果加入到r
 			}
 		}
 
-		return r;
+		return r;									// 返回r
 	}
 });
 

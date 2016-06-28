@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="parent1">
+		<div class="parent2">
+			<div class="parent3">
+				<div class="test">
+					test
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../../../js/jQuery.js"></script>
+	<script>
+	var match = jQuery.dir(document.querySelector('.test'), 'parentNode', '.parent1');
+	console.log(match);
+	</script>
+</body>
+</html>
