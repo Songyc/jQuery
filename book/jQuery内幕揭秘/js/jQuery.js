@@ -5515,25 +5515,25 @@ jQuery.each({																// 遍历函数
 			elem.contentDocument || elem.contentWindow.document :
 			jQuery.makeArray( elem.childNodes );
 	}
-}, function( name, fn ) {
-	jQuery.fn[ name ] = function( until, selector ) {
-		var ret = jQuery.map( this, fn, until );
+}, function( name, fn ) { 													
+	jQuery.fn[ name ] = function( until, selector ) {						// until用于过滤查找停止的位置, selector用于过滤找到的元素
+		var ret = jQuery.map( this, fn, until );							// 遍历一个元素，对每个元素调用遍历函数fn，并将遍历函数fn的返回值放入一个新的数组中。
 
-		if ( !runtil.test( name ) ) {
+		if ( !runtil.test( name ) ) { 										// 检查遍历函数名是否以Until结尾，如果不是，模板函数的参数格式是jQuery.fn[name](selector), 如果是，模板函数的参数格式是jQuery.fn[name](until, selector)
 			selector = until;
 		}
 
-		if ( selector && typeof selector === "string" ) {
-			ret = jQuery.filter( selector, ret );
+		if ( selector && typeof selector === "string" ) { 					// 如果是字符串
+			ret = jQuery.filter( selector, ret );							// 过滤数组ret中的元素，保留与selector匹配的元素。
 		}
 
-		ret = this.length > 1 && !guaranteedUnique[ name ] ? jQuery.unique( ret ) : ret;
+		ret = this.length > 1 && !guaranteedUnique[ name ] ? jQuery.unique( ret ) : ret; 			// 如果只有一个元素，不进行排序和去重。遍历函数children(elem), contents(elem), next(elem),prev(elem)的返回值，也是序唯一的。不需要执行排序和去重。
 
-		if ( (this.length > 1 || rmultiselector.test( selector )) && rparentsprev.test( name ) ) {
-			ret = ret.reverse();
+		if ( (this.length > 1 || rmultiselector.test( selector )) && rparentsprev.test( name ) ) {	// 对于过滤函数parents(elem), prevUtil(elem, i, until)，prevAll(elem)。对找到的元素数组ret进行倒序排序，即元素按照由近到远的顺序倒着返回。
+			ret = ret.reverse(); 											// 倒序排序，元素按由近到远的顺序返回
 		}
 
-		return this.pushStack( ret, name, slice.call( arguments ).join(",") );
+		return this.pushStack( ret, name, slice.call( arguments ).join(",") );		// 用找到的元素数组ret构造新jQuery对象并返回。
 	};
 });
 
