@@ -5919,13 +5919,13 @@ jQuery.fn.extend({
 		return this.remove( selector, true );
 	},
 
-	domManip: function( args, table, callback ) {
-		var results, first, fragment, parent,
+	domManip: function( args, table, callback ) {					// 
+		var results, first, fragment, parent,						// 
 			value = args[0],
 			scripts = [];
 
 		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {
+		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {	// 
 			return this.each(function() {
 				jQuery(this).domManip( args, table, callback, true );
 			});
