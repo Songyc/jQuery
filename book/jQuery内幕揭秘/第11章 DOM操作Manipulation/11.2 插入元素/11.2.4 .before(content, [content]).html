@@ -10,10 +10,8 @@
 	</div>
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	var test = $(".test");
-	test.domManip(document.querySelector('.test') ,true , function () {
-		console.log('test');
-	});
+	var ret = $(document).before('<div>', '<div>');
+	console.log(ret);
 	</script>
 </body>
 </html>

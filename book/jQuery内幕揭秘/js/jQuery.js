@@ -5651,7 +5651,7 @@ var nodeNames = "abbr|article|aside|audio|canvas|datalist|details|figcaption|fig
 	rnocache = /<(?:script|object|embed|option|style)/i,
 	rnoshimcache = new RegExp("<(?:" + nodeNames + ")", "i"),
 	// checked="checked" or checked
-	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
+	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i, 								// checked|checeked='checked'|checked="checked"|checked= 'checked'|checked= "checked"|checked ='checked'|checked ="checked"
 	rscriptType = /\/(java|ecma)script/i,
 	rcleanScript = /^\s*<!(?:\[CDATA\[|\-\-)/,
 	wrapMap = {
@@ -5677,7 +5677,7 @@ if ( !jQuery.support.htmlSerialize ) {
 
 jQuery.fn.extend({
 	text: function( text ) {
-		if ( jQuery.isFunction(text) ) {
+		if ( jQuery.isFunction(text) ) { 					// 函数的情况，先执行该函数，返回值作为新文本内容，迭代调用方法.text(text)
 			return this.each(function(i) {
 				var self = jQuery( this );
 
@@ -5685,11 +5685,11 @@ jQuery.fn.extend({
 			});
 		}
 
-		if ( typeof text !== "object" && text !== undefined ) {
-			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
+		if ( typeof text !== "object" && text !== undefined ) { 		// 不是对象，也不是undefined
+			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) ); 	// 先清空内容，创建文本节点插入并插入匹配元素中。
 		}
 
-		return jQuery.text( this );
+		return jQuery.text( this );					// 获取所有元素的合并后的文本内容
 	},
 
 	wrapAll: function( html ) {
@@ -5758,7 +5758,7 @@ jQuery.fn.extend({
 	},
 
 	append: function() {
-		return this.domManip(arguments, true, function( elem ) {
+		return this.domManip(arguments, true, function( elem ) {		// 用于在每个匹配元素集合中末尾插入指定的内容。
 			if ( this.nodeType === 1 ) {
 				this.appendChild( elem );
 			}
@@ -5766,39 +5766,39 @@ jQuery.fn.extend({
 	},
 
 	prepend: function() {
-		return this.domManip(arguments, true, function( elem ) {
+		return this.domManip(arguments, true, function( elem ) { 		// 用于在每个匹配元素集合中头部内容插入指定的内容。
 			if ( this.nodeType === 1 ) {
 				this.insertBefore( elem, this.firstChild );
 			}
 		});
 	},
 
-	before: function() {
+	before: function() {												// 用于在每个匹配元素集合中前面插入指定的内容。
 		if ( this[0] && this[0].parentNode ) {
 			return this.domManip(arguments, false, function( elem ) {
 				this.parentNode.insertBefore( elem, this );
 			});
-		} else if ( arguments.length ) {
+		} else if ( arguments.length ) {								// 对于没有父元素的元素，调用clean()将字符串转成DOM元素
 			var set = jQuery.clean( arguments );
-			set.push.apply( set, this.toArray() );
-			return this.pushStack( set, "before", arguments );
+			set.push.apply( set, this.toArray() );						// 将当前匹配元素集合合并到转换后的DOM数组之后
+			return this.pushStack( set, "before", arguments );			// 用合并后的DOM元素数组构造成新jQuery对象并返回
 		}
 	},
 
-	after: function() {
-		if ( this[0] && this[0].parentNode ) {
+	after: function() {											
+		if ( this[0] && this[0].parentNode ) {							// 用于在每个匹配元素集合中后面插入指定的内容。	
 			return this.domManip(arguments, false, function( elem ) {
 				this.parentNode.insertBefore( elem, this.nextSibling );
 			});
-		} else if ( arguments.length ) {
-			var set = this.pushStack( this, "after", arguments );
-			set.push.apply( set, jQuery.clean(arguments) );
+		} else if ( arguments.length ) {								
+			var set = this.pushStack( this, "after", arguments );		// 将当前匹配元素集合构造成新jQuery对象
+			set.push.apply( set, jQuery.clean(arguments) );				// 调用clean()将参数转成DOM元素数组，最后加入到新jQuery对象中，返回新jQuery对象
 			return set;
 		}
 	},
 
 	// keepData is for internal use only--do not document
-	remove: function( selector, keepData ) {
+	remove: function( selector, keepData ) { 							// 
 		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
 			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) {
 				if ( !keepData && elem.nodeType === 1 ) {
@@ -5841,41 +5841,41 @@ jQuery.fn.extend({
 	},
 
 	html: function( value ) {
-		if ( value === undefined ) {
-			return this[0] && this[0].nodeType === 1 ?
-				this[0].innerHTML.replace(rinlinejQuery, "") :
+		if ( value === undefined ) {						// 未传入参数
+			return this[0] && this[0].nodeType === 1 ? 		// 匹配元素是DOM元素
+				this[0].innerHTML.replace(rinlinejQuery, "") : 		// 用innerHMLT获取HTML内容，返回前删除jQuery运行时可能在元素上设置的jQuery的扩展属性jQuery.expando
 				null;
 
 		// See if we can take a shortcut and just use innerHTML
-		} else if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
-			(jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value )) &&
-			!wrapMap[ (rtagName.exec( value ) || ["", ""])[1].toLowerCase() ] ) {
+		} else if ( typeof value === "string" && !rnoInnerhtml.test( value ) && 				// 如果不包含script,style字符串
+			(jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value )) &&			// 支持前导空白符
+			!wrapMap[ (rtagName.exec( value ) || ["", ""])[1].toLowerCase() ] ) {				// 为需要修正	
 
-			value = value.replace(rxhtmlTag, "<$1></$2>");
+			value = value.replace(rxhtmlTag, "<$1></$2>");			// 修正自关闭标签
 
 			try {
-				for ( var i = 0, l = this.length; i < l; i++ ) {
+				for ( var i = 0, l = this.length; i < l; i++ ) {			// 遍历匹配元素
 					// Remove element nodes and prevent memory leaks
-					if ( this[i].nodeType === 1 ) {
-						jQuery.cleanData( this[i].getElementsByTagName("*") );
-						this[i].innerHTML = value;
+					if ( this[i].nodeType === 1 ) {								
+						jQuery.cleanData( this[i].getElementsByTagName("*") );			// 移除所有后代元素关联的数据和事件
+						this[i].innerHTML = value;										// 尝试设置属性innerHTML插入HTML内容
 					}
 				}
 
 			// If using innerHTML throws an exception, use the fallback method
 			} catch(e) {
-				this.empty().append( value );
+				this.empty().append( value );								// 如果抛出错误，先调用empty()移除后代元素的关联数据和事件，移除子元素，然后调用方法append()插入HTML内容。
 			}
 
-		} else if ( jQuery.isFunction( value ) ) {
+		} else if ( jQuery.isFunction( value ) ) {							// 如果是函数
 			this.each(function(i){
 				var self = jQuery( this );
 
-				self.html( value.call(this, i, self.html()) );
+				self.html( value.call(this, i, self.html()) );				// 在每个匹配元素上调用该函数，将返回的HTML内容作为参数再迭代调用html函数
 			});
 
 		} else {
-			this.empty().append( value );
+			this.empty().append( value ); 									// 先调用empty()移除后代元素的关联数据和事件，移除子元素，然后调用方法append()插入HTML内容。
 		}
 
 		return this;
@@ -5925,13 +5925,13 @@ jQuery.fn.extend({
 			scripts = [];
 
 		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {	// 
-			return this.each(function() {
-				jQuery(this).domManip( args, table, callback, true );
+		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) { 		// 当浏览器复制文档片段时会丢失其中复制按钮和单选按钮的选中状态checked，并且参数tags中的元素是含有属性checked的HTML代码。
+			return this.each(function() {							// 
+				jQuery(this).domManip( args, table, callback, true );		// 迭代调用方法.domManip()时，因为测试项为false, html代码中含有属性checked, 因此HTML代码转换后的DOM不会被缓存
 			});
 		}
 
-		if ( jQuery.isFunction(value) ) {
+		if ( jQuery.isFunction(value) ) {							// 如果是函数的情况，则遍历匹配元素集合，在每个元素上执行该函数，并取其返回值作为等插入的内容。迭代调用方法.domManip();
 			return this.each(function(i) {
 				var self = jQuery(this);
 				args[0] = value.call(this, i, table ? self.html() : undefined);
@@ -5940,30 +5940,30 @@ jQuery.fn.extend({
 		}
 
 		if ( this[0] ) {
-			parent = value && value.parentNode;
+			parent = value && value.parentNode;				// 
 
 			// If we're in a fragment, just use that instead of building a new one
 			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
 				results = { fragment: parent };
 
 			} else {
-				results = jQuery.buildFragment( args, this, scripts );
+				results = jQuery.buildFragment( args, this, scripts ); 				// 调用buildFragment(args, nodes, scripts)把HTML代码转成DOM元素，返回值结构是{fragment: fragment, cacheable: cacheable}
 			}
 
-			fragment = results.fragment;
+			fragment = results.fragment;					
 
-			if ( fragment.childNodes.length === 1 ) {
-				first = fragment = fragment.firstChild;
+			if ( fragment.childNodes.length === 1 ) {		// 如果只有一个子元素
+				first = fragment = fragment.firstChild;		// 则覆盖变量fragment的值为子元素
 			} else {
-				first = fragment.firstChild;
+				first = fragment.firstChild;				
 			}
 
-			if ( first ) {
-				table = table && jQuery.nodeName( first, "tr" );
+			if ( first ) {									
+				table = table && jQuery.nodeName( first, "tr" );		// 如果待插入元素是tr元素，则调用函数root()检查当前元素是否是table元素
 
 				for ( var i = 0, l = this.length, lastIndex = l - 1; i < l; i++ ) {
 					callback.call(
-						table ?
+						table ?											// 如果是table元素，则返回该元素下的tbody元素
 							root(this[i], first) :
 							this[i],
 						// Make sure that we do not leak memory by inadvertently discarding
@@ -5973,14 +5973,14 @@ jQuery.fn.extend({
 						// in certain situations (Bug #8070).
 						// Fragments from the fragment cache must always be cloned and never used
 						// in place.
-						results.cacheable || ( l > 1 && i < lastIndex ) ?
+						results.cacheable || ( l > 1 && i < lastIndex ) ? 		// 修正待插入元素。如果返回的文档片段是可缓存的，则总是插入该文档片段的副本；如果返回的文档片段不可缓存，但是jQuery对象中含有多个元素。则向最后一个目标元素插入该文档片段。
 							jQuery.clone( fragment, true, true ) :
 							fragment
 					);
 				}
 			}
 
-			if ( scripts.length ) {
+			if ( scripts.length ) {							// 转换后的script要手动加载
 				jQuery.each( scripts, evalScript );
 			}
 		}
@@ -6139,23 +6139,23 @@ jQuery.each({
 	insertAfter: "after",
 	replaceAll: "replaceWith"
 }, function( name, original ) {
-	jQuery.fn[ name ] = function( selector ) {
+	jQuery.fn[ name ] = function( selector ) { 																
 		var ret = [],
-			insert = jQuery( selector ),
-			parent = this.length === 1 && this[0].parentNode;
+			insert = jQuery( selector ), 										// 变量insert指向目标元素集合，this指向待插入元素集合
+			parent = this.length === 1 && this[0].parentNode;					// 
 
-		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
-			insert[ original ]( this[0] );
-			return this;
+		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) { 		// 待插入元素只有一个，并在文档片段中目标元素也只有一个。
+			insert[ original ]( this[0] ); 								// 则直接将待插入元素插入目标元素中
+			return this; 										
 
 		} else {
-			for ( var i = 0, l = insert.length; i < l; i++ ) {
-				var elems = ( i > 0 ? this.clone(true) : this ).get();
-				jQuery( insert[i] )[ original ]( elems );
-				ret = ret.concat( elems );
+			for ( var i = 0, l = insert.length; i < l; i++ ) { 					// 遍历目标元素集合
+				var elems = ( i > 0 ? this.clone(true) : this ).get();			// 第一次插入的是待插入元素集合，第二次插入的是待插入元素副本。
+				jQuery( insert[i] )[ original ]( elems );						// 将待插入的插入每个目标元素，
+				ret = ret.concat( elems ); 										// 遍历过程过，将待插入元素和元素的副本放入ret中
 			}
 
-			return this.pushStack( ret, name, insert.selector );
+			return this.pushStack( ret, name, insert.selector );				// 返回由插入元素数组构成新的jQuery对象
 		}
 	};
 });

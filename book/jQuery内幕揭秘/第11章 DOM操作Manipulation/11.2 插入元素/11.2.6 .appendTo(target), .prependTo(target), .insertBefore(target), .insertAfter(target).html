@@ -8,12 +8,15 @@
 	<div class="test">
 		test
 	</div>
+	<div class="test2">
+		
+	</div>
+	<div class="test2">
+		
+	</div>
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	var test = $(".test");
-	test.domManip(document.querySelector('.test') ,true , function () {
-		console.log('test');
-	});
+	console.log($('.test').appendTo('.test2'));
 	</script>
 </body>
 </html>
