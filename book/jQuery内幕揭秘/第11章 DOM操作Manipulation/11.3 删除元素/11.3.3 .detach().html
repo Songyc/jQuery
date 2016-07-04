@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		<div class="test1">
+			test1
+		</div>
+		<div class="test1 test11">
+			<div class="test111">
+				test111
+			</div>
+		</div>
+		<div class="test1">
+			test1
+		</div>
+		<div class="test2">
+			test22
+		</div>
+	</div>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	$('.test111').click(function () {
+		console.log('.test111');
+	})
+	$('.test1').detach('.test11');
+
+	// jQuery.cache还保留着数据
+	</script>
+</body>
+</html>

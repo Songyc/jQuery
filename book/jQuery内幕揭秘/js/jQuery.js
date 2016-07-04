@@ -5693,18 +5693,18 @@ jQuery.fn.extend({
 	},
 
 	wrapAll: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
+		if ( jQuery.isFunction( html ) ) { 					// 如果是函数
 			return this.each(function(i) {
-				jQuery(this).wrapAll( html.call(this, i) );
+				jQuery(this).wrapAll( html.call(this, i) ); 	// 先调用该函数
 			});
 		}
 
-		if ( this[0] ) {
+		if ( this[0] ) { 									
 			// The elements to wrap the target around
-			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true);
+			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true); 		// 创建含有包裹元素的jQuery对象
 
 			if ( this[0].parentNode ) {
-				wrap.insertBefore( this[0] );
+				wrap.insertBefore( this[0] ); 						// 把wap放在this[0]前面
 			}
 
 			wrap.map(function() {
@@ -5815,16 +5815,16 @@ jQuery.fn.extend({
 		return this;
 	},
 
-	empty: function() {
-		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
+	empty: function() { 											
+		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {		// 遍历匹配元素集合
 			// Remove element nodes and prevent memory leaks
-			if ( elem.nodeType === 1 ) {
-				jQuery.cleanData( elem.getElementsByTagName("*") );
+			if ( elem.nodeType === 1 ) {								// 
+				jQuery.cleanData( elem.getElementsByTagName("*") ); 	// 清除匹配元素的所有子元素的关联数据和事件
 			}
 
 			// Remove any remaining nodes
-			while ( elem.firstChild ) {
-				elem.removeChild( elem.firstChild );
+			while ( elem.firstChild ) { 								
+				elem.removeChild( elem.firstChild );					//逐个移除匹配元素的第一个元素
 			}
 		}
 
@@ -5832,11 +5832,11 @@ jQuery.fn.extend({
 	},
 
 	clone: function( dataAndEvents, deepDataAndEvents ) {
-		dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
-		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
+		dataAndEvents = dataAndEvents == null ? false : dataAndEvents; 			// 如果未传入参数, 修正dataAndEvents为false。
+		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents; 		// 未传入参数deepDataAndEvents, 修正deepDataAndEvents为dataAndEvents
 
 		return this.map( function () {
-			return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
+			return jQuery.clone( this, dataAndEvents, deepDataAndEvents ); 		// 
 		});
 	},
 
@@ -5882,41 +5882,41 @@ jQuery.fn.extend({
 	},
 
 	replaceWith: function( value ) {
-		if ( this[0] && this[0].parentNode ) {
+		if ( this[0] && this[0].parentNode ) { 				
 			// Make sure that the elements are removed from the DOM before they are inserted
 			// this can help fix replacing a parent with child elements
 			if ( jQuery.isFunction( value ) ) {
 				return this.each(function(i) {
-					var self = jQuery(this), old = self.html();
-					self.replaceWith( value.call( this, i, old ) );
+					var self = jQuery(this), old = self.html(); 	
+					self.replaceWith( value.call( this, i, old ) ); 		// 设置关键字this指向当前元素，传入了两个参数：当前元素在集合中的下标位置，当前元素的旧HTML内容	
 				});
 			}
 
-			if ( typeof value !== "string" ) {
-				value = jQuery( value ).detach();
+			if ( typeof value !== "string" ) { 				// value不是字符串的情况, 可能是DOM元素或者jQuery对象
+				value = jQuery( value ).detach(); 			// 调用.detach将value从文档中移除，保留其关联数据和事件
 			}
 
-			return this.each(function() {
+			return this.each(function() { 					// 遍历每个匹配元素
 				var next = this.nextSibling,
 					parent = this.parentNode;
 
-				jQuery( this ).remove();
+				jQuery( this ).remove(); 					// 移除匹配元素和它关联数据和事件	
 
-				if ( next ) {
+				if ( next ) {								// 如果当前元素有下一个兄弟元素，则将新内容插入下一个兄弟元素之前
 					jQuery(next).before( value );
 				} else {
-					jQuery(parent).append( value );
+					jQuery(parent).append( value ); 		// 如果已经是最后一个元素，则将元素内容插入父元素末尾
 				}
 			});
 		} else {
-			return this.length ?
-				this.pushStack( jQuery(jQuery.isFunction(value) ? value() : value), "replaceWith", value ) :
+			return this.length ? 							// 如果当前匹配元素集合中含有元素
+				this.pushStack( jQuery(jQuery.isFunction(value) ? value() : value), "replaceWith", value ) : 	// 用value构造一个新jQuery对象，然后为了修正属性selector, 用新构造的jQuery对象再次构造一个jQuery对象，并返回。
 				this;
 		}
 	},
 
 	detach: function( selector ) {
-		return this.remove( selector, true );
+			return this.remove( selector, true ); 						// 删除与selector匹配的元素，但保留它的关联数据和事件
 	},
 
 	domManip: function( args, table, callback ) {					// 
@@ -6024,7 +6024,7 @@ function cloneCopyEvent( src, dest ) {
 	}
 }
 
-function cloneFixAttributes( src, dest ) {
+function cloneFixAttributes( src, dest ) { 					 	// 用于修正副本不兼容属性
 	var nodeName;
 
 	// We do not need to do anything for non-Elements
@@ -6034,29 +6034,29 @@ function cloneFixAttributes( src, dest ) {
 
 	// clearAttributes removes the attributes, which we don't want,
 	// but also removes the attachEvent events, which we *do* want
-	if ( dest.clearAttributes ) {
+	if ( dest.clearAttributes ) { 						// IE6/7/8 调用clearAttributes()移除属性和事件
 		dest.clearAttributes();
 	}
 
 	// mergeAttributes, in contrast, only merges back on the
 	// original attributes, not the events
-	if ( dest.mergeAttributes ) {
+	if ( dest.mergeAttributes ) { 						// 通过mergeAttributes()把原始元素的属性复制到副本元素上。
 		dest.mergeAttributes( src );
 	}
 
-	nodeName = dest.nodeName.toLowerCase();
+	nodeName = dest.nodeName.toLowerCase(); 			
 
 	// IE6-8 fail to clone children inside object elements that use
 	// the proprietary classid attribute value (rather than the type
 	// attribute) to identify the type of content to display
-	if ( nodeName === "object" ) {
+	if ( nodeName === "object" ) {						// 修正object元素的属性outerHTML
 		dest.outerHTML = src.outerHTML;
 
-	} else if ( nodeName === "input" && (src.type === "checkbox" || src.type === "radio") ) {
+	} else if ( nodeName === "input" && (src.type === "checkbox" || src.type === "radio") ) { 		
 		// IE6-8 fails to persist the checked state of a cloned checkbox
 		// or radio button. Worse, IE6-7 fail to give the cloned element
 		// a checked appearance if the defaultChecked value isn't also set
-		if ( src.checked ) {
+		if ( src.checked ) { 			// 修正复选框和单选框按钮的属性defaultChecked, checked, value
 			dest.defaultChecked = dest.checked = src.checked;
 		}
 
@@ -6068,18 +6068,18 @@ function cloneFixAttributes( src, dest ) {
 
 	// IE6-8 fails to return the selected option to the default selected
 	// state when cloning options
-	} else if ( nodeName === "option" ) {
-		dest.selected = src.defaultSelected;
+	} else if ( nodeName === "option" ) { 			
+		dest.selected = src.defaultSelected; 			// 修正option元素的selected
 
 	// IE6-8 fails to set the defaultValue to the correct value when
 	// cloning other types of input fields
-	} else if ( nodeName === "input" || nodeName === "textarea" ) {
-		dest.defaultValue = src.defaultValue;
+	} else if ( nodeName === "input" || nodeName === "textarea" ) { 		
+		dest.defaultValue = src.defaultValue; 			// 修正input, textarea元素的defaultValue
 	}
 
 	// Event data gets referenced instead of copied if the expando
 	// gets copied too
-	dest.removeAttribute( jQuery.expando );
+	dest.removeAttribute( jQuery.expando ); 			// 移除扩展属性jQuery.expando
 }
 
 jQuery.buildFragment = function( args, nodes, scripts ) { 	 	// 参数args:数组，含有待转换为DOM元素的HTML代码。参数nodes：数组，含有文档对象、jQuery对象或DOM元素。
@@ -6200,54 +6200,54 @@ function shimCloneNode( elem ) {
 
 jQuery.extend({
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
-		var srcElements,
+		var srcElements,		
 			destElements,
 			i,
 			// IE<=8 does not properly clone detached, unknown element nodes
-			clone = jQuery.support.html5Clone || !rnoshimcache.test( "<" + elem.nodeName ) ?
-				elem.cloneNode( true ) :
-				shimCloneNode( elem );
+			clone = jQuery.support.html5Clone || !rnoshimcache.test( "<" + elem.nodeName ) ?  	// 支持复制html5元素，或者原始元素不是html5元素
+				elem.cloneNode( true ) : 		// 调用cloneNode(true)方法复制元素
+				shimCloneNode( elem ); 			// 否则调用函数shimCloneNode(elem)通过安全文档片段复制html5元素
 
-		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) &&
-				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
+		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) && 				// 不支持复制元素事件或者不复制选中状态checked, 则调用函数cloneFixAttribute(src.dest)
+				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) { 	// 
 			// IE copies events bound via attachEvent when using cloneNode.
 			// Calling detachEvent on the clone will also remove the events
 			// from the original. In order to get around this, we use some
 			// proprietary methods to clear the events. Thanks to MooTools
 			// guys for this hotness.
 
-			cloneFixAttributes( elem, clone );
+			cloneFixAttributes( elem, clone ); 										// 则调用cloneFixAttributes(elem, clone)修正副本元素的不兼容属性。
 
 			// Using Sizzle here is crazy slow, so we use getElementsByTagName instead
-			srcElements = getAll( elem );
-			destElements = getAll( clone );
+			srcElements = getAll( elem ); 											// getAll(elem)获取原始元素和副本元素的所有后代元素。
+			destElements = getAll( clone ); 										
 
 			// Weird iteration because IE will replace the length property
 			// with an element if you are cloning the body and one of the
 			// elements on the page has a name or id of "length"
-			for ( i = 0; srcElements[i]; ++i ) {
-				// Ensure that the destination node is not null; Fixes #9587
-				if ( destElements[i] ) {
-					cloneFixAttributes( srcElements[i], destElements[i] );
+			for ( i = 0; srcElements[i]; ++i ) { 							// 遍历原始元素
+				// Ensure that the destination node is not null; Fixes #9587 	
+				if ( destElements[i] ) { 									
+					cloneFixAttributes( srcElements[i], destElements[i] ); 	// 修正副本元素所有的后代的不兼容属性。
 				}
 			}
 		}
 
 		// Copy the events from the original to the clone
-		if ( dataAndEvents ) {
-			cloneCopyEvent( elem, clone );
+		if ( dataAndEvents ) {							// 如果dataAndEvents为true
+			cloneCopyEvent( elem, clone ); 				// 调用cloneCopyEvent(elem, clone)元素关联的数据和事件复制到副本元素上
 
-			if ( deepDataAndEvents ) {
-				srcElements = getAll( elem );
+			if ( deepDataAndEvents ) { 					// 如果deepDataAndEvents为true
+				srcElements = getAll( elem ); 			// getAll(elem)获取原始元素和副本元素的所有后代元素。 
 				destElements = getAll( clone );
 
-				for ( i = 0; srcElements[i]; ++i ) {
-					cloneCopyEvent( srcElements[i], destElements[i] );
+				for ( i = 0; srcElements[i]; ++i ) { 	
+					cloneCopyEvent( srcElements[i], destElements[i] );  // 复制副本所有后代元素的关联数据和事件
 				}
 			}
 		}
 
-		srcElements = destElements = null;
+		srcElements = destElements = null; 				// 
 
 		// Return the cloned set
 		return clone;
