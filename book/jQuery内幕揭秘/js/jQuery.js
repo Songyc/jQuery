@@ -5798,16 +5798,16 @@ jQuery.fn.extend({
 	},
 
 	// keepData is for internal use only--do not document
-	remove: function( selector, keepData ) { 							// 
-		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
-			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) {
-				if ( !keepData && elem.nodeType === 1 ) {
-					jQuery.cleanData( elem.getElementsByTagName("*") );
+	remove: function( selector, keepData ) { 							
+		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {		// 遍历匹配元素集合
+			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) { 			 // 如果未写入参数或者在每个元素上过滤与参数selector匹配的元素
+				if ( !keepData && elem.nodeType === 1 ) { 				// 如果keepData为false, 不保留数据。如果为true，则保留关联的数据和事件。
+					jQuery.cleanData( elem.getElementsByTagName("*") ); 		// 调用jQuery.cleanData()清除elem自身和所有子元素的事件，数据。
 					jQuery.cleanData( [ elem ] );
 				}
 
-				if ( elem.parentNode ) {
-					elem.parentNode.removeChild( elem );
+				if ( elem.parentNode ) {								
+					elem.parentNode.removeChild( elem );				// 调用原生方法removeChild(elem)删除elem
 				}
 			}
 		}
