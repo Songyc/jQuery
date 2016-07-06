@@ -5704,10 +5704,10 @@ jQuery.fn.extend({
 			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true); 		// 创建含有包裹元素的jQuery对象
 
 			if ( this[0].parentNode ) {
-				wrap.insertBefore( this[0] ); 						// 把wap放在this[0]前面
+				wrap.insertBefore( this[0] ); 								// 把wap放在this[0]前面
 			}
 
-			wrap.map(function() {
+			wrap.map(function() { 											// 用.map()方法找到最底层的元素，
 				var elem = this;
 
 				while ( elem.firstChild && elem.firstChild.nodeType === 1 ) {
@@ -5715,28 +5715,28 @@ jQuery.fn.extend({
 				}
 
 				return elem;
-			}).append( this );
+			}).append( this ); 												// 然后把当前匹配元素集合插入最内层元素中
 		}
 
 		return this;
 	},
 
-	wrapInner: function( html ) {
+	wrapInner: function( html ) { 											// 如果是函数
 		if ( jQuery.isFunction( html ) ) {
 			return this.each(function(i) {
-				jQuery(this).wrapInner( html.call(this, i) );
+				jQuery(this).wrapInner( html.call(this, i) ); 				// 取其返回值作为包裹元素，迭代调用.wrapInner();
 			});
 		}
 
 		return this.each(function() {
 			var self = jQuery( this ),
-				contents = self.contents();
+				contents = self.contents(); 	 							// 取匹配元素集合的所有子元素
 
-			if ( contents.length ) {
-				contents.wrapAll( html );
+			if ( contents.length ) {  										// 如果有子元素
+				contents.wrapAll( html );									// 将html转成DOM元素，调用.wrapAll()将子元素放入它里面
 
 			} else {
-				self.append( html );
+				self.append( html ); 										// 没有子元素，直接调用.append()放入匹配元素中
 			}
 		});
 	},
@@ -5745,16 +5745,16 @@ jQuery.fn.extend({
 		var isFunction = jQuery.isFunction( html );
 
 		return this.each(function(i) {
-			jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
+			jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html ); 		// html是函数，马上执行，取返回值作为wrapAll方法的第一个参数，调用wrapAll。
 		});
 	},
 
-	unwrap: function() {
+	unwrap: function() { 												// 去掉非body的父元素
 		return this.parent().each(function() {
-			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
+			if ( !jQuery.nodeName( this, "body" ) ) { 					// 如果父元素不是body
+				jQuery( this ).replaceWith( this.childNodes );			// 匹配元素调用.replaceWith，使其父元素的所有子元素替代父元素
 			}
-		}).end();
+		}).end(); 														// 返回匹配元素
 	},
 
 	append: function() {
@@ -6376,7 +6376,7 @@ jQuery.extend({
 		return ret;
 	},
 
-	cleanData: function( elems ) {
+	cleanData: function( elems ) {									// 清除元素
 		var data, id,
 			cache = jQuery.cache,
 			special = jQuery.event.special,
@@ -6393,7 +6393,7 @@ jQuery.extend({
 				data = cache[ id ];
 
 				if ( data && data.events ) {
-					for ( var type in data.events ) {
+					for ( var type in data.events ) { 				// 移除绑定事件
 						if ( special[ type ] ) {
 							jQuery.event.remove( elem, type );
 
@@ -6404,36 +6404,36 @@ jQuery.extend({
 					}
 
 					// Null the DOM reference to avoid IE6/7/8 leak (#7054)
-					if ( data.handle ) {
+					if ( data.handle ) { 							// 
 						data.handle.elem = null;
 					}
 				}
 
-				if ( deleteExpando ) {
+				if ( deleteExpando ) { 								// 删除jQuery扩展属性
 					delete elem[ jQuery.expando ];
 
-				} else if ( elem.removeAttribute ) {
+				} else if ( elem.removeAttribute ) { 				
 					elem.removeAttribute( jQuery.expando );
 				}
 
-				delete cache[ id ];
+				delete cache[ id ]; 								// 删除事件缓存对象
 			}
 		}
 	}
 });
 
-function evalScript( i, elem ) {
-	if ( elem.src ) {
-		jQuery.ajax({
+function evalScript( i, elem ) { 									// 执行html片段中有script标签的javascript代码
+	if ( elem.src ) { 												// 如果有src, 说明script是个外链地址
+		jQuery.ajax({ 												// 同步请求
 			url: elem.src,
 			async: false,
 			dataType: "script"
 		});
-	} else {
-		jQuery.globalEval( ( elem.text || elem.textContent || elem.innerHTML || "" ).replace( rcleanScript, "/*$0*/" ) );
+	} else { 														// 如果是javascript片段
+		jQuery.globalEval( ( elem.text || elem.textContent || elem.innerHTML || "" ).replace( rcleanScript, "/*$0*/" ) ); 		// 调用jQuery.globalEval()方法执行
 	}
 
-	if ( elem.parentNode ) {
+	if ( elem.parentNode ) { 										// 执行完后删除script标签
 		elem.parentNode.removeChild( elem );
 	}
 }
@@ -6457,16 +6457,16 @@ var ralpha = /alpha\([^)]*\)/i,
 	getComputedStyle,
 	currentStyle;
 
-jQuery.fn.css = function( name, value ) {
+jQuery.fn.css = function( name, value ) { 							// 设置或者获取元素的DOM属性name
 	// Setting 'undefined' is a no-op
-	if ( arguments.length === 2 && value === undefined ) {
+	if ( arguments.length === 2 && value === undefined ) { 			
 		return this;
 	}
 
-	return jQuery.access( this, name, value, true, function( elem, name, value ) {
+	return jQuery.access( this, name, value, true, function( elem, name, value ) { 	 	// 调用jQuery.access()设置或者获取元素的DOM属性
 		return value !== undefined ?
-			jQuery.style( elem, name, value ) :
-			jQuery.css( elem, name );
+			jQuery.style( elem, name, value ) : 					// 如果传入value，则调用jQuery.style()设置DOM元素的style属性
+			jQuery.css( elem, name ); 								// 未传入value，调用jQuery.css()来获取DOM属性name
 	});
 };
 
@@ -6510,13 +6510,13 @@ jQuery.extend({
 	// Get and set the style property on a DOM Node
 	style: function( elem, name, value, extra ) {
 		// Don't set styles on text and comment nodes
-		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
+		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) { 				// 过滤文本节点和注释
 			return;
 		}
 
 		// Make sure that we're working with the right name
-		var ret, type, origName = jQuery.camelCase( name ),
-			style = elem.style, hooks = jQuery.cssHooks[ origName ];
+		var ret, type, origName = jQuery.camelCase( name ), 					// 样式名转成驼峰式
+			style = elem.style, hooks = jQuery.cssHooks[ origName ]; 			// 通过style读取内联时需要用驼峰式
 
 		name = jQuery.cssProps[ origName ] || origName;
 
@@ -6525,39 +6525,39 @@ jQuery.extend({
 			type = typeof value;
 
 			// convert relative number strings (+= or -=) to relative numbers. #7345
-			if ( type === "string" && (ret = rrelNum.exec( value )) ) {
-				value = ( +( ret[1] + 1) * +ret[2] ) + parseFloat( jQuery.css( elem, name ) );
+			if ( type === "string" && (ret = rrelNum.exec( value )) ) {			// 如果参数value是 '-=100px'/'+=100px'(相对值字符串)，则计算相对值
+				value = ( +( ret[1] + 1) * +ret[2] ) + parseFloat( jQuery.css( elem, name ) ); 			// 将value转换成整数加上元素的原始值
 				// Fixes bug #9237
-				type = "number";
+				type = "number"; 												// 修正type为'number'
 			}
 
 			// Make sure that NaN and null values aren't set. See: #7116
-			if ( value == null || type === "number" && isNaN( value ) ) {
+			if ( value == null || type === "number" && isNaN( value ) ) { 		// 如果value为null或者为NaN(非法数字), 不设置style属性
 				return;
 			}
 
 			// If a number was passed in, add 'px' to the (except for certain CSS properties)
-			if ( type === "number" && !jQuery.cssNumber[ origName ] ) {
+			if ( type === "number" && !jQuery.cssNumber[ origName ] ) { 		// 为数值型样式追加'px'，jQuery.cssNumber对象定义的属性则不需要添加
 				value += "px";
 			}
 
 			// If a hook was provided, use that value, otherwise just set the specified value
-			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value )) !== undefined ) {
+			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value )) !== undefined ) { 		// 优先调用hooks.set方法，其次设置属性style[name]
 				// Wrapped to prevent IE from throwing errors when 'invalid' values are provided
 				// Fixes bug #5509
 				try {
-					style[ name ] = value;
+					style[ name ] = value; 										// 设置元素的style属性name为value
 				} catch(e) {}
 			}
 
 		} else {
 			// If a hook was provided get the non-computed value from there
-			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
+			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) { 	 	// 优先调用.get方法
 				return ret;
 			}
 
 			// Otherwise just get the value from the style object
-			return style[ name ];
+			return style[ name ];												// 读取内联样式
 		}
 	},
 
@@ -6565,12 +6565,12 @@ jQuery.extend({
 		var ret, hooks;
 
 		// Make sure that we're working with the right name
-		name = jQuery.camelCase( name );
-		hooks = jQuery.cssHooks[ name ];
-		name = jQuery.cssProps[ name ] || name;
+		name = jQuery.camelCase( name ); 										// 样式名转成驼峰式
+		hooks = jQuery.cssHooks[ name ];										// 获取样式名对应的修正对象
+		name = jQuery.cssProps[ name ] || name; 								// 修正name,在IE6/7/8中需要通过样式styleFloat来访问样式float，在其他浏览器中则通过样式cssFloat访问
 
 		// cssFloat needs a special treatment
-		if ( name === "cssFloat" ) {
+		if ( name === "cssFloat" ) { 											
 			name = "float";
 		}
 
