@@ -6567,19 +6567,19 @@ jQuery.extend({
 		// Make sure that we're working with the right name
 		name = jQuery.camelCase( name ); 										// 样式名转成驼峰式
 		hooks = jQuery.cssHooks[ name ];										// 获取样式名对应的修正对象
-		name = jQuery.cssProps[ name ] || name; 								// 修正name,在IE6/7/8中需要通过样式styleFloat来访问样式float，在其他浏览器中则通过样式cssFloat访问
+		name = jQuery.cssProps[ name ] || name; 								// 修正name,在IE6/7中需要通过样式styleFloat来访问样式float，在其他浏览器中则通过样式cssFloat访问
 
 		// cssFloat needs a special treatment
-		if ( name === "cssFloat" ) { 											
+		if ( name === "cssFloat" ) {											// 对于cssFloat, 在读取计算样式值时需要转换为float											
 			name = "float";
 		}
 
 		// If a hook was provided get the computed value from there
-		if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) {
+		if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) { 	// 优先调用修正对象的get方法读取计算样式，并返回。
 			return ret;
 
 		// Otherwise, if a way to get the computed value exists, use that
-		} else if ( curCSS ) {
+		} else if ( curCSS ) {													// 不需要修正，直接调用curCss方法获取当前属性name的值，并返回。
 			return curCSS( elem, name );
 		}
 	},
@@ -6703,33 +6703,33 @@ jQuery(function() {
 	}
 });
 
-if ( document.defaultView && document.defaultView.getComputedStyle ) {
+if ( document.defaultView && document.defaultView.getComputedStyle ) { 		// 如果支持getComputedStyle方法
 	getComputedStyle = function( elem, name ) {
 		var ret, defaultView, computedStyle;
 
-		name = name.replace( rupper, "-$1" ).toLowerCase();
+		name = name.replace( rupper, "-$1" ).toLowerCase(); 		// 将驼峰式转成连字符串，或者有ms前面加-
 
 		if ( (defaultView = elem.ownerDocument.defaultView) &&
-				(computedStyle = defaultView.getComputedStyle( elem, null )) ) {
-			ret = computedStyle.getPropertyValue( name );
-			if ( ret === "" && !jQuery.contains( elem.ownerDocument.documentElement, elem ) ) {
-				ret = jQuery.style( elem, name );
+				(computedStyle = defaultView.getComputedStyle( elem, null )) ) { 			
+			ret = computedStyle.getPropertyValue( name ); 							// 获取计算样式
+			if ( ret === "" && !jQuery.contains( elem.ownerDocument.documentElement, elem ) ) { 	// 	如果没有获取到样式并且当前元素不在文档中
+				ret = jQuery.style( elem, name ); 					// 则调用jQuery.style(elem, name)方法来获取。
 			}
 		}
 
-		return ret;
+		return ret; 												// 最后返回
 	};
 }
 
-if ( document.documentElement.currentStyle ) {
-	currentStyle = function( elem, name ) {
+if ( document.documentElement.currentStyle ) { 				// 如果支持currentStyle
+	currentStyle = function( elem, name ) { 				
 		var left, rsLeft, uncomputed,
 			ret = elem.currentStyle && elem.currentStyle[ name ],
 			style = elem.style;
 
 		// Avoid setting ret to empty string here
 		// so we don't default to auto
-		if ( ret === null && style && (uncomputed = style[ name ]) ) {
+		if ( ret === null && style && (uncomputed = style[ name ]) ) { 		// 没有获取计算样式，则尝试从style[name]中读取内联样式
 			ret = uncomputed;
 		}
 
@@ -6738,27 +6738,27 @@ if ( document.documentElement.currentStyle ) {
 
 		// If we're not dealing with a regular pixel number
 		// but a number that has a weird ending, we need to convert it to pixels
-		if ( !rnumpx.test( ret ) && rnum.test( ret ) ) {
+		if ( !rnumpx.test( ret ) && rnum.test( ret ) ) { 		// 如果不是'px'为单位, 而是百分比
 
 			// Remember the original values
-			left = style.left;
-			rsLeft = elem.runtimeStyle && elem.runtimeStyle.left;
+			left = style.left;									// 备份left
+			rsLeft = elem.runtimeStyle && elem.runtimeStyle.left; 	// 获取样式left
 
 			// Put in the new values to get a computed value out
-			if ( rsLeft ) {
+			if ( rsLeft ) { 										
 				elem.runtimeStyle.left = elem.currentStyle.left;
 			}
-			style.left = name === "fontSize" ? "1em" : ( ret || 0 );
-			ret = style.pixelLeft + "px";
+			style.left = name === "fontSize" ? "1em" : ( ret || 0 );	// 将ret赋值给style.left
+			ret = style.pixelLeft + "px"; 						// 读取left的像素值pixelLeft作为返回值
 
 			// Revert the changed values
-			style.left = left;
-			if ( rsLeft ) {
-				elem.runtimeStyle.left = rsLeft;
+			style.left = left; 									// 恢复样式left
+			if ( rsLeft ) { 									
+				elem.runtimeStyle.left = rsLeft; 				// 恢复样式rsLeft
 			}
 		}
 
-		return ret === "" ? "auto" : ret;
+		return ret === "" ? "auto" : ret; 						// 如果ret是字符串，修正为'auto'
 	};
 }
 

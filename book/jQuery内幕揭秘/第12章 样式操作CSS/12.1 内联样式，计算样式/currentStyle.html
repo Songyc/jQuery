@@ -4,15 +4,16 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style>
-	.test{float:left;}
+	.test{width: 62.5%;}
 	</style>
 </head>
 <body>
+	<script src="../../js/jQuery.js"></script>
 	<div class="test">
 		test
 	</div>
 	<script>
-	alert(document.defaultView);
+	jQuery.currentStyle(document.querySelector('.test'), 'width');
 	</script>
 </body>
 </html>

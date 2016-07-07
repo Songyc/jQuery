@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.test{width:200px;}
+	</style>
+</head>
+<body>
+	<div class="test">
+		test
+	</div>
+	<script>
+	var test = document.querySelector('.test'),
+		gcStyle, sStyle;
+
+	gcStyle = window.getComputedStyle(test, null)['width'];
+	sStyle = test.style.width;
+
+	console.log(gcStyle, sStyle);
+	</script>
+</body>
+</html>

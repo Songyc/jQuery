@@ -3,16 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<style>
-	.test{float:left;}
-	</style>
 </head>
 <body>
-	<div class="test">
+	<div class="test" width="100">
 		test
 	</div>
+	<script src="../../js/jQuery.js"></script>
 	<script>
-	alert(document.defaultView);
+	jQuery.curCss(document.querySelector('.test'), 'width', true)
+
 	</script>
 </body>
 </html>
