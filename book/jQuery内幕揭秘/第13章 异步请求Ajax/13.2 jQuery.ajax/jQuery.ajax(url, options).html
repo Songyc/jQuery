@@ -5,13 +5,15 @@
 	<title>Document</title>
 </head>
 <body>
-	<div class="test" width="100">
-		test
-	</div>
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	jQuery.cssHooks.width.get(document.querySelector('.test'), true, true);
+	var url = '',
+		options = {};
 
+	$.ajax({
+	  	method: "POST",
+	  	url: "test.js"
+	})
 	</script>
 </body>
 </html>

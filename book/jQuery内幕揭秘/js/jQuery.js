@@ -6448,8 +6448,8 @@ var ralpha = /alpha\([^)]*\)/i,
 	rnumpx = /^-?\d+(?:px)?$/i,
 	rnum = /^-?\d/,
 	rrelNum = /^([\-+])=([\-+.\de]+)/,
-
-	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
+ 
+	cssShow = { position: "absolute", visibility: "hidden", display: "block" }, 		// absolute以避免引起文档布局流变化，通过设置样式visibility为hidden，使得当前元素在不可见的同时进入文档流，通过设置样式display为block，使width和height生效。
 	cssWidth = [ "Left", "Right" ],
 	cssHeight = [ "Top", "Bottom" ],
 	curCSS,
@@ -6476,13 +6476,13 @@ jQuery.extend({
 	cssHooks: {
 		opacity: {
 			get: function( elem, computed ) {
-				if ( computed ) {
+				if ( computed ) { 				// 如果参数是true，则调用函数curCss()读取计算样式。
 					// We should always get a number back from opacity
-					var ret = curCSS( elem, "opacity", "opacity" );
-					return ret === "" ? "1" : ret;
+					var ret = curCSS( elem, "opacity", "opacity" ); 	
+					return ret === "" ? "1" : ret; 		// 如果读取值为'', 则将其修正为'1'返回。
 
 				} else {
-					return elem.style.opacity;
+					return elem.style.opacity; 		// 否则读取style.opacity读取内联样式
 				}
 			}
 		}
@@ -6585,19 +6585,19 @@ jQuery.extend({
 	},
 
 	// A method for quickly swapping in/out CSS properties to get correct calculations
-	swap: function( elem, options, callback ) {
+	swap: function( elem, options, callback ) { 	 							// 
 		var old = {};
 
 		// Remember the old values, and insert the new ones
-		for ( var name in options ) {
-			old[ name ] = elem.style[ name ];
-			elem.style[ name ] = options[ name ];
+		for ( var name in options ) { 											
+			old[ name ] = elem.style[ name ]; 									// 将现有的内联属性保存在old对象中
+			elem.style[ name ] = options[ name ]; 								// 再设置临时属性
 		}
 
-		callback.call( elem );
+		callback.call( elem ); 													// 执行回调, 读取属性
 
 		// Revert the old values
-		for ( name in options ) {
+		for ( name in options ) { 												// 再恢复原始属性
 			elem.style[ name ] = old[ name ];
 		}
 	}
@@ -6606,75 +6606,75 @@ jQuery.extend({
 // DEPRECATED, Use jQuery.css() instead
 jQuery.curCSS = jQuery.css;
 
-jQuery.each(["height", "width"], function( i, name ) {
+jQuery.each(["height", "width"], function( i, name ) { 
 	jQuery.cssHooks[ name ] = {
-		get: function( elem, computed, extra ) {
+		get: function( elem, computed, extra ) { 					
 			var val;
 
-			if ( computed ) {
-				if ( elem.offsetWidth !== 0 ) {
-					return getWH( elem, name, extra );
+			if ( computed ) { 								// 只支持读取计算样式
+				if ( elem.offsetWidth !== 0 ) { 			// 如果宽度不为0，表示元素可见
+					return getWH( elem, name, extra ); 		// 调用getWH(elem, name, extra)，并返回
 				} else {
-					jQuery.swap( elem, cssShow, function() {
+					jQuery.swap( elem, cssShow, function() { 	// 否则调用jQuery.swap先显示出现，再获取宽度，再恢复隐藏
 						val = getWH( elem, name, extra );
 					});
 				}
 
-				return val;
+				return val; 								// 返回获取宽度
 			}
 		},
 
-		set: function( elem, value ) {
-			if ( rnumpx.test( value ) ) {
-				// ignore negative width and height values #1599
-				value = parseFloat( value );
+		set: function( elem, value ) { 						 
+			if ( rnumpx.test( value ) ) { 					// 如果样式值没有单位或者单位是px
+				// ignore negative width and height values #1599 		
+				value = parseFloat( value ); 				// 转字符串转成整数，并忽略后面的单位
 
-				if ( value >= 0 ) {
-					return value + "px";
+				if ( value >= 0 ) {							// 如果样式值大于0
+					return value + "px"; 					// 追加上'px'
 				}
 
 			} else {
-				return value;
+				return value; 								// 否则直接返回value
 			}
 		}
 	};
 });
 
-if ( !jQuery.support.opacity ) {
+if ( !jQuery.support.opacity ) { 			// 	如果不支持opacity.
 	jQuery.cssHooks.opacity = {
-		get: function( elem, computed ) {
+		get: function( elem, computed ) { 		// 
 			// IE uses filters for opacity
-			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "" ) ?
-				( parseFloat( RegExp.$1 ) / 100 ) + "" :
-				computed ? "1" : "";
+			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "" ) ? 	// 如果computed为true，即要读取计算样式，则读取elem.currentStyle.filter，否则读取elem.style.filter。
+				( parseFloat( RegExp.$1 ) / 100 ) + "" : 	// 如果设置了透明度，除以100，再转为字符串
+				computed ? "1" : ""; 						// 如果没设置透明度，并且ccomputed为true，返回1，否则返回0。
 		},
 
-		set: function( elem, value ) {
+		set: function( elem, value ) { 			// 
 			var style = elem.style,
 				currentStyle = elem.currentStyle,
-				opacity = jQuery.isNumeric( value ) ? "alpha(opacity=" + value * 100 + ")" : "",
-				filter = currentStyle && currentStyle.filter || style.filter || "";
+				opacity = jQuery.isNumeric( value ) ? "alpha(opacity=" + value * 100 + ")" : "", 		// 如果value为数字，就乘以100
+				filter = currentStyle && currentStyle.filter || style.filter || ""; 					// 尝试依次获取计算样式currentStyle.filter，否则获取内联样式style.filter
 
 			// IE has trouble with opacity if it does not have layout
 			// Force it by setting the zoom level
-			style.zoom = 1;
+			style.zoom = 1; 					// 在IE中要设置样式zoom为1，使得该元素具有布局hasLayout。
 
 			// if setting opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
-			if ( value >= 1 && jQuery.trim( filter.replace( ralpha, "" ) ) === "" ) {
+			if ( value >= 1 && jQuery.trim( filter.replace( ralpha, "" ) ) === "" ) { 					// 如果设置值大于等于1
 
 				// Setting style.filter to null, "" & " " still leave "filter:" in the cssText
 				// if "filter:" is present at all, clearType is disabled, we want to avoid this
 				// style.removeAttribute is IE Only, but so apparently is this code path...
-				style.removeAttribute( "filter" );
+				style.removeAttribute( "filter" ); 														// 则删除filter属性。使用cleartype会出问题。
 
 				// if there there is no filter style applied in a css rule, we are done
-				if ( currentStyle && !currentStyle.filter ) {
+				if ( currentStyle && !currentStyle.filter ) { 							// 在级联样式没有设置其它样式，并且移除了内联样式的属性。所以可以直接返回。
 					return;
 				}
 			}
 
 			// otherwise, set new filter values
-			style.filter = ralpha.test( filter ) ?
+			style.filter = ralpha.test( filter ) ? 					// 如果有设置滤镜fitler，则替换已有的alpha为当前alpha属性，否则直接写入。
 				filter.replace( ralpha, opacity ) :
 				filter + " " + opacity;
 		}
@@ -6684,17 +6684,17 @@ if ( !jQuery.support.opacity ) {
 jQuery(function() {
 	// This hook cannot be added until DOM ready because the support test
 	// for it is not run until after DOM ready
-	if ( !jQuery.support.reliableMarginRight ) {
+	if ( !jQuery.support.reliableMarginRight ) { 					
 		jQuery.cssHooks.marginRight = {
-			get: function( elem, computed ) {
+			get: function( elem, computed ) { 						
 				// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
 				// Work around by temporarily setting element display to inline-block
 				var ret;
-				jQuery.swap( elem, { "display": "inline-block" }, function() {
+				jQuery.swap( elem, { "display": "inline-block" }, function() { 		// 通过临时设置属性{display:'inline-block'}来返回正确的样式
 					if ( computed ) {
-						ret = curCSS( elem, "margin-right", "marginRight" );
+						ret = curCSS( elem, "margin-right", "marginRight" ); 		// 读取计算样式
 					} else {
-						ret = elem.style.marginRight;
+						ret = elem.style.marginRight; 								// 或者内联样式
 					}
 				});
 				return ret;
@@ -6764,53 +6764,53 @@ if ( document.documentElement.currentStyle ) { 				// 如果支持currentStyle
 
 curCSS = getComputedStyle || currentStyle;
 
-function getWH( elem, name, extra ) {
+function getWH( elem, name, extra ) {					// 获取元素的宽或者高
 
 	// Start with offset property
-	var val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
-		which = name === "width" ? cssWidth : cssHeight,
+	var val = name === "width" ? elem.offsetWidth : elem.offsetHeight, 		 	// 获取元素的offsetWidth/offsetHeight，包含了content, padding值，边框
+		which = name === "width" ? cssWidth : cssHeight, 			// 如果name是'width'，则which为['left', 'right'], 否则which为['top', 'bottom']
 		i = 0,
 		len = which.length;
 
-	if ( val > 0 ) {
-		if ( extra !== "border" ) {
-			for ( ; i < len; i++ ) {
-				if ( !extra ) {
-					val -= parseFloat( jQuery.css( elem, "padding" + which[ i ] ) ) || 0;
+	if ( val > 0 ) { 				// 如果元素宽大于0，可见元素
+		if ( extra !== "border" ) { 			// 如果extra不是'border'
+			for ( ; i < len; i++ ) { 			// 遍历which
+				if ( !extra ) {				 	// 未传入参数extra
+					val -= parseFloat( jQuery.css( elem, "padding" + which[ i ] ) ) || 0; 		// 减去内边距padding值
 				}
-				if ( extra === "margin" ) {
+				if ( extra === "margin" ) { 				// 如果是'margin', 加上外边距margin值
 					val += parseFloat( jQuery.css( elem, extra + which[ i ] ) ) || 0;
 				} else {
-					val -= parseFloat( jQuery.css( elem, "border" + which[ i ] + "Width" ) ) || 0;
+					val -= parseFloat( jQuery.css( elem, "border" + which[ i ] + "Width" ) ) || 0; 		// 默认减去border值
 				}
 			}
 		}
 
-		return val + "px";
+		return val + "px"; 		// 如果未传入参数，返回content。如果传入border，返回content,padding,border;  传入margin，返回content, padding, border, margin。传入padding, 返回content, padding
 	}
 
 	// Fall back to computed then uncomputed css if necessary
-	val = curCSS( elem, name, name );
-	if ( val < 0 || val == null ) {
-		val = elem.style[ name ] || 0;
+	val = curCSS( elem, name, name ); 			// 尝试读取height/width的计算样式值
+	if ( val < 0 || val == null ) {				// 如果样式小于0或获取不到
+		val = elem.style[ name ] || 0;			// 读取内联样式
 	}
 	// Normalize "", auto, and prepare for extra
-	val = parseFloat( val ) || 0;
+	val = parseFloat( val ) || 0; 				// 转为数值,只有content
 
 	// Add padding, border, margin
-	if ( extra ) {
+	if ( extra ) { 						// 如果有值
 		for ( ; i < len; i++ ) {
-			val += parseFloat( jQuery.css( elem, "padding" + which[ i ] ) ) || 0;
-			if ( extra !== "padding" ) {
-				val += parseFloat( jQuery.css( elem, "border" + which[ i ] + "Width" ) ) || 0;
+			val += parseFloat( jQuery.css( elem, "padding" + which[ i ] ) ) || 0; 		// 默认加上内边距
+			if ( extra !== "padding" ) { 												
+				val += parseFloat( jQuery.css( elem, "border" + which[ i ] + "Width" ) ) || 0; 	// 不是padding，是border或margin, 加上外边距border
 			}
-			if ( extra === "margin" ) {
-				val += parseFloat( jQuery.css( elem, extra + which[ i ] ) ) || 0;
+			if ( extra === "margin" ) { 			
+				val += parseFloat( jQuery.css( elem, extra + which[ i ] ) ) || 0; 	// 如果是'margin'，加上外边距margin
 			}
 		}
 	}
 
-	return val + "px";
+	return val + "px"; 					// 最后返回val+'px'
 }
 
 if ( jQuery.expr && jQuery.expr.filters ) {
@@ -7212,18 +7212,18 @@ jQuery.extend({
 	ajax: function( url, options ) {
 
 		// If url is an object, simulate pre-1.5 signature
-		if ( typeof url === "object" ) {
-			options = url;
+		if ( typeof url === "object" ) { 					// 如果url是对象
+			options = url; 									// 修正url, options
 			url = undefined;
 		}
 
 		// Force options to be an object
-		options = options || {};
+		options = options || {}; 							// 修正options，没获取到options就设置为{}
 
 		var // Create the final options object
-			s = jQuery.ajaxSetup( {}, options ),
+			s = jQuery.ajaxSetup( {}, options ), 			// 创建最后的options参数
 			// Callbacks context
-			callbackContext = s.context || s,
+			callbackContext = s.context || s, 				// 
 			// Context for global events
 			// It's the callbackContext if one was provided in the options
 			// and if it's a DOM node or a jQuery collection
@@ -8898,64 +8898,64 @@ function defaultDisplay( nodeName ) {
 var rtable = /^t(?:able|d|h)$/i,
 	rroot = /^(?:body|html)$/i;
 
-if ( "getBoundingClientRect" in document.documentElement ) {
-	jQuery.fn.offset = function( options ) {
-		var elem = this[0], box;
+if ( "getBoundingClientRect" in document.documentElement ) { 		// 如果浏览器支持'getBoundingClientRect'
+	jQuery.fn.offset = function( options ) { 						// 获取匹配第一个元素当前的文档坐标或设置匹配元素的目标坐标								
+		var elem = this[0], box; 									
 
-		if ( options ) {
-			return this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
+		if ( options ) {											// 如果有参数传入
+			return this.each(function( i ) { 						// 
+				jQuery.offset.setOffset( this, options, i ); 		// 调用jQuery.offset.setOffset给每个匹配元素设置文档坐标
 			});
 		}
 
-		if ( !elem || !elem.ownerDocument ) {
+		if ( !elem || !elem.ownerDocument ) { 						// 如果没有匹配元素或匹配元素不在文档中
 			return null;
 		}
 
-		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
+		if ( elem === elem.ownerDocument.body ) { 					// 如果是body
+			return jQuery.offset.bodyOffset( elem ); 				// 调用jQuery.offset.bodyOffset()设置body的文档坐标
 		}
 
 		try {
-			box = elem.getBoundingClientRect();
+			box = elem.getBoundingClientRect(); 					// 获取每一个元素的窗口坐标。在IE中，未添加到文档中元素调用方法getBoundingClientRect()会抛出错误
 		} catch(e) {}
 
-		var doc = elem.ownerDocument,
+		var doc = elem.ownerDocument, 
 			docElem = doc.documentElement;
 
 		// Make sure we're not dealing with a disconnected DOM node
-		if ( !box || !jQuery.contains( docElem, elem ) ) {
-			return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
+		if ( !box || !jQuery.contains( docElem, elem ) ) { 			// 如果未取到元素的窗口坐标或者元素不在当前文档中
+			return box ? { top: box.top, left: box.left } : { top: 0, left: 0 }; 		// 如果获取不到元素的窗口坐标，返回{top:0, left:0}。
 		}
 
 		var body = doc.body,
-			win = getWindow(doc),
-			clientTop  = docElem.clientTop  || body.clientTop  || 0,
-			clientLeft = docElem.clientLeft || body.clientLeft || 0,
-			scrollTop  = win.pageYOffset || jQuery.support.boxModel && docElem.scrollTop  || body.scrollTop,
-			scrollLeft = win.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft,
-			top  = box.top  + scrollTop  - clientTop,
-			left = box.left + scrollLeft - clientLeft;
+			win = getWindow(doc), 					// 获取window对象, 如果是window对象或者document对象，返回window,否则返回false。
+			clientTop  = docElem.clientTop  || body.clientTop  || 0, 			// 获取html,body的上边框厚度
+			clientLeft = docElem.clientLeft || body.clientLeft || 0, 			// 获取html,body的左边框厚度
+			scrollTop  = win.pageYOffset || jQuery.support.boxModel && docElem.scrollTop  || body.scrollTop, 	// 获取滚动条的垂直偏移
+			scrollLeft = win.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft, 	// 获取滚动条的水平偏移
+			top  = box.top  + scrollTop  - clientTop, 			// 计算文档元素的上边距
+			left = box.left + scrollLeft - clientLeft; 			// 计算文档元素的左边距
 
-		return { top: top, left: left };
+		return { top: top, left: left }; 			// 返回格式为{top:top, left:left}对象
 	};
 
 } else {
-	jQuery.fn.offset = function( options ) {
+	jQuery.fn.offset = function( options ) { 		
 		var elem = this[0];
 
-		if ( options ) {
+		if ( options ) { 							
 			return this.each(function( i ) {
 				jQuery.offset.setOffset( this, options, i );
 			});
 		}
 
-		if ( !elem || !elem.ownerDocument ) {
+		if ( !elem || !elem.ownerDocument ) { 		
 			return null;
 		}
 
 		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
+			return jQuery.offset.bodyOffset( elem ); 		
 		}
 
 		var computedStyle,
@@ -8969,7 +8969,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 			top = elem.offsetTop,
 			left = elem.offsetLeft;
 
-		while ( (elem = elem.parentNode) && elem !== body && elem !== docElem ) {
+		while ( (elem = elem.parentNode) && elem !== body && elem !== docElem ) { 				
 			if ( jQuery.support.fixedPosition && prevComputedStyle.position === "fixed" ) {
 				break;
 			}
@@ -9015,58 +9015,58 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 
 jQuery.offset = {
 
-	bodyOffset: function( body ) {
-		var top = body.offsetTop,
-			left = body.offsetLeft;
+	bodyOffset: function( body ) { 				
+		var top = body.offsetTop, 				// offsetTop获取元素的上边框到父元素上边框的距离
+			left = body.offsetLeft; 			// offsetTop获取元素的左边框到父元素左边框的距离
 
-		if ( jQuery.support.doesNotIncludeMarginInBodyOffset ) {
-			top  += parseFloat( jQuery.css(body, "marginTop") ) || 0;
+		if ( jQuery.support.doesNotIncludeMarginInBodyOffset ) { 		 		// 如果body元素距html元素边框的距离不包括body元素的外边距margin，则测试项doesNotIncludeMarginInBodyOffset为true。
+			top  += parseFloat( jQuery.css(body, "marginTop") ) || 0; 			//  
 			left += parseFloat( jQuery.css(body, "marginLeft") ) || 0;
 		}
 
-		return { top: top, left: left };
+		return { top: top, left: left };		// 返回{top: top, left: left}
 	},
 
-	setOffset: function( elem, options, i ) {
-		var position = jQuery.css( elem, "position" );
+	setOffset: function( elem, options, i ) {				
+		var position = jQuery.css( elem, "position" );			// 获取position属性
 
 		// set position first, in-case top/left are set even on static elem
-		if ( position === "static" ) {
+		if ( position === "static" ) { 				// 如果是'static', 修正为'relative'
 			elem.style.position = "relative";
 		}
 
-		var curElem = jQuery( elem ),
-			curOffset = curElem.offset(),
-			curCSSTop = jQuery.css( elem, "top" ),
-			curCSSLeft = jQuery.css( elem, "left" ),
-			calculatePosition = ( position === "absolute" || position === "fixed" ) && jQuery.inArray("auto", [curCSSTop, curCSSLeft]) > -1,
+		var curElem = jQuery( elem ),				
+			curOffset = curElem.offset(), 			// 获取元素的文档坐标
+			curCSSTop = jQuery.css( elem, "top" ), 			// 获取计算样式top
+			curCSSLeft = jQuery.css( elem, "left" ), 		// 获取计算样式left
+			calculatePosition = ( position === "absolute" || position === "fixed" ) && jQuery.inArray("auto", [curCSSTop, curCSSLeft]) > -1, 	// 如果position是absolute或者fixed并且计算样式top或者left属性值为auto
 			props = {}, curPosition = {}, curTop, curLeft;
 
 		// need to be able to calculate position if either top or left is auto and position is either absolute or fixed
-		if ( calculatePosition ) {
-			curPosition = curElem.position();
-			curTop = curPosition.top;
-			curLeft = curPosition.left;
+		if ( calculatePosition ) { 					// 如果能计算
+			curPosition = curElem.position();		// 获取最近定位祖先元素或body的坐标。因为auto可能不是0，但会被解析为0。
+			curTop = curPosition.top;				
+			curLeft = curPosition.left; 			
 		} else {
-			curTop = parseFloat( curCSSTop ) || 0;
+			curTop = parseFloat( curCSSTop ) || 0; 		// 将计算样式curCSSTop, curCSSLeft解析为数值
 			curLeft = parseFloat( curCSSLeft ) || 0;
 		}
 
-		if ( jQuery.isFunction( options ) ) {
-			options = options.call( elem, i, curOffset );
+		if ( jQuery.isFunction( options ) ) { 			// 如果是函数 
+			options = options.call( elem, i, curOffset ); 			// 执行函数
+		} 
+
+		if ( options.top != null ) { 					// 如果设置目标坐标的top属性
+			props.top = ( options.top - curOffset.top ) + curTop; 		// 目标文档坐标top - 当前文档坐标top + 计算样式top
+		}
+		if ( options.left != null ) { 					
+			props.left = ( options.left - curOffset.left ) + curLeft; 	// 目标文档坐标left - 当前文档坐标left + 计算样式left
 		}
 
-		if ( options.top != null ) {
-			props.top = ( options.top - curOffset.top ) + curTop;
-		}
-		if ( options.left != null ) {
-			props.left = ( options.left - curOffset.left ) + curLeft;
-		}
-
-		if ( "using" in options ) {
-			options.using.call( elem, props );
+		if ( "using" in options ) { 					// 如果参数options有'using'
+			options.using.call( elem, props );			// 执行该using函数
 		} else {
-			curElem.css( props );
+			curElem.css( props ); 				// 否则调用.css()设置最终内联样式top,left。
 		}
 	}
 };
@@ -9074,90 +9074,90 @@ jQuery.offset = {
 
 jQuery.fn.extend({
 
-	position: function() {
-		if ( !this[0] ) {
+	position: function() { 					// 获取匹配的第一个元素的外边框相对于最近定位祖先元素的外边框的坐标
+		if ( !this[0] ) { 					
 			return null;
 		}
 
-		var elem = this[0],
+		var elem = this[0], 				// 获取第一个匹配元素
 
 		// Get *real* offsetParent
-		offsetParent = this.offsetParent(),
+		offsetParent = this.offsetParent(), 		// 获取匹配元素的最近定位祖先元素
 
 		// Get correct offsets
-		offset       = this.offset(),
-		parentOffset = rroot.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset();
+		offset       = this.offset(),				// 获取匹配元素的文档坐标
+		parentOffset = rroot.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset(); 		// 获取最近定位祖先元素的文档坐标，如果是body,html，则top,left为0
 
 		// Subtract element margins
 		// note: when an element has margin: auto the offsetLeft and marginLeft
 		// are the same in Safari causing offset.left to incorrectly be 0
-		offset.top  -= parseFloat( jQuery.css(elem, "marginTop") ) || 0;
-		offset.left -= parseFloat( jQuery.css(elem, "marginLeft") ) || 0;
+		offset.top  -= parseFloat( jQuery.css(elem, "marginTop") ) || 0; 		// 当前文档坐标top减去外上边距
+		offset.left -= parseFloat( jQuery.css(elem, "marginLeft") ) || 0; 		// 当前文档坐标left减去外左边距
 
 		// Add offsetParent borders
-		parentOffset.top  += parseFloat( jQuery.css(offsetParent[0], "borderTopWidth") ) || 0;
-		parentOffset.left += parseFloat( jQuery.css(offsetParent[0], "borderLeftWidth") ) || 0;
+		parentOffset.top  += parseFloat( jQuery.css(offsetParent[0], "borderTopWidth") ) || 0; 		// 最近定位祖先元素文档坐标top再加上上边框
+		parentOffset.left += parseFloat( jQuery.css(offsetParent[0], "borderLeftWidth") ) || 0; 	// 最近定位祖先元素文档坐标left再加上左边框
 
 		// Subtract the two offsets
 		return {
-			top:  offset.top  - parentOffset.top,
+			top:  offset.top  - parentOffset.top, 			// 元素外边距到最近定位祖先父素的外边框的距离
 			left: offset.left - parentOffset.left
 		};
 	},
 
-	offsetParent: function() {
-		return this.map(function() {
-			var offsetParent = this.offsetParent || document.body;
-			while ( offsetParent && (!rroot.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) {
-				offsetParent = offsetParent.offsetParent;
+	offsetParent: function() { 				// 用于获取最近的定位元素 
+		return this.map(function() { 		
+			var offsetParent = this.offsetParent || document.body; 			// 获取最近的定位的祖先元素
+			while ( offsetParent && (!rroot.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) { 		// 相对定位的祖先元素不是body,html，并且position不是static
+				offsetParent = offsetParent.offsetParent; 			// 迭代最近的定位的祖先元素的最近的定位的祖先元素
 			}
-			return offsetParent;
+			return offsetParent; 			// 返回最近的定位的祖先元素被添加到新构造的jQuery对象
 		});
 	}
 });
 
 
 // Create scrollLeft and scrollTop methods
-jQuery.each( ["Left", "Top"], function( i, name ) {
+jQuery.each( ["Left", "Top"], function( i, name ) { 			// scrollLeft/scrollTop 方法返回或设置匹配元素的滚动条的水平/垂直位置
 	var method = "scroll" + name;
 
 	jQuery.fn[ method ] = function( val ) {
 		var elem, win;
 
-		if ( val === undefined ) {
-			elem = this[ 0 ];
+		if ( val === undefined ) { 			// 未传入参数val
+			elem = this[ 0 ]; 				// 获取匹配的第一个元素
 
-			if ( !elem ) {
-				return null;
-			}
+			if ( !elem ) {					// 没有匹配元素
+				return null; 				// 返回null
+			} 
 
-			win = getWindow( elem );
+			win = getWindow( elem ); 		// 获取wnidow对象, 如果是dom元素，返回false
 
 			// Return the scroll offset
-			return win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
-				jQuery.support.boxModel && win.document.documentElement[ method ] ||
+			return win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] : 		// 如果是window,document对象，并且支持pageXOffset属性，获取window.pageYOffset/pageXOffset,否则获取window.scrollLeft/scrollTop
+				jQuery.support.boxModel && win.document.documentElement[ method ] || 				// 
 					win.document.body[ method ] :
-				elem[ method ];
+				elem[ method ]; 				// dom元素返回elem.scrollLeft/scrollTop
 		}
 
-		// Set the scroll offset
-		return this.each(function() {
-			win = getWindow( this );
+		// Set the scroll offset 			// 如果val有传入
+		return this.each(function() { 		
+			win = getWindow( this );		// 获取window对象
 
-			if ( win ) {
-				win.scrollTo(
-					!i ? val : jQuery( win ).scrollLeft(),
+			if ( win ) { 				 	// 如果是window,document对象
+				win.scrollTo( 				// 调用window.scrollTo(x, y);
+					!i ? val : jQuery( win ).scrollLeft(), 	 	
 					 i ? val : jQuery( win ).scrollTop()
 				);
 
 			} else {
-				this[ method ] = val;
+				this[ method ] = val; 		// 否则设置scrollLeft/scrollTop属性
 			}
 		});
 	};
 });
 
-function getWindow( elem ) {
+function getWindow( elem ) {				// window, document返回window, dom元素返回false
 	return jQuery.isWindow( elem ) ?
 		elem :
 		elem.nodeType === 9 ?
@@ -9169,71 +9169,71 @@ function getWindow( elem ) {
 
 
 // Create width, height, innerHeight, innerWidth, outerHeight and outerWidth methods
-jQuery.each([ "Height", "Width" ], function( i, name ) {
+jQuery.each([ "Height", "Width" ], function( i, name ) { 
 
 	var type = name.toLowerCase();
 
 	// innerHeight and innerWidth
-	jQuery.fn[ "inner" + name ] = function() {
-		var elem = this[0];
-		return elem ?
-			elem.style ?
-			parseFloat( jQuery.css( elem, type, "padding" ) ) :
-			this[ type ]() :
-			null;
+	jQuery.fn[ "inner" + name ] = function() {		// .innerHeight/.innerWidth方法
+		var elem = this[0]; 					// 获取第一个匹配元素
+		return elem ? 	 						// 如果匹配到元素
+			elem.style ? 						// 并且支持内联样式elem.style
+			parseFloat( jQuery.css( elem, type, "padding" ) ) : 		// 获取元素的计算样式type,加上内边距
+			this[ type ]() : 	 				// 否则调用方法.width/.height()获取元素的内容content的高度或宽度
+			null; 								// 如果匹配不了元素，返回null
 	};
 
 	// outerHeight and outerWidth
-	jQuery.fn[ "outer" + name ] = function( margin ) {
+	jQuery.fn[ "outer" + name ] = function( margin ) { 			// .outerHeight/outerWidth方法
 		var elem = this[0];
 		return elem ?
 			elem.style ?
-			parseFloat( jQuery.css( elem, type, margin ? "margin" : "border" ) ) :
+			parseFloat( jQuery.css( elem, type, margin ? "margin" : "border" ) ) : 		// 如果参数是true, 则把外边距也计算
 			this[ type ]() :
-			null;
+			null; 						
 	};
 
-	jQuery.fn[ type ] = function( size ) {
+	jQuery.fn[ type ] = function( size ) { 		// .width/height()方法获取元素的宽或高
 		// Get window width or height
-		var elem = this[0];
+		var elem = this[0]; 					// 获取第一个匹配元素
 		if ( !elem ) {
-			return size == null ? null : this;
+			return size == null ? null : this; 		// 未传入参数，返回null，否则返回匹配元素集合
 		}
 
-		if ( jQuery.isFunction( size ) ) {
+		if ( jQuery.isFunction( size ) ) { 		// 如果是函数 
 			return this.each(function( i ) {
 				var self = jQuery( this );
-				self[ type ]( size.call( this, i, self[ type ]() ) );
+				self[ type ]( size.call( this, i, self[ type ]() ) ); 	// 则执行
 			});
 		}
 
-		if ( jQuery.isWindow( elem ) ) {
+		if ( jQuery.isWindow( elem ) ) { 			// 如果是window对象
 			// Everyone else use document.documentElement or document.body depending on Quirks vs Standards mode
 			// 3rd condition allows Nokia support, as it supports the docElem prop but not CSS1Compat
-			var docElemProp = elem.document.documentElement[ "client" + name ],
+			var docElemProp = elem.document.documentElement[ "client" + name ], 		// 获取window内容宽或高window.clientWidth/cliehtHeight
 				body = elem.document.body;
-			return elem.document.compatMode === "CSS1Compat" && docElemProp ||
-				body && body[ "client" + name ] || docElemProp;
+			return elem.document.compatMode === "CSS1Compat" && docElemProp || 			// 如果是开启标准兼容模式，返回window.clientWidth/clientHeight。
+				body && body[ "client" + name ] || docElemProp; 						// 否则返回body.clientWidth/clientHeight，如果获取不到，返回window.clientWidth/clientHeight
 
 		// Get document width or height
-		} else if ( elem.nodeType === 9 ) {
+		} else if ( elem.nodeType === 9 ) { 		// 如果是document元素
 			// Either scroll[Width/Height] or offset[Width/Height], whichever is greater
-			return Math.max(
+			return Math.max( 					 	// 返回window.clientWidth/clientHeight, window.scrollLeft/scrollHeight, window.offsetWidth/offsetHeight, body.scrollLeft/scrollHeight, body.offsetWidth/offsetHeight的最大值
 				elem.documentElement["client" + name],
 				elem.body["scroll" + name], elem.documentElement["scroll" + name],
 				elem.body["offset" + name], elem.documentElement["offset" + name]
 			);
 
 		// Get or set width or height on the element
-		} else if ( size === undefined ) {
-			var orig = jQuery.css( elem, type ),
-				ret = parseFloat( orig );
+		} else if ( size === undefined ) { 			// 未传入参数size
+			var orig = jQuery.css( elem, type ), 	// 获取元素的原始计算样式width/height
+				ret = parseFloat( orig ); 			// 转为数值
 
-			return jQuery.isNumeric( ret ) ? ret : orig;
+			return jQuery.isNumeric( ret ) ? ret : orig; 		// 返回该数值
 
 		// Set the width or height on the element (default to pixels if value is unitless)
 		} else {
-			return this.css( type, typeof size === "string" ? size : size + "px" );
+			return this.css( type, typeof size === "string" ? size : size + "px" ); 	// 否则调用.css()设置width/height属性
 		}
 	};
 

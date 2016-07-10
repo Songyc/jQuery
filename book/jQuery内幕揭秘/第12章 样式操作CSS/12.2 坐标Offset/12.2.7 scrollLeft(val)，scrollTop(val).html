@@ -3,15 +3,22 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style>
+	body{height:2000px;}
+	.test1{margin-top:20px;}
+	</style>
 </head>
 <body>
-	<div class="test" width="100">
+	<div class="test">
 		test
+	</div>
+	<div class="test1">
+		test1
 	</div>
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	jQuery.cssHooks.width.get(document.querySelector('.test'), true, true);
-
+	$('.test').scrollLeft();
+	$('.test').scrollLeft(100);
 	</script>
 </body>
 </html>

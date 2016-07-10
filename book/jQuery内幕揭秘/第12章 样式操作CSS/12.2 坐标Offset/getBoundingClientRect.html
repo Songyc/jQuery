@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="test">
+		test	
+	</div>
+	<script>
+	var div = document.createElement('div'),
+		test = document.querySelector('.test'),
+		gbdc;
+
+	try{
+		gbdc = div.getBoundingClientRect();
+		test = test.getBoundingClientRect();
+	}catch(e){}
+	console.log(gbdc, test);
+	</script>
+</body>
+</html>

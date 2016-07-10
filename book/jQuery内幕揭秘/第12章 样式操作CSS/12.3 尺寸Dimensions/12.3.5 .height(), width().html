@@ -3,15 +3,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style>
+	.test{margin:10px;border:20px solid #000;padding:100px;}
+	</style>
 </head>
 <body>
-	<div class="test" width="100">
+	<div class="test">
 		test
 	</div>
+	
 	<script src="../../js/jQuery.js"></script>
 	<script>
-	jQuery.cssHooks.width.get(document.querySelector('.test'), true, true);
-
+	console.log(
+		$('.test').width() 			// 不包含内边距
+	);
 	</script>
 </body>
 </html>

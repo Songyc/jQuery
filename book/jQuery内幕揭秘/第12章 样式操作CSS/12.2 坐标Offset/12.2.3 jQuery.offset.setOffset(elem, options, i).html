@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style>
-	body{height:2000px;border:20px solid #000;position:relative;top:50px;}
+	body{height:2000px;}
 	.test1{position:absolute; top:1000px; }
 	</style>
 </head>
@@ -15,9 +15,11 @@
 	<div class="test1">
 		test1
 	</div>
-	<script src="jQuery.js"></script>
+	<script src="../../js/jQuery.js"></script>
 	<script>
-	console.log(jQuery.support.doesNotIncludeMarginInBodyOffset);
+	// jQuery.offset.setOffset(document.querySelector('.test'), {top:'100px', left:'100px'}, 0);
+
+	jQuery.offset.setOffset(document.querySelector('.test1'), {top:1000, left:100}, 0);
 	</script>
 </body>
 </html>
