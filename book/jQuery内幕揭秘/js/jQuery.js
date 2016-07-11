@@ -7223,55 +7223,55 @@ jQuery.extend({
 		var // Create the final options object
 			s = jQuery.ajaxSetup( {}, options ), 			// 创建最后的options参数
 			// Callbacks context
-			callbackContext = s.context || s, 				// 
+			callbackContext = s.context || s, 				// 指定回调函数上下文，如果有指定context, 则以s.context为回调函数上下文，否则以完整的选项对象作为回调函数的上下文
 			// Context for global events
 			// It's the callbackContext if one was provided in the options
 			// and if it's a DOM node or a jQuery collection
-			globalEventContext = callbackContext !== s &&
+			globalEventContext = callbackContext !== s && 		// ajax全局事件上下文，默认上下文为对象jQuery.event。通过调用方法jQuery.event.trigger(event, data, elem, onlyHandlers)触发，全局事件会被传播到所有元素。
 				( callbackContext.nodeType || callbackContext instanceof jQuery ) ?
 						jQuery( callbackContext ) : jQuery.event,
 			// Deferreds
-			deferred = jQuery.Deferred(),
-			completeDeferred = jQuery.Callbacks( "once memory" ),
+			deferred = jQuery.Deferred(), 					// 创建异步队列
+			completeDeferred = jQuery.Callbacks( "once memory" ), 			// 创建回调函数列表。用于触发和存放回调函数
 			// Status-dependent callbacks
-			statusCode = s.statusCode || {},
-			// ifModified key
-			ifModifiedKey,
+			statusCode = s.statusCode || {}, 				// 状态码
+			// ifModified key 	
+			ifModifiedKey, 							// 
 			// Headers (they are sent all at once)
-			requestHeaders = {},
-			requestHeadersNames = {},
+			requestHeaders = {}, 					// 存储请求头
+			requestHeadersNames = {}, 				// 记录请求头
 			// Response headers
-			responseHeadersString,
-			responseHeaders,
+			responseHeadersString, 			 	// 存储响应字符串
+			responseHeaders, 					// 变量responseHeaders用于存储解析后的响应头和值
 			// transport
-			transport,
+			transport, 							// 当前请求分配的请求发送器
 			// timeout handle
-			timeoutTimer,
-			// Cross-domain detection vars
-			parts,
+			timeoutTimer, 					// 超时计时器
+			// Cross-domain detection vars 			
+			parts, 							// 存放解析当前请求的地址得到的协议，域名或IP，端口，用于判断当前请求是否路域。
 			// The jqXHR state
-			state = 0,
+			state = 0, 						// 表示当前请求jqXHR对象的状态
 			// To know if global events are to be dispatched
-			fireGlobals,
+			fireGlobals, 					// 是否触发全局Ajax事件
 			// Loop variable
 			i,
 			// Fake xhr
 			jqXHR = {
 
-				readyState: 0,
+				readyState: 0, 				// 当前jqXHR对象的状态，其初始值为0，发送前为1，响应完后为4
 
 				// Caches the header
-				setRequestHeader: function( name, value ) {
+				setRequestHeader: function( name, value ) { 		// 设置请求头。
 					if ( !state ) {
-						var lname = name.toLowerCase();
-						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;
+						var lname = name.toLowerCase(); 			
+						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;  // 存储在requestHeadersNames, requerstHeaders中	
 						requestHeaders[ name ] = value;
 					}
 					return this;
 				},
 
 				// Raw string
-				getAllResponseHeaders: function() {
+				getAllResponseHeaders: function() { 				// 
 					return state === 2 ? responseHeadersString : null;
 				},
 

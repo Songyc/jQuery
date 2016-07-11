@@ -6970,16 +6970,16 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 // A special extend for ajax options
 // that takes "flat" options (not to be deep extended)
 // Fixes #9887
-function ajaxExtend( target, src ) {
+function ajaxExtend( target, src ) { 			// 合并两个参数选项
 	var key, deep,
-		flatOptions = jQuery.ajaxSettings.flatOptions || {};
-	for ( key in src ) {
-		if ( src[ key ] !== undefined ) {
-			( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
+		flatOptions = jQuery.ajaxSettings.flatOptions || {}; 			
+	for ( key in src ) {						// 遍历源对象src属性合并到目标对象target上
+		if ( src[ key ] !== undefined ) { 		// 过滤未定义属性
+			( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ]; 	// 如果不是flatOptions里的url, context属性，用创建临时对象deep。将src的属性复制到deep里，而url,context则复制到target上
 		}
 	}
 	if ( deep ) {
-		jQuery.extend( true, target, deep );
+		jQuery.extend( true, target, deep );	
 	}
 }
 
@@ -7127,16 +7127,16 @@ jQuery.extend({
 	// with both ajaxSettings and settings fields.
 	// If target is omitted, writes into ajaxSettings.
 	ajaxSetup: function( target, settings ) {
-		if ( settings ) {
+		if ( settings ) { 							// 如果传入两个参数target, settings
 			// Building a settings object
-			ajaxExtend( target, jQuery.ajaxSettings );
+			ajaxExtend( target, jQuery.ajaxSettings ); 		// 先把默认选项集jQuery.ajaxSettings复制到对象target上
 		} else {
 			// Extending ajaxSettings
-			settings = target;
+			settings = target;						// 修正参数settings, target
 			target = jQuery.ajaxSettings;
 		}
-		ajaxExtend( target, settings );
-		return target;
+		ajaxExtend( target, settings ); 			// 调用ajaxEnd()合并选项
+		return target; 					// 返回合并选项
 	},
 
 	ajaxSettings: {
@@ -7221,9 +7221,9 @@ jQuery.extend({
 		options = options || {};
 
 		var // Create the final options object
-			s = jQuery.ajaxSetup( {}, options ),
-			// Callbacks context
-			callbackContext = s.context || s,
+			s = jQuery.ajaxSetup( {}, options ), 			// 合并出最终选项
+			// Callbacks context  
+			callbackContext = s.context || s, 				// 
 			// Context for global events
 			// It's the callbackContext if one was provided in the options
 			// and if it's a DOM node or a jQuery collection
