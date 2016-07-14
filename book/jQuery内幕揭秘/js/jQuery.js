@@ -7271,18 +7271,18 @@ jQuery.extend({
 				},
 
 				// Raw string
-				getAllResponseHeaders: function() { 				// 
+				getAllResponseHeaders: function() { 	 			// 用于获取响应头字符串
 					return state === 2 ? responseHeadersString : null;
 				},
 
 				// Builds headers hashtable if needed
-				getResponseHeader: function( key ) {
+				getResponseHeader: function( key ) { 				// 用于获取指定响应头的字符串
 					var match;
 					if ( state === 2 ) {
 						if ( !responseHeaders ) {
 							responseHeaders = {};
-							while( ( match = rheaders.exec( responseHeadersString ) ) ) {
-								responseHeaders[ match[1].toLowerCase() ] = match[ 2 ];
+							while( ( match = rheaders.exec( responseHeadersString ) ) ) { 		// 第一次调用方法jqXHR.getResponseHeaders(key)时，将解析到的响应头和值缓存到responseHeaders中，之后再调用不需要再解析，直接从对象responseHeaders中获取。
+								responseHeaders[ match[1].toLowerCase() ] = match[ 2 ]; 
 							}
 						}
 						match = responseHeaders[ key.toLowerCase() ];
@@ -7291,15 +7291,15 @@ jQuery.extend({
 				},
 
 				// Overrides response content-type header
-				overrideMimeType: function( type ) {
-					if ( !state ) {
+				overrideMimeType: function( type ) { 				// 对应XMLHTTPRequest的同名方法，用于覆盖MIME类型。
+					if ( !state ) { 						
 						s.mimeType = type;
 					}
 					return this;
 				},
 
 				// Cancel the request
-				abort: function( statusText ) {
+				abort: function( statusText ) { 					// 用于取消本次请求
 					statusText = statusText || "abort";
 					if ( transport ) {
 						transport.abort( statusText );
@@ -7312,10 +7312,10 @@ jQuery.extend({
 		// Callback for when everything is done
 		// It is defined here because jslint complains if it is declared
 		// at the end of the function (which would be more logical and readable)
-		function done( status, nativeStatusText, responses, headers ) {
+		function done( status, nativeStatusText, responses, headers ) { 			// 
 
 			// Called once
-			if ( state === 2 ) {
+			if ( state === 2 ) { 				// 状态码为2，返回
 				return;
 			}
 
@@ -7329,13 +7329,13 @@ jQuery.extend({
 
 			// Dereference transport for early garbage collection
 			// (no matter how long the jqXHR object will be used)
-			transport = undefined;
+			transport = undefined; 								// 解除对请求发送器的引用
 
 			// Cache response headers
-			responseHeadersString = headers || "";
+			responseHeadersString = headers || ""; 				// 将响应头字符串缓存到变量responseHeadersString中
 
 			// Set readyState
-			jqXHR.readyState = status > 0 ? 4 : 0;
+			jqXHR.readyState = status > 0 ? 4 : 0; 				// 如果响应完成，则变成4
 
 			var isSuccess,
 				success,
@@ -7346,7 +7346,7 @@ jQuery.extend({
 				etag;
 
 			// If successful, handle type chaining
-			if ( status >= 200 && status < 300 || status === 304 ) {
+			if ( status >= 200 && status < 300 || status === 304 ) { 			// 如果响应成功，则执行数据类型转换
 
 				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 				if ( s.ifModified ) {
