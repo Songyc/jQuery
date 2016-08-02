@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<div id="myDiv"><h3>Let AJAX change this text</h3></div>
+	<button type="button" onclick="loadXMLDoc()">Change Content</button>
+
+	<script>
+	var url = "http://192.168.1.4/jQuery/book/jQuery%E5%86%85%E5%B9%95%E6%8F%AD%E7%A7%98/%E7%AC%AC13%E7%AB%A0%20%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82Ajax/13.2%20jQuery.ajax/test.js?time=" + new Date().getTime() + "&fname=song&lname=yingchun";
+	function loadXMLDoc () {
+		var xmlhttp;
+		if(window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
+		}else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		xmlhttp.onreadystatechange = function () {
+
+			console.log(xmlhttp.readyState);
+
+			if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+				document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+			}
+		}
+
+		xmlhttp.open("POST", url, true); 			// 规定请求的类型、URL 以及是否异步处理请求。
+		xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 		// 将请求发送到服务器。
+		xmlhttp.send("fname=song&lname=yingchun");
+	}
+	
+	</script>
+</body>
+</html>

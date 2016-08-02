@@ -7349,7 +7349,7 @@ jQuery.extend({
 			if ( status >= 200 && status < 300 || status === 304 ) { 			// 如果响应成功，则执行数据类型转换
 
 				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-				if ( s.ifModified ) {
+				if ( s.ifModified ) { 					// 如果设置了选项ifModified, 则记录响应头Last-Modified和Etag，用于下一次对同一地址的请求。
 
 					if ( ( lastModified = jqXHR.getResponseHeader( "Last-Modified" ) ) ) {
 						jQuery.lastModified[ ifModifiedKey ] = lastModified;
@@ -7360,29 +7360,29 @@ jQuery.extend({
 				}
 
 				// If not modified
-				if ( status === 304 ) {
+				if ( status === 304 ) { 			// 如果状态码为304，表示请求资源没有变化，则设置变量statusText的值为"notmodified"，并且认为本次请求成功。
 
-					statusText = "notmodified";
-					isSuccess = true;
+					statusText = "notmodified"; 	// 则设置变量statusText的值为"notmodified", 并且认为本次请求成功。此时，"notmodified"被传给回调函数success(data, textStatus, jqXHR)和complete(jqXHR, testStatus)。
+					isSuccess = true; 				// 请求成功
 
 				// If we have data
-				} else {
+				} else {							// 状态码为200~300，表示请求成功
 
-					try {
-						success = ajaxConvert( s, response );
-						statusText = "success";
-						isSuccess = true;
+					try { 							
+						success = ajaxConvert( s, response );	// 调用函数ajaConvert(s, response)将响应的数据转换为期望的类型。
+						statusText = "success";					// 设置statusText值为"success"
+						isSuccess = true;						// 设置isSuccess值为true
 					} catch(e) {
-						// We have a parsererror
-						statusText = "parsererror";
-						error = e;
+						// We have a parsererror 				// 如果转换失败
+						statusText = "parsererror"; 			// 设置statusText值为"parsererror"
+						error = e;								// 设置error为e
 					}
 				}
-			} else {
+			} else { 											// 如果响应失败，则设置变量statusText的值为"error"
 				// We extract error from statusText
 				// then normalize statusText and status for non-aborts
-				error = statusText;
-				if ( !statusText || status ) {
+				error = statusText;								// 设置变量error的值statusText
+				if ( !statusText || status ) {					
 					statusText = "error";
 					if ( status < 0 ) {
 						status = 0;
@@ -7391,32 +7391,32 @@ jQuery.extend({
 			}
 
 			// Set data for the fake xhr object
-			jqXHR.status = status;
-			jqXHR.statusText = "" + ( nativeStatusText || statusText );
+			jqXHR.status = status;								// 设置自定义jqXHR对象的status属性为XMLHttpRequest的同名属性
+			jqXHR.statusText = "" + ( nativeStatusText || statusText ); 	// 设置jqXHR的statusText属性为XMLHttpRequest的同名属性
 
 			// Success/Error
-			if ( isSuccess ) {
-				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
+			if ( isSuccess ) { 									// 如果响应成功
+				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] ); 		// 调用方法deferred.resolveWith(context, args)触发成功回调函数。
 			} else {
-				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
+				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] ); 			// 调用方法deferred.resolveWith(context, args)触发失败回调函数。
 			}
 
 			// Status-dependent callbacks
-			jqXHR.statusCode( statusCode );
-			statusCode = undefined;
+			jqXHR.statusCode( statusCode ); 					// 调用jqXHR.statusCode(map)执行状态码对应的回调函数
+			statusCode = undefined;								
 
-			if ( fireGlobals ) {
+			if ( fireGlobals ) { 								// 未禁用全局事件，则根据响应是否成功和数据类型转换是否成功，决定触发全局事件ajaxSuccess或ajaxError，并通过调用方法jQuery.event.trigger(event, data, elem, onlyHandlers)或.trigger(type, data)来触发。
 				globalEventContext.trigger( "ajax" + ( isSuccess ? "Success" : "Error" ),
 						[ jqXHR, s, isSuccess ? success : error ] );
 			}
 
-			// Complete
-			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
+			// completeDeferred 								
+			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] ); 	// 触发完成回调函数
 
-			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
+			if ( fireGlobals ) { 													
+				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] ); 		// 
 				// Handle the global AJAX counter
-				if ( !( --jQuery.active ) ) {
+				if ( !( --jQuery.active ) ) { 										// 属性jQuery.active减1，如果变为0，表示所有的请求都已完成(包括成功，失败，取消)，则调用方法jQuery.evetn.trigger(event, data, elem, onlyHandlers)触发全局事件ajaxStop，事件
 					jQuery.event.trigger( "ajaxStop" );
 				}
 			}
@@ -7432,12 +7432,12 @@ jQuery.extend({
 		jqXHR.statusCode = function( map ) {
 			if ( map ) {
 				var tmp;
-				if ( state < 2 ) {
+				if ( state < 2 ) { 						// 请求还没接收到
 					for ( tmp in map ) {
 						statusCode[ tmp ] = [ statusCode[tmp], map[tmp] ];
 					}
-				} else {
-					tmp = map[ jqXHR.status ];
+				} else { 								// 请求已接收到或者请求处理中或者请求已完成，且响应已就绪
+					tmp = map[ jqXHR.status ]; 			// 
 					jqXHR.then( tmp, tmp );
 				}
 			}
