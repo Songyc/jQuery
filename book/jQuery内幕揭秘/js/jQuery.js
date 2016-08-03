@@ -7423,21 +7423,21 @@ jQuery.extend({
 		}
 
 		// Attach deferreds
-		deferred.promise( jqXHR );
-		jqXHR.success = jqXHR.done;
+		deferred.promise( jqXHR ); 						// 为jqXHR对象添加异步队列只读副本
+		jqXHR.success = jqXHR.done;						// 为了方便，也提供方法.success, .error, .complete方法
 		jqXHR.error = jqXHR.fail;
 		jqXHR.complete = completeDeferred.add;
 
 		// Status-dependent callbacks
-		jqXHR.statusCode = function( map ) {
+		jqXHR.statusCode = function( map ) { 			// 
 			if ( map ) {
 				var tmp;
 				if ( state < 2 ) { 						// 请求还没接收到
-					for ( tmp in map ) {
+					for ( tmp in map ) { 				// 则向变量statusCode中添加状态码对应的回调函数
 						statusCode[ tmp ] = [ statusCode[tmp], map[tmp] ];
 					}
 				} else { 								// 请求已接收到或者请求处理中或者请求已完成，且响应已就绪
-					tmp = map[ jqXHR.status ]; 			// 
+					tmp = map[ jqXHR.status ]; 			// 如果请求完成，则调用jqXHR.then(tmp, tmp)将状态码对应的回调函数同时添加到异步队列的成功和失败
 					jqXHR.then( tmp, tmp );
 				}
 			}
@@ -7447,15 +7447,15 @@ jQuery.extend({
 		// Remove hash character (#7531: and string promotion)
 		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
 		// We also use the url parameter if available
-		s.url = ( ( url || s.url ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
+		s.url = ( ( url || s.url ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" ); 	// 强制将url转成字符串，移除锚文部分，以//开头，要补充协议。
 
 		// Extract dataTypes list
-		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().split( rspacesAjax );
+		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().split( rspacesAjax ); 			// 删除头尾空格，开头字母小写，将dataType用空格分割成数组，并赋值给选项dataTypes
 
 		// Determine if a cross-domain request is in order
-		if ( s.crossDomain == null ) {
-			parts = rurl.exec( s.url.toLowerCase() );
-			s.crossDomain = !!( parts &&
+		if ( s.crossDomain == null ) { 						
+			parts = rurl.exec( s.url.toLowerCase() ); 				// 用正则rurl从选项url中解析出协议
+			s.crossDomain = !!( parts &&							// 与当前url比较，只要其中一项不同就认为是跨域请求，会通过script元素发送。
 				( parts[ 1 ] != ajaxLocParts[ 1 ] || parts[ 2 ] != ajaxLocParts[ 2 ] ||
 					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? 80 : 443 ) ) !=
 						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? 80 : 443 ) ) )
@@ -7463,20 +7463,20 @@ jQuery.extend({
 		}
 
 		// Convert data if not already a string
-		if ( s.data && s.processData && typeof s.data !== "string" ) {
+		if ( s.data && s.processData && typeof s.data !== "string" ) { 			// 如果选项processData为true, 并且data不是字符串，调用jQuery.param方法
 			s.data = jQuery.param( s.data, s.traditional );
 		}
 
 		// Apply prefilters
-		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
+		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR ); 		// 应用前置过滤器，继续修正选项
 
 		// If request was aborted inside a prefiler, stop there
-		if ( state === 2 ) {
+		if ( state === 2 ) {													// 
 			return false;
 		}
 
 		// We can fire global events as of now if asked to
-		fireGlobals = s.global;
+		fireGlobals = s.global; 												// 
 
 		// Uppercase the type
 		s.type = s.type.toUpperCase();
