@@ -7482,28 +7482,28 @@ jQuery.extend({
 		s.type = s.type.toUpperCase();
 
 		// Determine if request has content
-		s.hasContent = !rnoContent.test( s.type );
+		s.hasContent = !rnoContent.test( s.type ); 								// 判断请求是否包含内容
 
 		// Watch for a new set of requests
 		if ( fireGlobals && jQuery.active++ === 0 ) {
 			jQuery.event.trigger( "ajaxStart" );
 		}
 
-		// More options handling for requests with no content
-		if ( !s.hasContent ) {
+		// More options handling for requests with no content 					
+		if ( !s.hasContent ) {													// 如果没有请求内容，则修正选项url
 
 			// If data is available, append data to url
-			if ( s.data ) {
+			if ( s.data ) { 													// 如果设置了选项data, 则将选项data附加到选项url之后。正则rquery用于检测选项url中是否含有问号"?", 即是否已经有查询部分，如果没有则加上"?", 否则加上"&"。
 				s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.data;
 				// #9682: remove data so that it's not used in an eventual retry
 				delete s.data;
 			}
 
 			// Get ifModifiedKey before adding the anti-cache parameter
-			ifModifiedKey = s.url;
+			ifModifiedKey = s.url; 												// 
 
 			// Add anti-cache in url if needed
-			if ( s.cache === false ) {
+			if ( s.cache === false ) { 											// 如果选项cache为false，则禁用缓存，则在选项上替换或追加时间戳。
 
 				var ts = jQuery.now(),
 					// try replacing _= if it is there
@@ -7515,13 +7515,13 @@ jQuery.extend({
 		}
 
 		// Set the correct header, if data is being sent
-		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
+		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) { 		// 如果设置了选项data, 并且当前请求不是GET, HEAD请求，同时选项contentType不是false，则设置请求头Content-Type。如果在原始选项集中设置了选项options.contentType, 也会设置请求头Content-Type。
 			jqXHR.setRequestHeader( "Content-Type", s.contentType );
 		}
 
 		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-		if ( s.ifModified ) {
-			ifModifiedKey = ifModifiedKey || s.url;
+		if ( s.ifModified ) { 																	// 如果有设置ifModified属性
+			ifModifiedKey = ifModifiedKey || s.url; 											// ifModified为true，则设置请求头If-Modified-Since和If-None-Match，表示只有当最后一次请求的响应内容发生改变时，才会响应状态码200和新内容。
 			if ( jQuery.lastModified[ ifModifiedKey ] ) {
 				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ ifModifiedKey ] );
 			}
@@ -7531,7 +7531,7 @@ jQuery.extend({
 		}
 
 		// Set the Accepts header for the server, depending on the dataType
-		jqXHR.setRequestHeader(
+		jqXHR.setRequestHeader( 																// 设置请求头Accept，用于指定浏览器可授受的响应类型。
 			"Accept",
 			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[0] ] ?
 				s.accepts[ s.dataTypes[0] ] + ( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
@@ -7539,12 +7539,12 @@ jQuery.extend({
 		);
 
 		// Check for headers option
-		for ( i in s.headers ) {
+		for ( i in s.headers ) { 																// 设置其它请求头信息
 			jqXHR.setRequestHeader( i, s.headers[ i ] );
 		}
 
 		// Allow custom headers/mimetypes and early abort
-		if ( s.beforeSend && ( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) {
+		if ( s.beforeSend && ( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) { 		// 如果回调函数返回false，则取消本次请求。
 				// Abort if not done already
 				jqXHR.abort();
 				return false;
@@ -7552,24 +7552,24 @@ jQuery.extend({
 		}
 
 		// Install callbacks on deferreds
-		for ( i in { success: 1, error: 1, complete: 1 } ) {
+		for ( i in { success: 1, error: 1, complete: 1 } ) { 									// 添加成功，失败，完成回调
 			jqXHR[ i ]( s[ i ] );
 		}
 
 		// Get transport
-		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
+		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR ); 			// 获取请求发送器
 
 		// If no transport, we auto-abort
-		if ( !transport ) {
+		if ( !transport ) { 										// 如果没有找到对应的请求发送器，则结束本次请求
 			done( -1, "No Transport" );
-		} else {
-			jqXHR.readyState = 1;
+		} else { 								
+			jqXHR.readyState = 1; 									
 			// Send global event
 			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
+				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] ); 		// 触发全局事件ajaxSend
 			}
 			// Timeout
-			if ( s.async && s.timeout > 0 ) {
+			if ( s.async && s.timeout > 0 ) { 						// 设置超时
 				timeoutTimer = setTimeout( function(){
 					jqXHR.abort( "timeout" );
 				}, s.timeout );
@@ -7577,7 +7577,7 @@ jQuery.extend({
 
 			try {
 				state = 1;
-				transport.send( requestHeaders, done );
+				transport.send( requestHeaders, done ); 						// 发送请求，请求头集和回调函数done作为参数
 			} catch (e) {
 				// Propagate exception as error if not done
 				if ( state < 2 ) {
