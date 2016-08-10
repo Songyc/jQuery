@@ -6858,19 +6858,19 @@ var r20 = /%20/g,
 	 * 4) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 	 */
-	prefilters = {},
+	prefilters = {}, 				// 初始化变量prefilters
 
 	/* Transports bindings
 	 * 1) key is the dataType
 	 * 2) the catchall symbol "*" can be used
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
-	transports = {},
+	transports = {}, 				// transports为空对象
 
 	// Document location
 	ajaxLocation,
 
-	// Document location segments
+	// Document location segments 	
 	ajaxLocParts,
 
 	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
@@ -6892,18 +6892,18 @@ try {
 ajaxLocParts = rurl.exec( ajaxLocation.toLowerCase() ) || [];
 
 // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
-function addToPrefiltersOrTransports( structure ) {
+function addToPrefiltersOrTransports( structure ) { 			// 添加前置过滤器或者请求发送器
 
 	// dataTypeExpression is optional and defaults to "*"
-	return function( dataTypeExpression, func ) {
+	return function( dataTypeExpression, func ) { 				// 
 
-		if ( typeof dataTypeExpression !== "string" ) {
-			func = dataTypeExpression;
+		if ( typeof dataTypeExpression !== "string" ) { 		// 如果dataTypeExpression不是字符串
+			func = dataTypeExpression; 							// 修正参数dataTypeExpression、func, 参数dataTypeExpression默认为"*"
 			dataTypeExpression = "*";
 		}
 
-		if ( jQuery.isFunction( func ) ) {
-			var dataTypes = dataTypeExpression.toLowerCase().split( rspacesAjax ),
+		if ( jQuery.isFunction( func ) ) { 						// 如果func是函数 
+			var dataTypes = dataTypeExpression.toLowerCase().split( rspacesAjax ), 			// 用空白符分割参数dataTypeExpression为数组
 				i = 0,
 				length = dataTypes.length,
 				dataType,
@@ -6911,17 +6911,17 @@ function addToPrefiltersOrTransports( structure ) {
 				placeBefore;
 
 			// For each dataType in the dataTypeExpression
-			for ( ; i < length; i++ ) {
-				dataType = dataTypes[ i ];
+			for ( ; i < length; i++ ) { 						// 遍历数组
+				dataType = dataTypes[ i ]; 						
 				// We control if we're asked to add before
 				// any existing element
-				placeBefore = /^\+/.test( dataType );
-				if ( placeBefore ) {
+				placeBefore = /^\+/.test( dataType ); 			// 将参数func插入数组类型对应的数组中
+				if ( placeBefore ) { 							// 如果数据类型前面有"+"，则去掉"+"
 					dataType = dataType.substr( 1 ) || "*";
 				}
-				list = structure[ dataType ] = structure[ dataType ] || [];
-				// then we add to the structure accordingly
-				list[ placeBefore ? "unshift" : "push" ]( func );
+				list = structure[ dataType ] = structure[ dataType ] || []; 	// 如果数组不存在，初始化为空数组。
+				// then we add to the structure accordingly 					
+				list[ placeBefore ? "unshift" : "push" ]( func ); 			// 如果数据类型有"+"，则插入数组头部。否则插入数据类型对应的数组。
 			}
 		}
 	};
@@ -6929,25 +6929,25 @@ function addToPrefiltersOrTransports( structure ) {
 
 // Base inspection function for prefilters and transports
 function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR,
-		dataType /* internal */, inspected /* internal */ ) {
+		dataType /* internal */, inspected /* internal */ ) { 				// 
 
-	dataType = dataType || options.dataTypes[ 0 ];
-	inspected = inspected || {};
+	dataType = dataType || options.dataTypes[ 0 ]; 					// 数据类型
+	inspected = inspected || {}; 									// 
 
-	inspected[ dataType ] = true;
+	inspected[ dataType ] = true; 									// 存放已经执行过的数据类型的对象
 
-	var list = structure[ dataType ],
+	var list = structure[ dataType ], 								// 取出数据类型对应的前置过滤数组，或请求发送器工厂函数数组。
 		i = 0,
 		length = list ? list.length : 0,
-		executeOnly = ( structure === prefilters ),
+		executeOnly = ( structure === prefilters ), 				// 如果structure是前置过滤器集prefilters,则变量executeOnly为true，表示只执行，没有返回值; 否则为false, 表示不只是执行，还会有返回值。
 		selection;
 
-	for ( ; i < length && ( executeOnly || !selection ); i++ ) {
-		selection = list[ i ]( options, originalOptions, jqXHR );
+	for ( ; i < length && ( executeOnly || !selection ); i++ ) { 	// 如果是前置过滤，则遍历执行所有的函数。如果是获取请求发送器，则找到一个请求发送器就立即跳出循环。
+		selection = list[ i ]( options, originalOptions, jqXHR ); 	// 执行前置过滤器或者请求发送器函数
 		// If we got redirected to another dataType
 		// we try there if executing only and not done already
-		if ( typeof selection === "string" ) {
-			if ( !executeOnly || inspected[ selection ] ) {
+		if ( typeof selection === "string" ) { 						// 如果函数返回值的类型是字符串，即当前请求被重定向到了另一个类型。
+			if ( !executeOnly || inspected[ selection ] ) { 		// 
 				selection = undefined;
 			} else {
 				options.dataTypes.unshift( selection );

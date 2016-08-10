@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../../js/jQuery.js"></script>
+	<script>
+	// 添加json、jsonp对应的前置过滤器
+	jQuery.ajaxPrefilter("json jsonp", function (s, originalSettings, jqXHR) {
+		console.log("json");
+	});
+
+	jQuery.ajaxTransport("script", function (s) {
+		console.log("script")
+	});
+	</script>
+</body>
+</html>
