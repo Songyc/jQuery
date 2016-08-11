@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../../js/jQuery.js"></script>
+	<script>
+	var url = "http://192.168.1.4/jQuery/book/jQuery%E5%86%85%E5%B9%95%E6%8F%AD%E7%A7%98/%E7%AC%AC13%E7%AB%A0%20%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82Ajax/13.2%20jQuery.ajax/test.js?";
+	$.ajax({
+		url: url,
+	  	type: "post",
+	  	ifModified: true,
+	  	data: {
+	  		test1: 1,
+	  		test2: 2	  	
+	  	},
+	  	cache: false,
+	  	dataType: "jsonp",
+	  	success: function (data) {
+	  		console.log(data);
+	  	},
+	  	error: function (e) {
+	  		console.log(e);
+	  	}
+	});
+	</script>
+</body>
+</html>

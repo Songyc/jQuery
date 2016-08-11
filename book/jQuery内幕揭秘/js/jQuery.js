@@ -6947,24 +6947,24 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 		// If we got redirected to another dataType
 		// we try there if executing only and not done already
 		if ( typeof selection === "string" ) { 						// 如果函数返回值的类型是字符串，即当前请求被重定向到了另一个类型。
-			if ( !executeOnly || inspected[ selection ] ) { 		// 
+			if ( !executeOnly || inspected[ selection ] ) { 		// 如果是应用前置过滤器，并且重定向的数据已经处理过，则设置selection为undefined，然后继续遍历执行数组list的函数。如果是获取请求发送器，则设置selection为undefined，即丢掉返回值，然后继续遍历执行数组list中的函数。
 				selection = undefined;
-			} else {
-				options.dataTypes.unshift( selection );
-				selection = inspectPrefiltersOrTransports(
+			} else { 												// 如果是应用前置过滤器
+				options.dataTypes.unshift( selection );  			// 并且重定向的数据类型没有处理过，则将该数据类型插入数据类型数组的头部，改变当前请求的数据类型，
+				selection = inspectPrefiltersOrTransports( 			// 并递归调用函数inspectPrefiltersOrTransports(), 为当前请求应用该数据类型前置过滤器，递归调用完成后，将继续遍历执行数组list中的函数。
 						structure, options, originalOptions, jqXHR, selection, inspected );
 			}
 		}
 	}
 	// If we're only executing or nothing was selected
 	// we try the catchall dataType if not done already
-	if ( ( executeOnly || !selection ) && !inspected[ "*" ] ) {
-		selection = inspectPrefiltersOrTransports(
+	if ( ( executeOnly || !selection ) && !inspected[ "*" ] ) { 	// 如果是应用前置过滤器，并且没有处理过通配符*，则递归调用inspectPrefilterOrTransports()应用通配符*对应的前置过滤器; 如果是获取请求发送器，并且没有找到数据类型对应的发送器，同时也没有处理过通配符*。则递归调用inspectPrefiltersOrTransports()获取通配符*对应的请求发送器。
+		selection = inspectPrefiltersOrTransports( 					
 				structure, options, originalOptions, jqXHR, "*", inspected );
 	}
 	// unnecessary when only executing (prefilters)
 	// but it'll be ignored by the caller in that case
-	return selection;
+	return selection;  										// 对于前置过滤器，返回undefined。对于获取请求发送器，返回一个请求发送器。
 }
 
 // A special extend for ajax options
@@ -7846,27 +7846,27 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 	var inspectData = s.contentType === "application/x-www-form-urlencoded" &&
 		( typeof s.data === "string" );
 
-	if ( s.dataTypes[ 0 ] === "jsonp" ||
-		s.jsonp !== false && ( jsre.test( s.url ) ||
-				inspectData && jsre.test( s.data ) ) ) {
-
+	if ( s.dataTypes[ 0 ] === "jsonp" || 				 			// 检测当前请求是否是jsonp请求。如果数据类型为"jsonp"，或者
+		s.jsonp !== false && ( jsre.test( s.url ) || 				// 数据类型为"json"，并且选项url中含有触发jsonp请求的特征字符"=?&", "=?$"或者"??"
+				inspectData && jsre.test( s.data ) ) ) { 			// 未禁用jsonp，并且选项data中含有触发jsonp请求特征的字串符"=?&", "=?$"或者"??"
+ 
 		var responseContainer,
-			jsonpCallback = s.jsonpCallback =
+			jsonpCallback = s.jsonpCallback = 						// jsonpCallback表示jsonp回调函数名;如果选项jsonpCallback是函数，则执行并返回值作为回调函数名; 
 				jQuery.isFunction( s.jsonpCallback ) ? s.jsonpCallback() : s.jsonpCallback,
-			previous = window[ jsonpCallback ],
-			url = s.url,
+			previous = window[ jsonpCallback ], 					// 备份可能曾经出现过的同名jsonp回调函数。当前响应完成后，就会触发该函数。
+			url = s.url, 											
 			data = s.data,
-			replace = "$1" + jsonpCallback + "$2";
+			replace = "$1" + jsonpCallback + "$2"; 					// 变量replace用于替换选项url或data中触发jsonp请求的特征字符，其中$1、$2分别对应正则jsre中分组1, 分组2。
 
-		if ( s.jsonp !== false ) {
-			url = url.replace( jsre, replace );
-			if ( s.url === url ) {
-				if ( inspectData ) {
+		if ( s.jsonp !== false ) { 									
+			url = url.replace( jsre, replace ); 					// 修正选项url。
+			if ( s.url === url ) { 									// 如果没发生变化
+				if ( inspectData ) { 								
 					data = data.replace( jsre, replace );
 				}
 				if ( s.data === data ) {
 					// Add callback manually
-					url += (/\?/.test( url ) ? "&" : "?") + s.jsonp + "=" + jsonpCallback;
+					url += (/\?/.test( url ) ? "&" : "?") + s.jsonp + "=" + jsonpCallback; 		// 手动在选项url后增加jsonp回调函数参数名和回调函数名
 				}
 			}
 		}
@@ -7875,22 +7875,22 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 		s.data = data;
 
 		// Install callback
-		window[ jsonpCallback ] = function( response ) {
+		window[ jsonpCallback ] = function( response ) { 			// 在window注册一个同名回调函数，用于获取响应的json数据。该回调函数在响应完成后会被自动调用，基参数为服务器返回的json数据。通过闭包机制访问变量responseContainer，并将响应的json数据赋值给变量responseContainer。
 			responseContainer = [ response ];
 		};
 
 		// Clean-up function
-		jqXHR.always(function() {
+		jqXHR.always(function() { 									// 调用jqXHR.always()添加一个回调函数					
 			// Set callback back to previous value
-			window[ jsonpCallback ] = previous;
+			window[ jsonpCallback ] = previous; 					// 在window上注册一个同名回调函数，注销在window对象上注册的同名回调函数。当前请求成功时，触发此函数。
 			// Call if it was a function and we have a response
-			if ( responseContainer && jQuery.isFunction( previous ) ) {
+			if ( responseContainer && jQuery.isFunction( previous ) ) { 	
 				window[ jsonpCallback ]( responseContainer[ 0 ] );
 			}
 		});
 
 		// Use data converter to retrieve json after script execution
-		s.converters["script json"] = function() {
+		s.converters["script json"] = function() { 					// 为本次请求添加"script json"对应的数据转换器，通过闭包机制访问变量responseContainer，将响应的json数据返回给方法jQuery.ajax(url, options)。
 			if ( !responseContainer ) {
 				jQuery.error( jsonpCallback + " was not called" );
 			}
@@ -7898,10 +7898,10 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 		};
 
 		// force json dataType
-		s.dataTypes[ 0 ] = "json";
+		s.dataTypes[ 0 ] = "json"; 									// 强制设置本次请求的数据类型为"json"，即期望服务器返回json数据
 
 		// Delegate to script
-		return "script";
+		return "script"; 											// 
 	}
 });
 
