@@ -7065,16 +7065,16 @@ jQuery.fn.extend({
 	},
 
 	serializeArray: function() {
-		return this.map(function(){ 													// 	
-			return this.elements ? jQuery.makeArray( this.elements ) : this;
+		return this.map(function(){ 													// 调用.map(callback, (index, domElement))遍历当前匹配元素集合
+			return this.elements ? jQuery.makeArray( this.elements ) : this; 			// 如果某个匹配是form元素，则读取属性elements，即读取该form元素下所有表单元素。
 		})
-		.filter(function(){
+		.filter(function(){ 															// 调用.filter(selector)遍历第1步得到的匹配元素集合，从中过滤掉不应该包含的表单元素。
 			return this.name && !this.disabled &&
-				( this.checked || rselectTextarea.test( this.nodeName ) ||
+				( this.checked || rselectTextarea.test( this.nodeName ) || 				// 必须含有name属性。必须未被禁用。选取选中的复选框和单选按钮。选取select元素和textarea元素。不选取属性type为file、images、button和input元素。不选取button元素。
 					rinput.test( this.type ) );
 		})
-		.map(function( i, elem ){
-			var val = jQuery( this ).val();
+		.map(function( i, elem ){ 					                      				// 调用方法.map(callback(index, domElement))遍历第2步得到的匹配元素集合，读取元素的属性name和value，构造对象数组。
+			var val = jQuery( this ).val(); 											
 
 			return val == null ?
 				null :
@@ -7643,17 +7643,17 @@ function buildParams( prefix, obj, traditional, add ) { 								// 负责深度�
 				// a server error. Possible fixes are to modify rack's
 				// deserialization algorithm or to provide an option or flag
 				// to force array serialization to be shallow.
-				buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, traditional, add );
+				buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, traditional, add ); 		// 否则递归调用函数buildParams(prefix, obj, traditional, add)，调用时如果属性值是对象或数组，则修正属性名，格式为prefix[i]。
 			}
 		});
 
-	} else if ( !traditional && obj != null && typeof obj === "object" ) {
+	} else if ( !traditional && obj != null && typeof obj === "object" ) { 				// 如果属性值obj是对象，并且参数traditional不是true,则递归调用函数buildParams(prefix, obj, traditional, add)，调用前修正属性名，格式为prefix[name]。
 		// Serialize object item.
-		for ( var name in obj ) {
-			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
+		for ( var name in obj ) { 														
+			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add ); 	
 		}
 
-	} else {
+	} else { 																			// 如果属性值obj是对象，并且参数traditional不是true，则递归调用函数buildParams(prefix, obj, traditional, add)，调用前修正属性名，格式为prefix[name]。
 		// Serialize scalar item.
 		add( prefix, obj );
 	}
@@ -8337,10 +8337,10 @@ jQuery.fn.extend({
 	},
 
 	animate: function( prop, speed, easing, callback ) {
-		var optall = jQuery.speed( speed, easing, callback );
+		var optall = jQuery.speed( speed, easing, callback ); 							// 调用工具方法jQuery.speed(speed, easing, fn)修正运行时间、缓动函数、重写完成回调函数。
 
 		if ( jQuery.isEmptyObject( prop ) ) {
-			return this.each( optall.complete, [ false ] );
+			return this.each( optall.complete, [ false ] ); 							// 
 		}
 
 		// Do not change referenced properties as per-property easing will be lost

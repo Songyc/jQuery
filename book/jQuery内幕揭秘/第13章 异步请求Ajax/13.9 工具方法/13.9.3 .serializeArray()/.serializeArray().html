@@ -23,7 +23,10 @@
 	</form>
 	<script src="../../../js/jQuery.js"></script>
 	<script>
-	$("#results").append( "<tt>" + $("form").serialize() + "</tt>" );
+	var fields = $("select, :radio").serializeArray();
+	jQuery.each( fields, function(i, field){
+	  $("#results").append(field.value + " ");
+	});
 	</script>
 </body>
 </html>

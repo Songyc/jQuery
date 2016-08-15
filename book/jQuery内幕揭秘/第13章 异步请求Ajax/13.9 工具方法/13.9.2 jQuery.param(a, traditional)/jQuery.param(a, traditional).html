@@ -18,7 +18,7 @@
 		},
 		b: [1, 2, 3]
 	}
-	var recursiveEncoded = jQuery.param(myObject, true);
+	var recursiveEncoded = jQuery.param(myObject);
 	console.log(recursiveEncoded);
 	var recursiveDecoded = decodeURIComponent(recursiveEncoded);
 	console.log(recursiveDecoded);
