@@ -6983,66 +6983,66 @@ function ajaxExtend( target, src ) {
 	}
 }
 
-jQuery.fn.extend({
-	load: function( url, params, callback ) {
-		if ( typeof url !== "string" && _load ) {
-			return _load.apply( this, arguments );
+jQuery.fn.extend({ 			
+	load: function( url, params, callback ) { 			  	// 
+		if ( typeof url !== "string" && _load ) { 			// 如果参数url不是字符串，则调用同名的事件便捷方法.load(data, fn)。
+			return _load.apply( this, arguments ); 		
 
 		// Don't do a request if no elements are being requested
-		} else if ( !this.length ) {
+		} else if ( !this.length ) { 					
 			return this;
 		}
 
-		var off = url.indexOf( " " );
-		if ( off >= 0 ) {
-			var selector = url.slice( off, url.length );
-			url = url.slice( 0, off );
+		var off = url.indexOf( " " ); 						
+		if ( off >= 0 ) { 									// 如果有空格的情况
+			var selector = url.slice( off, url.length ); 	// 提取选择器
+			url = url.slice( 0, off ); 						// 修正url
 		}
 
 		// Default to a GET request
-		var type = "GET";
+		var type = "GET"; 									// 默认为HTTP GET请求
 
 		// If the second parameter was provided
-		if ( params ) {
+		if ( params ) { 									
 			// If it's a function
-			if ( jQuery.isFunction( params ) ) {
+			if ( jQuery.isFunction( params ) ) { 			// 如果参数params是函数, 即认为参数格式是load(url, callback)。
 				// We assume that it's the callback
-				callback = params;
+				callback = params; 							// 修正参数callback、params，
 				params = undefined;
 
 			// Otherwise, build a param string
-			} else if ( typeof params === "object" ) {
-				params = jQuery.param( params, jQuery.ajaxSettings.traditional );
-				type = "POST";
+			} else if ( typeof params === "object" ) { 		// 如果参数是对象，则认为参数格式是load(url, params, callback)，
+				params = jQuery.param( params, jQuery.ajaxSettings.traditional ); 		// 将参数params序列化字符串
+				type = "POST";								// 并修正请求类型为POST
 			}
 		}
 
 		var self = this;
 
 		// Request the remote document
-		jQuery.ajax({
+		jQuery.ajax({ 										
 			url: url,
 			type: type,
 			dataType: "html",
 			data: params,
 			// Complete callback (responseText is used internally)
-			complete: function( jqXHR, status, responseText ) {
+			complete: function( jqXHR, status, responseText ) { 						// 完成回调函数负责在响应完成后，设置每个匹配元素的HTML内容为响应数据
 				// Store the response as specified by the jqXHR object
-				responseText = jqXHR.responseText;
+				responseText = jqXHR.responseText; 										// 读取原始响应数据
 				// If successful, inject the HTML into all the matched elements
-				if ( jqXHR.isResolved() ) {
+				if ( jqXHR.isResolved() ) {												// 如果jqXHR对象处于成功状态，即请求成功。
 					// #4825: Get the actual response in case
 					// a dataFilter is present in ajaxSettings
-					jqXHR.done(function( r ) {
+					jqXHR.done(function( r ) { 											
 						responseText = r;
 					});
 					// See if a selector was specified
-					self.html( selector ?
+					self.html( selector ? 												// 将响应数据插入每个匹配元素中。如果提供了选择器表达式
 						// Create a dummy div to hold the results
 						jQuery("<div>")
 							// inject the contents of the document in, removing the scripts
 							// to avoid any 'Permission Denied' errors in IE
-							.append(responseText.replace(rscript, ""))
+							.append(responseText.replace(rscript, "")) 					// 先移除响应数据中的script标签，然后调用方法.append()将其添加到一个临时到每个匹配元素中。如果未提供选择器，则直接为每个元素设置HTML内容。
 
 							// Locate the specified elements
 							.find(selector) :
@@ -7051,7 +7051,7 @@ jQuery.fn.extend({
 						responseText );
 				}
 
-				if ( callback ) {
+				if ( callback ) { 														// 如果传入了函数callback，则在每个元素上执行该函数。
 					self.each( callback, [ responseText, status, jqXHR ] );
 				}
 			}
@@ -7061,11 +7061,11 @@ jQuery.fn.extend({
 	},
 
 	serialize: function() {
-		return jQuery.param( this.serializeArray() );
+		return jQuery.param( this.serializeArray() ); 									// 调用.serializeArray()将表单元素编码为对象数组，然后调用方法jQuery.param(a, traditional)将对象数组序列化为URL查询串。
 	},
 
 	serializeArray: function() {
-		return this.map(function(){
+		return this.map(function(){ 													// 	
 			return this.elements ? jQuery.makeArray( this.elements ) : this;
 		})
 		.filter(function(){
@@ -7097,13 +7097,13 @@ jQuery.each( "ajaxStart ajaxStop ajaxComplete ajaxError ajaxSuccess ajaxSend".sp
 jQuery.each( [ "get", "post" ], function( i, method ) {
 	jQuery[ method ] = function( url, data, callback, type ) {
 		// shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
+		if ( jQuery.isFunction( data ) ) { 											
 			type = type || callback;
 			callback = data;
 			data = undefined;
 		}
 
-		return jQuery.ajax({
+		return jQuery.ajax({ 									// 调用jQuery.ajax(url, options)请求发送
 			type: method,
 			url: url,
 			data: data,
@@ -7115,18 +7115,18 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 
 jQuery.extend({
 
-	getScript: function( url, callback ) {
-		return jQuery.get( url, undefined, callback, "script" );
+	getScript: function( url, callback ) { 						
+		return jQuery.get( url, undefined, callback, "script" ); 	// 调用jQuery.get(url, callback)请求从服务器加载JavaScript格式的文件并执行。
 	},
 
 	getJSON: function( url, data, callback ) {
-		return jQuery.get( url, data, callback, "json" );
+		return jQuery.get( url, data, callback, "json" ); 			// 调用jQuery.get(url, callback)请求从服务器加载JSON格式的数据。
 	},
 
 	// Creates a full fledged settings object into target
 	// with both ajaxSettings and settings fields.
 	// If target is omitted, writes into ajaxSettings.
-	ajaxSetup: function( target, settings ) {
+	ajaxSetup: function( target, settings ) { 						// 
 		if ( settings ) {
 			// Building a settings object
 			ajaxExtend( target, jQuery.ajaxSettings );
@@ -7183,16 +7183,16 @@ jQuery.extend({
 		converters: {
 
 			// Convert anything to text
-			"* text": window.String,
+			"* text": window.String, 							// 将任意类型的数据转换为字符串
 
-			// Text to html (true = no transformation)
-			"text html": true,
+			// Text to html (true = no transformation) 			
+			"text html": true, 									// 将字符串转换为HTML代码，值为true表示不需要转换
 
 			// Evaluate text as a json expression
-			"text json": jQuery.parseJSON,
+			"text json": jQuery.parseJSON,	 					// 将字符串转换为json
 
 			// Parse text as xml
-			"text xml": jQuery.parseXML
+			"text xml": jQuery.parseXML 						// 将字符串转换为XML文档
 		},
 
 		// For options that shouldn't be deep extended:
@@ -7742,14 +7742,14 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 }
 
 // Chain conversions given the request and the original response
-function ajaxConvert( s, response ) {
+function ajaxConvert( s, response ) { 							// 自定义函数ajaxConvert(s, response)
 
 	// Apply the dataFilter if provided
-	if ( s.dataFilter ) {
+	if ( s.dataFilter ) { 										// 如果设置了选项dataFilter。则执行
 		response = s.dataFilter( response, s.dataType );
 	}
 
-	var dataTypes = s.dataTypes,
+	var dataTypes = s.dataTypes, 								// 定义局部变量
 		converters = {},
 		i,
 		key,
@@ -7767,12 +7767,12 @@ function ajaxConvert( s, response ) {
 		conv2;
 
 	// For each dataType in the chain
-	for ( i = 1; i < length; i++ ) {
+	for ( i = 1; i < length; i++ ) { 							// 遍历数据类型数组s.dataTypes, 逐个转换。
 
 		// Create converters map
 		// with lowercased keys
-		if ( i === 1 ) {
-			for ( key in s.converters ) {
+		if ( i === 1 ) { 										
+			for ( key in s.converters ) { 						// 将选项converters中转换表达式和对应的数据转换器复制到变量converters中，复制时将转换表达式转换小写。
 				if ( typeof key === "string" ) {
 					converters[ key.toLowerCase() ] = s.converters[ key ];
 				}
@@ -7780,50 +7780,50 @@ function ajaxConvert( s, response ) {
 		}
 
 		// Get the dataTypes
-		prev = current;
-		current = dataTypes[ i ];
+		prev = current; 										// 修正变量prev，current值。每次转换换相邻的数据类型时，将上一次转换的目标类型存储在变量prev中，作为本次转换中被转换的类型，然后从数组dataTypes中取出本次转换的目标类型，使得整个转换过程链式地进行下去。
+		current = dataTypes[ i ]; 								// 
 
 		// If current is auto dataType, update it to prev
-		if ( current === "*" ) {
+		if ( current === "*" ) { 								// 数组dataTypes中的第一数据类型是通配符, 目标类型是通配符，被转换类型和目标类型相同
 			current = prev;
 		// If no auto and dataTypes are actually different
-		} else if ( prev !== "*" && prev !== current ) {
+		} else if ( prev !== "*" && prev !== current ) { 		// 被转换的类型不是通配符并且不等于目标类型
 
 			// Get the converter
-			conversion = prev + " " + current;
-			conv = converters[ conversion ] || converters[ "* " + current ];
+			conversion = prev + " " + current; 					// 拼接转换表达式
+			conv = converters[ conversion ] || converters[ "* " + current ]; 		// 尝试从数据转换器converters中查找数据转换器func
 
 			// If there is no direct converter, search transitively
-			if ( !conv ) {
-				conv2 = undefined;
-				for ( conv1 in converters ) {
-					tmp = conv1.split( " " );
-					if ( tmp[ 0 ] === prev || tmp[ 0 ] === "*" ) {
-						conv2 = converters[ tmp[1] + " " + current ];
-						if ( conv2 ) {
-							conv1 = converters[ conv1 ];
-							if ( conv1 === true ) {
-								conv = conv2;
-							} else if ( conv2 === true ) {
-								conv = conv1;
+			if ( !conv ) { 										// 如果没有查找到
+				conv2 = undefined; 								// 最终类型转换器
+				for ( conv1 in converters ) { 					// 被转换类型
+					tmp = conv1.split( " " ); 					
+					if ( tmp[ 0 ] === prev || tmp[ 0 ] === "*" ) { 		// 如果被转换的类型位于数据转换器中，或者是通配符。说明是可以被转换的。
+						conv2 = converters[ tmp[1] + " " + current ]; 	// 拼接数据类型和目标类型，从数据转换器中查找数据转换器func
+						if ( conv2 ) { 									// 如果有对应的数据转换器
+							conv1 = converters[ conv1 ]; 				// 过滤类型转换器赋值给conv1
+							if ( conv1 === true ) { 					// 如果过滤类型转换器对应的是true
+								conv = conv2; 							// 最终类型转换器就是我们想要的数据转换器
+							} else if ( conv2 === true ) { 				// 如果最终类型转换器对应的是true
+								conv = conv1; 							// 如果过渡类型与目标类型相同，则变成被转换类型
 							}
-							break;
-						}
+							break; 										// 一旦找到过渡类型，就可以提前结束嵌套遍历。
+						} 
 					}
 				}
 			}
 			// If we found no converter, dispatch an error
-			if ( !( conv || conv2 ) ) {
+			if ( !( conv || conv2 ) ) { 								// 如果A->B行不通，并且A不能转换为的所有都不能转换为B，即找不到过滤类型，则抛出异常。
 				jQuery.error( "No conversion from " + conversion.replace(" "," to ") );
 			}
 			// If found converter is not an equivalence
-			if ( conv !== true ) {
+			if ( conv !== true ) { 										// 如果A->B可行，或者A->C->B可行，则执行找到的数据转换器。
 				// Convert with 1 or 2 converters accordingly
-				response = conv ? conv( response ) : conv2( conv1(response) );
+				response = conv ? conv( response ) : conv2( conv1(response) ); 			
 			}
 		}
 	}
-	return response;
+	return response;													// 返回转换后的数据 
 }
 
 
@@ -7891,10 +7891,10 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 		// Use data converter to retrieve json after script execution
 		s.converters["script json"] = function() { 					// 为本次请求添加"script json"对应的数据转换器，通过闭包机制访问变量responseContainer，将响应的json数据返回给方法jQuery.ajax(url, options)。
-			if ( !responseContainer ) {
+			if ( !responseContainer ) { 							
 				jQuery.error( jsonpCallback + " was not called" );
 			}
-			return responseContainer[ 0 ];
+			return responseContainer[ 0 ]; 							// 将响应的json数据返回方法jQuery.ajax(url, options)
 		};
 
 		// force json dataType
@@ -7917,77 +7917,77 @@ jQuery.ajaxSetup({
 		script: /javascript|ecmascript/
 	},
 	converters: {
-		"text script": function( text ) {
-			jQuery.globalEval( text );
+		"text script": function( text ) { 							// 将文本转成javascript代码
+			jQuery.globalEval( text ); 								// 调用方法jQuery.globalEval(text)
 			return text;
 		}
 	}
 });
 
 // Handle cache's special case and global
-jQuery.ajaxPrefilter( "script", function( s ) {
-	if ( s.cache === undefined ) {
+jQuery.ajaxPrefilter( "script", function( s ) { 					
+	if ( s.cache === undefined ) { 								// 如果未明确指定选项cache，则设置其为false。即禁用缓存，这会使其在选项url上替换或追加时间戳jQuery.now()。
 		s.cache = false;
 	}
-	if ( s.crossDomain ) {
-		s.type = "GET";
-		s.global = false;
+	if ( s.crossDomain ) { 										// 如果选项crossDomain为true，即认为当前请求跨域。
+		s.type = "GET"; 										// 设置选项type为"GET"。
+		s.global = false; 										// 同时还设置选项global为false(这将导致Ajax全局事件被禁用)
 	}
 });
 
 // Bind script tag hack transport
-jQuery.ajaxTransport( "script", function(s) {
+jQuery.ajaxTransport( "script", function(s) { 					// script请求发送器
 
 	// This transport only deals with cross domain requests
-	if ( s.crossDomain ) {
+	if ( s.crossDomain ) { 										// 如果设置选项crossDomain为true
 
 		var script,
 			head = document.head || document.getElementsByTagName( "head" )[0] || document.documentElement;
 
-		return {
+		return { 												// 返回一个请求发送器
 
-			send: function( _, callback ) {
+			send: function( _, callback ) { 					// 在jQuery.ajax(url, options)中调用请求发送器的方法send()发送请求2时，会传入请求头集requestHeaders和回调函数done(status, native, StatusText, responses, headers)作为参数。
 
-				script = document.createElement( "script" );
+				script = document.createElement( "script" ); 	// 调用原生方法document.createElement()创建script元素
 
-				script.async = "async";
+				script.async = "async"; 						// 表示异步执行脚本
 
-				if ( s.scriptCharset ) {
+				if ( s.scriptCharset ) { 						// 如果指定了选项scriptCharset，还会设置script属性charset，指定外部脚本文件使用的字符集。
 					script.charset = s.scriptCharset;
 				}
 
-				script.src = s.url;
+				script.src = s.url; 							// 设置属性src
 
 				// Attach handlers for all browsers
-				script.onload = script.onreadystatechange = function( _, isAbort ) {
+				script.onload = script.onreadystatechange = function( _, isAbort ) { 		// 
 
-					if ( isAbort || !script.readyState || /loaded|complete/.test( script.readyState ) ) {
+					if ( isAbort || !script.readyState || /loaded|complete/.test( script.readyState ) ) { 		
 
 						// Handle memory leak in IE
-						script.onload = script.onreadystatechange = null;
+						script.onload = script.onreadystatechange = null; 					// 移除事件句柄
 
 						// Remove the script
-						if ( head && script.parentNode ) {
+						if ( head && script.parentNode ) { 									// 移除script元素
 							head.removeChild( script );
 						}
 
 						// Dereference the script
-						script = undefined;
+						script = undefined;													
 
 						// Callback if not abort
-						if ( !isAbort ) {
-							callback( 200, "success" );
+						if ( !isAbort ) { 													// 如果不是取消请求，则执行回调函数callback。
+							callback( 200, "success" ); 									// 将读取响应数据、转换数据类型、执行回调函数、触发全局事件。
 						}
 					}
 				};
 				// Use insertBefore instead of appendChild  to circumvent an IE6 bug.
 				// This arises when a base node is used (#2709 and #4378).
-				head.insertBefore( script, head.firstChild );
+				head.insertBefore( script, head.firstChild ); 								// 将创建的script，开始加载外部文件并执行响应的脚本，即开始发送请求并执行jsonp请求。
 			},
 
-			abort: function() {
-				if ( script ) {
-					script.onload( 0, 1 );
+			abort: function() {																
+				if ( script ) { 															// 如果变量script存在，说明已经调用过方法send(_, callback), 即当前请求已经发送。
+					script.onload( 0, 1 );													// 则手动触发onload事件句柄，传入的第二个参数为1，表示取消当前请求。
 				}
 			}
 		};
@@ -7998,7 +7998,7 @@ jQuery.ajaxTransport( "script", function(s) {
 
 
 var // #5280: Internet Explorer will keep connections alive if we don't abort on unload
-	xhrOnUnloadAbort = window.ActiveXObject ? function() {
+	xhrOnUnloadAbort = window.ActiveXObject ? function() { 									// 如果是IE, 初始化变量xhrOnUnloadAbort为一个函数，用于取消所有正在执行的请求。
 		// Abort all pending requests
 		for ( var key in xhrCallbacks ) {
 			xhrCallbacks[ key ]( 0, 1 );
@@ -8044,40 +8044,40 @@ jQuery.ajaxSettings.xhr = window.ActiveXObject ?
 })( jQuery.ajaxSettings.xhr() ); 								// 尝试创建ajax对象
 
 // Create transport if the browser can provide an xhr
-if ( jQuery.support.ajax ) {
+if ( jQuery.support.ajax ) { 							
 
-	jQuery.ajaxTransport(function( s ) {
+	jQuery.ajaxTransport(function( s ) { 						// 通配符*对应的请求发送器工厂函数会返回一个请求发送器。
 		// Cross domain only allowed if supported through XMLHttpRequest
-		if ( !s.crossDomain || jQuery.support.cors ) {
+		if ( !s.crossDomain || jQuery.support.cors ) { 			// 如果当前请求不跨域，或支持跨域资源共享，通配符*对应的请求发送器工厂函数才会返回一个请求发送器。
 
 			var callback;
 
 			return {
-				send: function( headers, complete ) {
+				send: function( headers, complete ) { 			
 
 					// Get a new xhr
-					var xhr = s.xhr(),
-						handle,
+					var xhr = s.xhr(), 							// 调用jQuery.ajaxSettings.xhr()创建XMLHttpRequest对象。
+						handle, 								
 						i;
 
 					// Open the socket
 					// Passing null username, generates a login popup on Opera (#2865)
-					if ( s.username ) {
+					if ( s.username ) { 						// 如果需要身份验证。则传入选项username和password。XMLHttpRequest对象的方法open(method, url, async, use, password)打开socket连接，如果需要身份验证，则传入选项usename和password。
 						xhr.open( s.type, s.url, s.async, s.username, s.password );
 					} else {
 						xhr.open( s.type, s.url, s.async );
 					}
 
 					// Apply custom fields if provided
-					if ( s.xhrFields ) {
+					if ( s.xhrFields ) { 							// 为XMLHttpRequest对象设置自定义属性
 						for ( i in s.xhrFields ) {
 							xhr[ i ] = s.xhrFields[ i ];
 						}
 					}
 
 					// Override mime type if needed
-					if ( s.mimeType && xhr.overrideMimeType ) {
-						xhr.overrideMimeType( s.mimeType );
+					if ( s.mimeType && xhr.overrideMimeType ) { 	// 如果设置了选项mimeType，发送端指定接收内容的mime-type。并且XMLHttpRequest对象支持方法，并且XMLHttpRequest对象支持方法overrideMimeType，
+						xhr.overrideMimeType( s.mimeType );			// 则调用该方法强制覆盖浏览器返回的MIME类型，即响应头Content-Type的值。响应头Content-Type用于指定响应内容的类型。
 					}
 
 					// X-Requested-With header
@@ -8085,13 +8085,13 @@ if ( jQuery.support.ajax ) {
 					// akin to a jigsaw puzzle, we simply never set it to be sure.
 					// (it can always be set on a per-request basis or even using ajaxSetup)
 					// For same-domain requests, won't change header if already provided.
-					if ( !s.crossDomain && !headers["X-Requested-With"] ) {
+					if ( !s.crossDomain && !headers["X-Requested-With"] ) { 		// 设置请求头X-Request-With为XMLHttpRequest，标识本次请求是Ajax请求。
 						headers[ "X-Requested-With" ] = "XMLHttpRequest";
 					}
 
-					// Need an extra try/catch for cross domain requests in Firefox 3
+					// Need an extra try/catch for cross domain requests in Firefox 3 	
 					try {
-						for ( i in headers ) {
+						for ( i in headers ) { 										// 遍历请求头，调用XMLHttpRequest对象的方法setRequestHeader(header, value)逐个设置。
 							xhr.setRequestHeader( i, headers[ i ] );
 						}
 					} catch( _ ) {}
@@ -8099,10 +8099,10 @@ if ( jQuery.support.ajax ) {
 					// Do send the request
 					// This may raise an exception which is actually
 					// handled in jQuery.ajax (so no try/catch here)
-					xhr.send( ( s.hasContent && s.data ) || null );
+					xhr.send( ( s.hasContent && s.data ) || null ); 				// 发送请求
 
 					// Listener
-					callback = function( _, isAbort ) {
+					callback = function( _, isAbort ) {  							// 定义事件监听函数							
 
 						var status,
 							statusText,
@@ -8116,41 +8116,41 @@ if ( jQuery.support.ajax ) {
 						try {
 
 							// Was never called and is aborted or complete
-							if ( callback && ( isAbort || xhr.readyState === 4 ) ) {
+							if ( callback && ( isAbort || xhr.readyState === 4 ) ) { 		// 如果是取消请求或请求完成，则执行后续代码，否则不做任何动作。
 
 								// Only called once
-								callback = undefined;
+								callback = undefined; 								// callback只会触发一次
 
 								// Do not keep as active anymore
-								if ( handle ) {
-									xhr.onreadystatechange = jQuery.noop;
-									if ( xhrOnUnloadAbort ) {
-										delete xhrCallbacks[ handle ];
+								if ( handle ) { 									// 如果handle可以转成true, 说明已经绑定了onreadystatechange
+									xhr.onreadystatechange = jQuery.noop; 			// 定义onreadystatechange事件监听函数callback(_, isAort);则重新设置为空函数，避免重复触发和内存泄漏。
+									if ( xhrOnUnloadAbort ) { 		 				// 同时如果变量xhrOnUnloadAbort可以转成true				
+										delete xhrCallbacks[ handle ]; 				// 移除当前请求对应的回调函数callback(_, isAbort)。
 									}
 								}
 
 								// If it's an abort
-								if ( isAbort ) {
+								if ( isAbort ) { 									// 如果参数isAbort可以转成true, 并且请求还没完成
 									// Abort it manually if needed
-									if ( xhr.readyState !== 4 ) {
-										xhr.abort();
+									if ( xhr.readyState !== 4 ) { 					
+										xhr.abort(); 								// 则取消请求
 									}
 								} else {
-									status = xhr.status;
-									responseHeaders = xhr.getAllResponseHeaders();
-									responses = {};
-									xml = xhr.responseXML;
+									status = xhr.status; 							// 访问属性xhr.status状态码
+									responseHeaders = xhr.getAllResponseHeaders(); 	// 调用xhr.getAllResponseHeaders()读取响应字符串
+									responses = {}; 								// 初始化变量responses为空对象，尝试读取xhr.responseXML和xhr.responseText
+									xml = xhr.responseXML;							// 尝试读取xhr.responseXML
 
 									// Construct response list
-									if ( xml && xml.documentElement /* #4958 */ ) {
+									if ( xml && xml.documentElement /* #4958 */ ) { // 
 										responses.xml = xml;
 									}
-									responses.text = xhr.responseText;
+									responses.text = xhr.responseText; 				// 尝试读取xhr.responseText
 
 									// Firefox throws an exception when accessing
 									// statusText for faulty cross-domain requests
 									try {
-										statusText = xhr.statusText;
+										statusText = xhr.statusText; 				// 尝试读取响应状态描述xhr.statusText
 									} catch( e ) {
 										// We normalize with Webkit giving an empty statusText
 										statusText = "";
@@ -8161,7 +8161,7 @@ if ( jQuery.support.ajax ) {
 									// If the request is local and we have data: assume a success
 									// (success with no data won't get notified, that's the best we
 									// can do given current implementations)
-									if ( !status && s.isLocal && !s.crossDomain ) {
+									if ( !status && s.isLocal && !s.crossDomain ) { 	// 修正不标准的状态码
 										status = responses.text ? 200 : 404;
 									// IE - #1450: sometimes returns 1223 when it should be 204
 									} else if ( status === 1223 ) {
@@ -8169,14 +8169,14 @@ if ( jQuery.support.ajax ) {
 									}
 								}
 							}
-						} catch( firefoxAccessException ) {
+						} catch( firefoxAccessException ) { 						// 如果firefox抛出异常，则调用回调函数done(-1, firefoxAccessException), 触发失败回调函数，并结束本次请求。
 							if ( !isAbort ) {
 								complete( -1, firefoxAccessException );
 							}
 						}
 
 						// Call complete if needed
-						if ( responses ) {
+						if ( responses ) { 											// 如果响应完成并且成功，则调用回调函数done(status, statusText, responses, responseHeaders)，触发成功回调函数。
 							complete( status, statusText, responses, responseHeaders );
 						}
 					};
@@ -8184,21 +8184,21 @@ if ( jQuery.support.ajax ) {
 					// if we're in sync mode or it's in cache
 					// and has been retrieved directly (IE6 & IE7)
 					// we need to manually fire the callback
-					if ( !s.async || xhr.readyState === 4 ) {
-						callback();
+					if ( !s.async || xhr.readyState === 4 ) { 						// 如果选项async为false，即表示处于同步模式或者当前请求已完成。
+						callback(); 												// 手动触发回调函数
 					} else {
 						handle = ++xhrId;
-						if ( xhrOnUnloadAbort ) {
+						if ( xhrOnUnloadAbort ) { 									// 如果是IE浏览器
 							// Create the active xhrs callbacks list if needed
 							// and attach the unload handler
-							if ( !xhrCallbacks ) {
+							if ( !xhrCallbacks ) { 									// 将函数xhrOnUnloadAbort()绑定到window对象的unload事件上，当页面退出时，不会自动断开正在执行的Ajax请求。
 								xhrCallbacks = {};
 								jQuery( window ).unload( xhrOnUnloadAbort );
 							}
 							// Add to list of active xhrs callbacks
-							xhrCallbacks[ handle ] = callback;
+							xhrCallbacks[ handle ] = callback; 						// 用于唯一标识请求发送器中的回调函数callback
 						}
-						xhr.onreadystatechange = callback;
+						xhr.onreadystatechange = callback; 							// 绑定onreadystatechange事件，当readystate改变时被触发。
 					}
 				},
 
