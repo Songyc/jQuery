@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="">
+		123
+	</form>
+	<script src="../../../js/jQuery.js"></script>
+	<script>
+	var myObject = {
+		a: {
+			one: 1,
+			two: 2,
+			three: 3
+		},
+		b: [1, 2, 3]
+	}
+	var recursiveEncoded = jQuery.param(myObject, true);
+	console.log(recursiveEncoded);
+	var recursiveDecoded = decodeURIComponent(recursiveEncoded);
+	console.log(recursiveDecoded);
+	</script>
+</body>
+</html>

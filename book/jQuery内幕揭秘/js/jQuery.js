@@ -7594,44 +7594,44 @@ jQuery.extend({
 
 	// Serialize an array of form elements or a set of
 	// key/values into a query string
-	param: function( a, traditional ) {
-		var s = [],
-			add = function( key, value ) {
+	param: function( a, traditional ) { 										
+		var s = [], 															// 用于存在参数对
+			add = function( key, value ) {  									// 将参数key, value编码，并用等号拼接成参数对，然后插入数组s中。
 				// If value is a function, invoke it and return its value
-				value = jQuery.isFunction( value ) ? value() : value;
-				s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
+				value = jQuery.isFunction( value ) ? value() : value; 			
+				s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value ); 		
 			};
 
 		// Set traditional to true for jQuery <= 1.3.2 behavior.
-		if ( traditional === undefined ) {
-			traditional = jQuery.ajaxSettings.traditional;
+		if ( traditional === undefined ) { 										// 如果未传入traditional
+			traditional = jQuery.ajaxSettings.traditional; 						// 则读取默认值jQuery.ajaxSettings.traditional。
 		}
 
 		// If an array was passed in, assume that it is an array of form elements.
-		if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
+		if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) { 		// 如果参数a是数组或jQuery对象，则认为是表单元素集合。
 			// Serialize the form elements
 			jQuery.each( a, function() {
-				add( this.name, this.value );
+				add( this.name, this.value ); 											// 读取每个元素的属性name、value。然后调用函数add(key, value)编码并插入数组中。
 			});
 
 		} else {
 			// If traditional, encode the "old" way (the way 1.3.2 or older
 			// did it), otherwise encode params recursively.
-			for ( var prefix in a ) {
-				buildParams( prefix, a[ prefix ], traditional, add );
+			for ( var prefix in a ) { 													// 否则认为a是对象，遍历该对象，调用函数buildParams(prefix, obj, traditional, add)深度序列化属性值。
+				buildParams( prefix, a[ prefix ], traditional, add ); 					
 			}
 		}
 
 		// Return the resulting serialization
-		return s.join( "&" ).replace( r20, "+" );
+		return s.join( "&" ).replace( r20, "+" ); 										// 最后用字符&连接数组s中的参数对，并将空格替换为字符+。
 	}
 });
 
-function buildParams( prefix, obj, traditional, add ) {
-	if ( jQuery.isArray( obj ) ) {
+function buildParams( prefix, obj, traditional, add ) { 								// 负责深度序列化数组和对象。
+	if ( jQuery.isArray( obj ) ) { 														// 如果obj是数组
 		// Serialize array item.
-		jQuery.each( obj, function( i, v ) {
-			if ( traditional || rbracket.test( prefix ) ) {
+		jQuery.each( obj, function( i, v ) { 											// 遍历数组
+			if ( traditional || rbracket.test( prefix ) ) { 							// 逐个序列化数组中的元素。如果是浅序列化，则直接调用函数add(key, value)编码并插入数组s中。
 				// Treat each array item as a scalar.
 				add( prefix, v );
 
