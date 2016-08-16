@@ -8601,10 +8601,10 @@ jQuery.extend({
 	},
 
 	easing: {
-		linear: function( p, n, firstNum, diff ) {
-			return firstNum + diff * p;
+		linear: function( p, n, firstNum, diff ) { 						// 线性缓动函数linear，动画效果是：匀速运动。
+			return firstNum + diff * p; 				
 		},
-		swing: function( p, n, firstNum, diff ) {
+		swing: function( p, n, firstNum, diff ) { 						// 余弦缓动函数swing，动画效果是: 慢 快 慢
 			return ( ( -Math.cos( p*Math.PI ) / 2 ) + 0.5 ) * diff + firstNum;
 		}
 	},
@@ -8660,16 +8660,16 @@ jQuery.fx.prototype = {
 			return self.step( gotoEnd );
 		}
 
-		t.queue = this.options.queue;	
+		t.queue = this.options.queue;									
 		t.elem = this.elem;
-		t.saveState = function() {
-			if ( self.options.hide && jQuery._data( self.elem, "fxshow" + self.prop ) === undefined ) {
+		t.saveState = function() {	 									// 方法t.saveState()用于记录当前样式动画的状态。
+			if ( self.options.hide && jQuery._data( self.elem, "fxshow" + self.prop ) === undefined ) { 		// 如果样式值是"hide"，则记录动画的开始值，以便下次遇到"show"时设置结束值为记录的值。在方法.stop(type, clearQueue, gotoEnd)中，停止动画之前，如果参数gotoEnd不是true，则会调用方法t.saveState()保存状态，以便回退动画。
 				jQuery._data( self.elem, "fxshow" + self.prop, self.start );
 			}
 		};
 
-		if ( t() && jQuery.timers.push(t) && !timerId ) {
-			timerId = setInterval( fx.tick, fx.interval );
+		if ( t() && jQuery.timers.push(t) && !timerId ) { 				// 执行单帧闭包动画函数t(gotoEnd)，并将其插入全局动画函数数组jQuery.timers中，同时创建一个全局定时器timerId，周期性地执行方法jQuery.fx.tick()，从而开始执行动画。
+			timerId = setInterval( fx.tick, fx.interval ); 				
 		}
 	},
 
@@ -8705,43 +8705,43 @@ jQuery.fx.prototype = {
 	},
 
 	// Each step of an animation
-	step: function( gotoEnd ) {
+	step: function( gotoEnd ) { 										// 定义方法jQuery.fx.prototype.step(gotoEnd)，参数gotoEnd表示当前样式动画是否直接跳转到完成状态。
 		var p, n, complete,
 			t = fxNow || createFxNow(),
 			done = true,
 			elem = this.elem,
 			options = this.options;
 
-		if ( gotoEnd || t >= options.duration + this.startTime ) {
-			this.now = this.end;
+		if ( gotoEnd || t >= options.duration + this.startTime ) { 		// 参数gotoEnd为true或者超过了动画完成时间，则在该if语句的最后返回false。
+			this.now = this.end; 										// 设置当前帧样式值为结束值，设置已执行时间百分比和差值百分比为1，然后调用jQuery.fx.prototype.update()更新样式值。
 			this.pos = this.state = 1;
 			this.update();
 
-			options.animatedProperties[ this.prop ] = true;
+			options.animatedProperties[ this.prop ] = true; 			// 设置属性options.animatedProperties中当前样式的值为true，表示当前样式动画已经执行完成。
 
-			for ( p in options.animatedProperties ) {
-				if ( options.animatedProperties[ p ] !== true ) {
+			for ( p in options.animatedProperties ) { 					// 检查当前元素的所有样式动画是否全部完成
+				if ( options.animatedProperties[ p ] !== true ) { 		
 					done = false;
 				}
 			}
 
-			if ( done ) {
+			if ( done ) { 												// 如果当前元素的所有样式动画全部完成，则恢复备份的样式初始值
 				// Reset the overflow
 				if ( options.overflow != null && !jQuery.support.shrinkWrapBlocks ) {
 
-					jQuery.each( [ "", "X", "Y" ], function( index, value ) {
+					jQuery.each( [ "", "X", "Y" ], function( index, value ) { 		// 如果备份过样式overflow, overflowX, overflowY, 并且当前元素不会被子元素撑大，则恢复备份的样式。
 						elem.style[ "overflow" + value ] = options.overflow[ index ];
 					});
 				}
 
 				// Hide the element if the "hide" operation was done
-				if ( options.hide ) {
+				if ( options.hide ) { 									// 如果某个样式值是hide，开始动画时会调用jQuery.fx.prototype.hide()设置options.hide为true。
 					jQuery( elem ).hide();
 				}
 
 				// Reset the properties, if the item has been hidden or shown
-				if ( options.hide || options.show ) {
-					for ( p in options.animatedProperties ) {
+				if ( options.hide || options.show ) { 					// 如果某个样式值是hide或show，开始动画时会调用jQuery.fx.prototype.hide/show()设置options.hide/show为true，这里恢复备份的样式为初始值。
+					for ( p in options.animatedProperties ) { 			
 						jQuery.style( elem, p, options.orig[ p ] );
 						jQuery.removeData( elem, "fxshow" + p, true );
 						// Toggle data is no longer needed
@@ -8757,54 +8757,54 @@ jQuery.fx.prototype = {
 				if ( complete ) {
 
 					options.complete = false;
-					complete.call( elem );
+					complete.call( elem ); 
 				}
 			}
 
-			return false;
+			return false; 												// 返回false, 表示当前样式动画已经完成。
 
 		} else {
 			// classical easing cannot be used with an Infinity duration
-			if ( options.duration == Infinity ) {
+			if ( options.duration == Infinity ) { 						
 				this.now = t;
 			} else {
-				n = t - this.startTime;
-				this.state = n / options.duration;
+				n = t - this.startTime; 								// 已执行时间
+				this.state = n / options.duration; 						// 已执行时间百分比
 
 				// Perform the easing function, defaults to swing
-				this.pos = jQuery.easing[ options.animatedProperties[this.prop] ]( this.state, n, 0, 1, options.duration );
-				this.now = this.start + ( (this.end - this.start) * this.pos );
+				this.pos = jQuery.easing[ options.animatedProperties[this.prop] ]( this.state, n, 0, 1, options.duration ); 	// 执行缓动函数， 获取差值百分比
+				this.now = this.start + ( (this.end - this.start) * this.pos ); 		// 当前帧样式值 = 开始值 + 差值百分比 * (结束值 - 开始值)
 			}
 			// Perform the next step of the animation
-			this.update();
+			this.update(); 												// 调用方法jQuery.fx.prototype.update()更新样式值
 		}
 
-		return true;
+		return true; 													// 返回true，表示当前样式动画尚未完成
 	}
 };
 
 jQuery.extend( jQuery.fx, {
-	tick: function() {
+	tick: function() { 														
 		var timer,
 			timers = jQuery.timers,
 			i = 0;
 
-		for ( ; i < timers.length; i++ ) {
+		for ( ; i < timers.length; i++ ) { 						// 遍历执行全局动画函数jQuery.timers
 			timer = timers[ i ];
 			// Checks the timer has not already been removed
-			if ( !timer() && timers[ i ] === timer ) {
+			if ( !timer() && timers[ i ] === timer ) { 			// 如果某个闭包单帧回调函数t(gotoEnd)返回false，表示该函数代表的样式动画已经执行完成，则将从数组jQuery.timers中移除。
 				timers.splice( i--, 1 );
 			}
 		}
 
-		if ( !timers.length ) {
+		if ( !timers.length ) { 								// 如果数组jQuery.timers变为空数组，表示所有样式动画已经执行完成，则将其从数组jQuery.timers中移除。
 			jQuery.fx.stop();
 		}
 	},
 
-	interval: 13,
+	interval: 13, 												// 定义了定时器执行方法jQuery.fx.tick()的间隔时间，默认为13ms。
 
-	stop: function() {
+	stop: function() { 											// 清除全局定时器
 		clearInterval( timerId );
 		timerId = null;
 	},
