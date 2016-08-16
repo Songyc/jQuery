@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="go"> Run</button>
+	<span id="block">Hello!</span>
+	<script src="../../../js/jQuery.js"></script>
+	<script>
+	$.fx.off = true;
+
+	$("#block").animate({
+
+		// width: ["80%", function () {
+			// console.log("width");
+		// }],
+		height: "+=100px",
+		fontSize: "10em",
+		borderWidth: 10,
+		show: "toggle",
+	}, function () {
+		console.log(1);
+	});
+
+	</script>
+</body>
+</html>

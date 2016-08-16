@@ -5,9 +5,21 @@
 	<title>Document</title>
 </head>
 <body>
+	<button id="go"> Run</button>
+	<div id="block">Hello!</div>
 	<script src="../../../js/jQuery.js"></script>
 	<script>
-	
+	// 在一个动画中同时应用三种类型的效果
+	// $("#go").click(function() {
+		$("#block").animate({
+			width: "90%",
+			height: "100%",
+			fontSize: "10em",
+			borderWidth: 10
+		}, 1000, function () {
+			console.log(111);
+		});
+	// });
 	</script>
 </body>
 </html>

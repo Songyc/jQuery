@@ -8339,22 +8339,22 @@ jQuery.fn.extend({
 	animate: function( prop, speed, easing, callback ) {
 		var optall = jQuery.speed( speed, easing, callback ); 							// 调用工具方法jQuery.speed(speed, easing, fn)修正运行时间、缓动函数、重写完成回调函数。
 
-		if ( jQuery.isEmptyObject( prop ) ) {
-			return this.each( optall.complete, [ false ] ); 							// 
+		if ( jQuery.isEmptyObject( prop ) ) { 											// 如果参数prop中没有需要执行动画的样式，
+			return this.each( optall.complete, [ false ] ); 							// 则立即调用完成回调函数。如果选项queue为false, 且参数noUnmark为false,则不会调用jQuery._unmark()使当前元素的计数器fxmark减1, 因为此时还没有调用jQuery._mark()使当前元素的计数器fxmark加1。
 		}
 
 		// Do not change referenced properties as per-property easing will be lost
-		prop = jQuery.extend( {}, prop );
+		prop = jQuery.extend( {}, prop ); 												// 复制一份动画样式的集合。
 
-		function doAnimation() {
+		function doAnimation() { 														// 定义动画函数
 			// XXX 'this' does not always have a nodeName when running the
 			// test suite
 
-			if ( optall.queue === false ) {
-				jQuery._mark( this );
+			if ( optall.queue === false ) { 											// 如果选项queue为false，动画将会立即异步执行，
+				jQuery._mark( this ); 													// 这里将当前元素关联的计数器加1，使得方法.promise()能够监听该元素的异步动画是否完成。
 			}
 
-			var opt = jQuery.extend( {}, optall ),
+			var opt = jQuery.extend( {}, optall ), 										// opt是完整选项集optall的副本。变量isElement用于检测当前元素是否是DOM元素。变量hidden则表示当前元素是否可见的。
 				isElement = this.nodeType === 1,
 				hidden = isElement && jQuery(this).is(":hidden"),
 				name, val, p, e,
@@ -8362,37 +8362,37 @@ jQuery.fn.extend({
 				method;
 
 			// will store per property easing and be used to determine when an animation is complete
-			opt.animatedProperties = {};
+			opt.animatedProperties = {}; 												// 用于存放动画样式的缓动函数，当动画完成后，属性值被设置为true。
 
 			for ( p in prop ) {
 
 				// property name normalization
-				name = jQuery.camelCase( p );
-				if ( p !== name ) {
+				name = jQuery.camelCase( p ); 											// 样式名转为驼峰式
+				if ( p !== name ) { 													// 统一格式化样式名为驼峰式
 					prop[ name ] = prop[ p ];
 					delete prop[ p ];
 				}
 
-				val = prop[ name ];
+				val = prop[ name ]; 													
 
 				// easing resolution: per property > opt.specialEasing > opt.easing > 'swing' (default)
-				if ( jQuery.isArray( val ) ) {
-					opt.animatedProperties[ name ] = val[ 1 ];
-					val = prop[ name ] = val[ 0 ];
+				if ( jQuery.isArray( val ) ) { 											// 如果样式结束值是数组
+					opt.animatedProperties[ name ] = val[ 1 ]; 							// 则取其第二个元素为该样式的缓动函数
+					val = prop[ name ] = val[ 0 ]; 										// 并修正第一个元素为该样式的结束值
 				} else {
-					opt.animatedProperties[ name ] = opt.specialEasing && opt.specialEasing[ name ] || opt.easing || 'swing';
+					opt.animatedProperties[ name ] = opt.specialEasing && opt.specialEasing[ name ] || opt.easing || 'swing'; 		// 否则依次读取opt.specialEasing[name], opt.easing, 如果未读取到则采用默认值swing。
 				}
 
-				if ( val === "hide" && hidden || val === "show" && !hidden ) {
-					return opt.complete.call( this );
+				if ( val === "hide" && hidden || val === "show" && !hidden ) { 			// 如果结束值为"hide"并且当前元素看不见或者结束值为"show"并且当前元素可以看见
+					return opt.complete.call( this ); 									// 直接触发完成函数
 				}
 
-				if ( isElement && ( name === "height" || name === "width" ) ) {
+				if ( isElement && ( name === "height" || name === "width" ) ) { 		// 如果样式名为height或者width
 					// Make sure that nothing sneaks out
 					// Record all 3 overflow attributes because IE does not
 					// change the overflow attribute when overflowX and
 					// overflowY are set to the same value
-					opt.overflow = [ this.style.overflow, this.style.overflowX, this.style.overflowY ];
+					opt.overflow = [ this.style.overflow, this.style.overflowX, this.style.overflowY ]; 		// 备份样式overflow,overflowX,overflowY
 
 					// Set display property to inline-block for height/width
 					// animations on inline elements that are having width/height animated
@@ -8401,7 +8401,7 @@ jQuery.fn.extend({
 
 						// inline-level elements accept inline-block;
 						// block-level elements need to be inline with layout
-						if ( !jQuery.support.inlineBlockNeedsLayout || defaultDisplay( this.nodeName ) === "inline" ) {
+						if ( !jQuery.support.inlineBlockNeedsLayout || defaultDisplay( this.nodeName ) === "inline" ) { 	// 设置样式为inline-block或zoom为1模拟inline-block
 							this.style.display = "inline-block";
 
 						} else {
@@ -8411,50 +8411,50 @@ jQuery.fn.extend({
 				}
 			}
 
-			if ( opt.overflow != null ) {
-				this.style.overflow = "hidden";
+			if ( opt.overflow != null ) { 												// 如果样式值为width或height
+				this.style.overflow = "hidden"; 										// 设置样式overflow为'hidden'
 			}
 
-			for ( p in prop ) {
-				e = new jQuery.fx( this, opt, p );
-				val = prop[ p ];
+			for ( p in prop ) { 														
+				e = new jQuery.fx( this, opt, p ); 										// 为每个样式构造标准动画对象
+				val = prop[ p ]; 														
 
-				if ( rfxtypes.test( val ) ) {
+				if ( rfxtypes.test( val ) ) { 											// 如果样式值是toggle, show或hide，则转换为调用方法jQuery.fx.prototype.show/hide()修正开始值和结束值，并会调用方法jQuery.fx.prototype.custom(form, to, unit)开始执行动画。
 
 					// Tracks whether to show or hide based on private
 					// data attached to the element
-					method = jQuery._data( this, "toggle" + p ) || ( val === "toggle" ? hidden ? "show" : "hide" : 0 );
+					method = jQuery._data( this, "toggle" + p ) || ( val === "toggle" ? hidden ? "show" : "hide" : 0 ); 		
 					if ( method ) {
-						jQuery._data( this, "toggle" + p, method === "show" ? "hide" : "show" );
+						jQuery._data( this, "toggle" + p, method === "show" ? "hide" : "show" ); 		// 将当前元素的数据缓存对象中临时记录下次遇到toggle时应转换成何值。
 						e[ method ]();
 					} else {
 						e[ val ]();
 					}
 
 				} else {
-					parts = rfxnum.exec( val );
-					start = e.cur();
+					parts = rfxnum.exec( val ); 										// 如果样式是数值型，则计算开始值start, 结束值end, 单位unit，然后开始执行动画。
+					start = e.cur(); 													
 
-					if ( parts ) {
+					if ( parts ) { 														
 						end = parseFloat( parts[2] );
 						unit = parts[3] || ( jQuery.cssNumber[ p ] ? "" : "px" );
 
 						// We need to compute starting value
-						if ( unit !== "px" ) {
+						if ( unit !== "px" ) { 											// 如果结束值单位不是"px"，
 							jQuery.style( this, p, (end || 1) + unit);
 							start = ( (end || 1) / e.cur() ) * start;
-							jQuery.style( this, p, start + unit);
+							jQuery.style( this, p, start + unit); 						// 将开始值换算成与结束值单位一致的值
 						}
 
 						// If a +=/-= token was provided, we're doing a relative animation
-						if ( parts[1] ) {
-							end = ( (parts[ 1 ] === "-=" ? -1 : 1) * end ) + start;
+						if ( parts[1] ) { 												// 如果样式值是为"-="/"+="开头的
+							end = ( (parts[ 1 ] === "-=" ? -1 : 1) * end ) + start; 	// 则用开始值加上或减去给定的值，得到结束值
 						}
 
-						e.custom( start, end, unit );
+						e.custom( start, end, unit ); 									// 调用方法jQuery.fx.prototype(from, to, unit)开始执行动画。
 
 					} else {
-						e.custom( start, val, "" );
+						e.custom( start, val, "" );										// 不是数值型的仍然开始执行动画。
 					}
 				}
 			}
@@ -8463,9 +8463,9 @@ jQuery.fn.extend({
 			return true;
 		}
 
-		return optall.queue === false ?
-			this.each( doAnimation ) :
-			this.queue( optall.queue, doAnimation );
+		return optall.queue === false ? 											// 如果选项queue为false，
+			this.each( doAnimation ) : 												// 则调用方法.each()在每个匹配元素执行动画函数doAnimation(), 即立即开始执行动画; 
+			this.queue( optall.queue, doAnimation ); 								// 否则调用方法.queue(type, data)将动画函数插入选项queue指定的队列中。
 	},
 
 	stop: function( type, clearQueue, gotoEnd ) {
@@ -8566,33 +8566,33 @@ jQuery.each({
 });
 
 jQuery.extend({
-	speed: function( speed, easing, fn ) {
-		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
+	speed: function( speed, easing, fn ) { 								// 工具方法jQuery.speed(speed, easing, fn)负责修正运行时间、缓动函数、重写完成回调函数。
+		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : { 			// 修正复杂的参数格式
 			complete: fn || !fn && easing ||
 				jQuery.isFunction( speed ) && speed,
 			duration: speed,
 			easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
 		};
 
-		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
-			opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
+		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration : 	// 如果jQuery.fx.off为true，即全局禁用动画，则选项duration为0。如果选项duration是数值型，则直接采用;
+			opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default; 	 	// 否则尝试从jQuery.fx.speeds中读取动画持续时间，如果未取到，则读取jQuery.fx._default。
 
 		// normalize opt.queue - true/undefined/null -> "fx"
-		if ( opt.queue == null || opt.queue === true ) {
+		if ( opt.queue == null || opt.queue === true ) { 				// 修正选项queue。如果选项queue是undefined、null、true，则将其修正为"fx"，即默认加入动画队列，而不是立即开始运行。
 			opt.queue = "fx";
 		}
 
 		// Queueing
-		opt.old = opt.complete;
+		opt.old = opt.complete; 										// 修正选项complete。先备份完成回调函数到属性old，然后重写该函数。
 
 		opt.complete = function( noUnmark ) {
-			if ( jQuery.isFunction( opt.old ) ) {
+			if ( jQuery.isFunction( opt.old ) ) { 						// 在新函数中，先调用备份的完成回调函数。
 				opt.old.call( this );
 			}
 
-			if ( opt.queue ) {
-				jQuery.dequeue( this, opt.queue );
-			} else if ( noUnmark !== false ) {
+			if ( opt.queue ) { 											// 如果选项queue不是false
+				jQuery.dequeue( this, opt.queue ); 						// 则调用jQuery.dequeue()将fx队列中的下一个动画函数doAnimation()出队并执行，
+			} else if ( noUnmark !== false ) { 							// 否则调用jQuery._unmark()将计数器减1。
 				jQuery._unmark( this );
 			}
 		};
@@ -8611,12 +8611,12 @@ jQuery.extend({
 
 	timers: [],
 
-	fx: function( elem, options, prop ) {
-		this.options = options;
+	fx: function( elem, options, prop ) { 								// 方法jQuery.fx(elem, options, prop)是一个构造函数，用于为单个样式构造动画对象。
+		this.options = options; 										// 保存参数到动画对象上
 		this.elem = elem;
 		this.prop = prop;
 
-		options.orig = options.orig || {};
+		options.orig = options.orig || {};								
 	}
 
 });
@@ -8646,21 +8646,21 @@ jQuery.fx.prototype = {
 	},
 
 	// Start an animation from one number to another
-	custom: function( from, to, unit ) {
+	custom: function( from, to, unit ) { 								// 负责开始执行单个样式的动画
 		var self = this,
 			fx = jQuery.fx;
 
-		this.startTime = fxNow || createFxNow();
-		this.end = to;
-		this.now = this.start = from;
-		this.pos = this.state = 0;
-		this.unit = unit || this.unit || ( jQuery.cssNumber[ this.prop ] ? "" : "px" );
+		this.startTime = fxNow || createFxNow(); 		 				// 动画开始时间，值为时间				
+		this.end = to; 													// 当前样式结束值
+		this.now = this.start = from; 									// 属性start当前样式开始值, 属性now当前帧样式值
+		this.pos = this.state = 0; 										// 属性state已执行时间的百分比, pos差值百比
+		this.unit = unit || this.unit || ( jQuery.cssNumber[ this.prop ] ? "" : "px" ); 		// 当前样式的百分比
 
-		function t( gotoEnd ) {
+		function t( gotoEnd ) { 										// 构造一个封装了jQuery.fx.prototype.step()的函数t(gotoEnd)，称为单帧闭包动画函数。
 			return self.step( gotoEnd );
 		}
 
-		t.queue = this.options.queue;
+		t.queue = this.options.queue;	
 		t.elem = this.elem;
 		t.saveState = function() {
 			if ( self.options.hide && jQuery._data( self.elem, "fxshow" + self.prop ) === undefined ) {
@@ -8674,34 +8674,34 @@ jQuery.fx.prototype = {
 	},
 
 	// Simple 'show' function
-	show: function() {
-		var dataShow = jQuery._data( this.elem, "fxshow" + this.prop );
+	show: function() { 													// 用于当样式值是show时修正动画的开始值和结束值。
+		var dataShow = jQuery._data( this.elem, "fxshow" + this.prop ); 	// 如果在数据缓存中记录了当前样式的初始值，则动画的开始值为当前值。
 
 		// Remember where we started, so that we can go back to it later
-		this.options.orig[ this.prop ] = dataShow || jQuery.style( this.elem, this.prop );
-		this.options.show = true;
+		this.options.orig[ this.prop ] = dataShow || jQuery.style( this.elem, this.prop ); 		// 获取元素的当前样式开始值
+		this.options.show = true; 																
 
 		// Begin the animation
 		// Make sure that we start at a small width/height to avoid any flash of content
-		if ( dataShow !== undefined ) {
+		if ( dataShow !== undefined ) { 														// 如果有开始值
 			// This show is picking up where a previous hide or show left off
-			this.custom( this.cur(), dataShow );
+			this.custom( this.cur(), dataShow ); 												// 调用jQuery.fx.prototype.custom(from, to, unit)开始执行动画。
 		} else {
-			this.custom( this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur() );
+			this.custom( this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur() ); 	// 否则开始为0或者1，结束值为当前值。对于样式width和height，要修正开始值为1，以避免屏幕闪烁，其他样式则仍从0开始。
 		}
 
 		// Start by showing the element
-		jQuery( this.elem ).show();
+		jQuery( this.elem ).show(); 									// 在该方法的最后还会调用.show()立即显示当前元素
 	},
 
 	// Simple 'hide' function
-	hide: function() {
+	hide: function() { 													// 用于当样式值是hide时记录样式的当前值。
 		// Remember where we started, so that we can go back to it later
-		this.options.orig[ this.prop ] = jQuery._data( this.elem, "fxshow" + this.prop ) || jQuery.style( this.elem, this.prop );
+		this.options.orig[ this.prop ] = jQuery._data( this.elem, "fxshow" + this.prop ) || jQuery.style( this.elem, this.prop ); 	// 获取样式的当前值
 		this.options.hide = true;
 
 		// Begin the animation
-		this.custom( this.cur(), 0 );
+		this.custom( this.cur(), 0 ); 									// 调用jQuery.fx.prototype.custom(from, to)开始执行动画。
 	},
 
 	// Each step of an animation
