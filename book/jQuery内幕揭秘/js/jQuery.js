@@ -8222,23 +8222,23 @@ var elemdisplay = {},
 	timerId,
 	fxAttrs = [
 		// height animations
-		[ "height", "marginTop", "marginBottom", "paddingTop", "paddingBottom" ],
+		[ "height", "marginTop", "marginBottom", "paddingTop", "paddingBottom" ], 		// 高度动画：高度、上下外边距、上下内边距
 		// width animations
-		[ "width", "marginLeft", "marginRight", "paddingLeft", "paddingRight" ],
+		[ "width", "marginLeft", "marginRight", "paddingLeft", "paddingRight" ], 		// 宽度动画：宽度、左右外边距、左右内边距
 		// opacity animations
-		[ "opacity" ]
+		[ "opacity" ] 																	// 透明度动画：透明度
 	],
 	fxNow;
 
 jQuery.fn.extend({
-	show: function( speed, easing, callback ) {
+	show: function( speed, easing, callback ) { 				
 		var elem, display;
 
-		if ( speed || speed === 0 ) {
+		if ( speed || speed === 0 ) { 													// 如果有传入参数，调用.animate(prop, speed, easing, callback)来实现
 			return this.animate( genFx("show", 3), speed, easing, callback );
 
 		} else {
-			for ( var i = 0, j = this.length; i < j; i++ ) {
+			for ( var i = 0, j = this.length; i < j; i++ ) { 							// 如果没有传入参数，则立即显示匹配元素，没有任何动画效果。
 				elem = this[ i ];
 
 				if ( elem.style ) {
@@ -8279,10 +8279,10 @@ jQuery.fn.extend({
 
 	hide: function( speed, easing, callback ) {
 		if ( speed || speed === 0 ) {
-			return this.animate( genFx("hide", 3), speed, easing, callback);
+			return this.animate( genFx("hide", 3), speed, easing, callback); 			// 如果有传入参数，调用.animate(prop, speed, easing, callback)来实现
 
 		} else {
-			var elem, display,
+			var elem, display, 															// 如果没有传入参数，则立即隐藏匹配元素，没有任何动画效果。
 				i = 0,
 				j = this.length;
 
@@ -8312,15 +8312,15 @@ jQuery.fn.extend({
 	// Save the old toggle function
 	_toggle: jQuery.fn.toggle,
 
-	toggle: function( fn, fn2, callback ) {
+	toggle: function( fn, fn2, callback ) { 											
 		var bool = typeof fn === "boolean";
 
-		if ( jQuery.isFunction(fn) && jQuery.isFunction(fn2) ) {
+		if ( jQuery.isFunction(fn) && jQuery.isFunction(fn2) ) { 				// 如果提供了运行时间，则该方法变为一个动画方法
 			this._toggle.apply( this, arguments );
 
-		} else if ( fn == null || bool ) {
+		} else if ( fn == null || bool ) { 										// 如果没有传入参数，则立即显示/隐藏匹配元素，没有任何动画效果。
 			this.each(function() {
-				var state = bool ? fn : jQuery(this).is(":hidden");
+				var state = bool ? fn : jQuery(this).is(":hidden"); 			
 				jQuery(this)[ state ? "show" : "hide" ]();
 			});
 
@@ -8331,8 +8331,8 @@ jQuery.fn.extend({
 		return this;
 	},
 
-	fadeTo: function( speed, to, easing, callback ) {
-		return this.filter(":hidden").css("opacity", 0).show().end()
+	fadeTo: function( speed, to, easing, callback ) { 							// 把所有匹配元素的不透明度以渐进方式调整到指定的不透明度。调用方法.filter(":hidden")过滤出当前匹配元素集合中的不可见元素，设置的样式opacity为0，即完全透明，并调用.show()立即显示。然后调用方法.end()返回匹配元素集合
+		return this.filter(":hidden").css("opacity", 0).show().end()			// 最后调用方法.animate(prop, speed, easing, complete)为每个匹配元素的样式opacity应用动画。
 					.animate({opacity: to}, speed, easing, callback);
 	},
 
@@ -8505,24 +8505,24 @@ jQuery.fn.extend({
 				stopQueue( this, data, index );
 			}
 
-			for ( index = timers.length; index--; ) { 		 						// 						
-				if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) {
-					if ( gotoEnd ) {
+			for ( index = timers.length; index--; ) { 		 						// 从后向前遍历全局动画函数数组jQuery.timers，移除当前元素关联的单帧闭包动画函数t(gotoEnd)。				
+				if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) { 		
+					if ( gotoEnd ) { 												// 在移除之前，如果参数gotoEnd为true
 
 						// force the next step to be the last
-						timers[ index ]( true );
+						timers[ index ]( true ); 									// 移除前调用t(gotoEnd)跳转到完成状态
 					} else {
-						timers[ index ].saveState();
+						timers[ index ].saveState(); 								// 否则调用方法t.saveState()保存状态，以便回退动画。
 					}
 					hadTimers = true;
-					timers.splice( index, 1 );
+					timers.splice( index, 1 ); 										
 				}
 			}
 
 			// start the next in the queue if the last step wasn't forced
 			// timers currently will call their complete callbacks, which will dequeue
 			// but only if they were gotoEnd
-			if ( !( gotoEnd && hadTimers ) ) {
+			if ( !( gotoEnd && hadTimers ) ) { 										// 如果变量hadTimers为true, 并且参数gotoEnd为true(表示会触发完成回调函数)，那么在前面遍历jQuery.timers时，必须会触发当前动画的完成回调函数，进而自动出队和执行下一个动画函数doAnimation()。除此以外的其他情况，需要手动调用方法jQuery.dequeue(elem, type)出队和执行下一个动画函数doAnimation()。
 				jQuery.dequeue( this, type );
 			}
 		});
