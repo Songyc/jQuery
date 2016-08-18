@@ -8468,44 +8468,44 @@ jQuery.fn.extend({
 			this.queue( optall.queue, doAnimation ); 								// 否则调用方法.queue(type, data)将动画函数插入选项queue指定的队列中。
 	},
 
-	stop: function( type, clearQueue, gotoEnd ) {
-		if ( typeof type !== "string" ) {
+	stop: function( type, clearQueue, gotoEnd ) { 									// 用于停止当前匹配元素上正在运行的动画
+		if ( typeof type !== "string" ) { 											// 修正参数。如果第一个参数type不是字符串，即参数格式是stop(clearQueue, gotoEnd)，则修正参数。
 			gotoEnd = clearQueue;
 			clearQueue = type;
 			type = undefined;
 		}
-		if ( clearQueue && type !== false ) {
-			this.queue( type || "fx", [] );
+		if ( clearQueue && type !== false ) { 										// 如果参数clearQueue为true，则清空动画队列。
+			this.queue( type || "fx", [] ); 					
 		}
 
-		return this.each(function() {
+		return this.each(function() { 												// 遍历匹配元素集合
 			var index,
 				hadTimers = false,
 				timers = jQuery.timers,
 				data = jQuery._data( this );
 
 			// clear marker counters if we know they won't be
-			if ( !gotoEnd ) {
-				jQuery._unmark( true, this );
+			if ( !gotoEnd ) { 														// 清除异步动画的计数器
+				jQuery._unmark( true, this ); 										// 需要手动调用方法jQuery._unmark(force, elem, type)来清除当前元素关联的计数器
 			}
 
-			function stopQueue( elem, data, index ) {
-				var hooks = data[ index ];
+			function stopQueue( elem, data, index ) { 								// 为出队的函数分配一个临时对象hooks，并将该对象存储到元素elem关联的数据缓存对象上，数据名为type+".run"; 
+				var hooks = data[ index ]; 											// 
 				jQuery.removeData( elem, index, true );
 				hooks.stop( gotoEnd );
 			}
-
-			if ( type == null ) {
+ 	
+			if ( type == null ) { 													// 如果未传入参数type, 则取消所有队列的延迟出队操作
 				for ( index in data ) {
 					if ( data[ index ] && data[ index ].stop && index.indexOf(".run") === index.length - 4 ) {
 						stopQueue( this, data, index );
 					}
 				}
-			} else if ( data[ index = type + ".run" ] && data[ index ].stop ){
+			} else if ( data[ index = type + ".run" ] && data[ index ].stop ){ 		// 如果传入参数type, 则取消所有队列的延迟出险操作
 				stopQueue( this, data, index );
 			}
 
-			for ( index = timers.length; index--; ) {
+			for ( index = timers.length; index--; ) { 		 						// 						
 				if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) {
 					if ( gotoEnd ) {
 
@@ -8623,12 +8623,12 @@ jQuery.extend({
 
 jQuery.fx.prototype = {
 	// Simple function for setting a style value
-	update: function() {
-		if ( this.options.step ) {
+	update: function() { 												
+		if ( this.options.step ) { 										
 			this.options.step.call( this.elem, this.now, this );
 		}
 
-		( jQuery.fx.step[ this.prop ] || jQuery.fx.step._default )( this );
+		( jQuery.fx.step[ this.prop ] || jQuery.fx.step._default )( this ); 	// 通过调用jQuery.fx.step中的方法来更新样式值。如果当前样式在对象jQuery.fx.step中有对应的修正方法，则调用修正方法更新样式值; 否则调用默认方法jQuery.fx.step._default()直接设置内联样式。
 	},
 
 	// Get the current size
@@ -8816,15 +8816,15 @@ jQuery.extend( jQuery.fx, {
 		_default: 400
 	},
 
-	step: {
+	step: { 													
 		opacity: function( fx ) {
-			jQuery.style( fx.elem, "opacity", fx.now );
+			jQuery.style( fx.elem, "opacity", fx.now ); 		// 通过调用方法jQuery.style(elem, name, value, extra)设置样式opactiy。
 		},
 
 		_default: function( fx ) {
-			if ( fx.elem.style && fx.elem.style[ fx.prop ] != null ) {
+			if ( fx.elem.style && fx.elem.style[ fx.prop ] != null ) { 			// 默认情况下，更新样式值时，如果当前元素有属性style，并且有属性style含有指定的样式，则在属性style上设置样式值
 				fx.elem.style[ fx.prop ] = fx.now + fx.unit;
-			} else {
+			} else { 															// 否则在DOM元素上设置DOM属性
 				fx.elem[ fx.prop ] = fx.now;
 			}
 		}
@@ -8833,7 +8833,7 @@ jQuery.extend( jQuery.fx, {
 
 // Adds width/height step functions
 // Do not set anything below 0
-jQuery.each([ "width", "height" ], function( i, prop ) {
+jQuery.each([ "width", "height" ], function( i, prop ) { 		// 向对象jQuery.fx.step中添加更新样式width、height的函数，更新函数内部依然会通过方法jQuery.style(elem, name, value, extra)来实现，但是如果样式值小于0，则会将其修正为0。
 	jQuery.fx.step[ prop ] = function( fx ) {
 		jQuery.style( fx.elem, prop, Math.max(0, fx.now) + fx.unit );
 	};

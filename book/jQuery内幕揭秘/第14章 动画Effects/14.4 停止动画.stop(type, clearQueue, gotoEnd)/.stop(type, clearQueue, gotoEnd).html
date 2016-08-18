@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<style></style>
+	<button id="go"> Run</button>
+	<span id="block">Hello!</span>
+	<script src="../../js/jQuery.js"></script>
+	<script>
+	var complete = function () {
+		$(this).animate({show: "toggle"});
+	}
+
+	$("#block").animate({
+		height: "100px"
+	}).animate({
+		height: "200px"
+	}).stop(true);
+	</script>
+</body>
+</html>
